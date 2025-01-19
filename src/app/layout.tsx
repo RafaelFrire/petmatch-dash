@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import type { Metadata } from "next";
 import "../global.css"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 export const metadata: Metadata = {
@@ -12,12 +13,16 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>)
+{
+  const queryClient = new QueryClient();
   return (
     <html>
       <body>
-        <Header />
-        {children}
+        {/* <QueryClientProvider client={queryClient}> */}
+          <Header />
+          {children}
+        {/* </QueryClientProvider> */}
       </body>
     </html>
   );

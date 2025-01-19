@@ -3,10 +3,11 @@ import FilterHeader from "../filters";
 import SearchIcon from "@/icons/SearchIcon";
 import Line from "@/components/line";
 
-type inputProps = {
-} & React.PropsWithChildren<React.ComponentPropsWithRef<"input">>
+type inputProps = {} & React.PropsWithChildren<
+  React.ComponentPropsWithRef<"input">
+>;
 
-const InputSearch:React.FC<inputProps> = ({...props}:inputProps) =>{
+const InputSearch: React.FC<inputProps> = ({ ...props }: inputProps) => {
   return (
     <div
       className="w-full max-w-sm min-w-[300px] flex items-center justify-between
@@ -14,10 +15,7 @@ const InputSearch:React.FC<inputProps> = ({...props}:inputProps) =>{
     "
     >
       <FilterHeader />
-      <Line 
-      height={"25px"}
-      width={"1px"}
-      />
+      <Line height={"25px"} width={"1px"} />
       <input
         className="w-full max-w-[50%] py-1 bg-transparent border-none placeholder:text-primary80 focus:outline-none"
         {...props}
@@ -25,6 +23,6 @@ const InputSearch:React.FC<inputProps> = ({...props}:inputProps) =>{
       <SearchIcon width={22} height={22} className="mx-2" />
     </div>
   );
-}
+};
 
 export default InputSearch;

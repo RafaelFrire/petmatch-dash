@@ -2,6 +2,7 @@ import Header from "@/components/header";
 import type { Metadata } from "next";
 import "../global.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Footer from "@/components/footer";
 
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
         {/* <QueryClientProvider client={queryClient}> */}
           <Header />
           {children}
+          <Footer />
         {/* </QueryClientProvider> */}
       </body>
     </html>

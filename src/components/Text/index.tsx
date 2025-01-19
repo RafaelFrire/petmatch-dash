@@ -5,12 +5,11 @@ type textProps = {
 
 
 const Text:React.FC<textProps> = ({text, ...props}:textProps) =>{
-    return(
-        <text {...props}
-        className="text-primary-100 font-semibold">
-            {text}
-        </text>
-    )    
+    return (
+      <text {...props} className="text-primary-100 font-semibold">
+        {text}
+      </text>
+    );    
 }
 
 export default Text;

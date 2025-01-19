@@ -15,8 +15,8 @@ const InputSearch:React.FC<inputProps> = ({...props}:inputProps) =>{
     >
       <FilterHeader />
       <Line 
-      height={"10"}
-      width={"1"}
+      height={"25px"}
+      width={"1px"}
       />
       <input
         className="w-full max-w-[50%] py-1 bg-transparent border-none placeholder:text-primary80 focus:outline-none"

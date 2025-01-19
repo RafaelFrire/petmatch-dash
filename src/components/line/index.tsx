@@ -1,10 +1,16 @@
-type lineProps = {
+type LineProps = {
   width: string;
   height: string;
+  classname?: string;
 };
 
-const Line = ({ }: lineProps) => {
-  return <div className={`w-[1px] h-[25px] bg-primary100`}></div>;
+const Line = ({ width, height, classname }: LineProps) => {
+  return (
+    <div
+      style={{ width, height }}
+      className={`bg-primary100 ${classname}`}
+    ></div>
+  );
 };
 
 export default Line;

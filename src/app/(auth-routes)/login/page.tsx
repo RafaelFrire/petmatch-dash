@@ -1,7 +1,9 @@
+import FormLogin from "@/components/formlogin";
+
 export default function Login(){
-    return(
-        <div>
-            <h1>this is my loginpage</h1>
-        </div>
-    )
+  return (
+    <div className="">
+        <FormLogin />
+    </div>
+  );
 }

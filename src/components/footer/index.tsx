@@ -23,7 +23,7 @@ const ContactInfo: textWithIconProps[] = [
 
 const Footer = () => {
   return (
-    <footer className="absolute bottom-1 min-h-32">
+    <footer className="relative h-32 py-6">
       <Line width="100vw" height="1.5px" classname="my-4" />
       <div className="flex justify-around items-center py-12">
         <div className="max-w-[300px]">

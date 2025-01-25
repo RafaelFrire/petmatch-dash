@@ -1,4 +1,5 @@
 import Line from "../line";
+import ButtonLogin from "./buttonLogin";
 import InputSearch from "./InputSearch";
 import Navbar from "./navbar";
 import { navlinkProps } from "./navLink";
@@ -16,8 +17,9 @@ const navLinks: navlinkProps[] = [
 const Header = () => {
   return (
     <header className="py-4">
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center gap-10">
         <InputSearch placeholder="Encontre o seu pet" />
+        <ButtonLogin text="Login" />
       </div>
       <Line width="100vw" height="1.5px" classname="my-4" />
       <Navbar navLinks={navLinks} />

@@ -23,20 +23,19 @@ const ContactInfo: textWithIconProps[] = [
 
 const Footer = () => {
   return (
-    <footer className="relative h-32 py-6">
-      <Line width="100vw" height="1.5px" classname="my-4" />
-      <div className="flex justify-around items-center py-12">
+    <footer className="relative h-32 py-6 ">
+      <Line width="100%" height="1.5px" classname="my-4" />
+      <div className="flex justify-around flex-wrap items-center py-12">
         <div className="max-w-[300px]">
           <text>
             Proin ullamcorper pretium orci. Donec nec scelerisque leo. Nam massa
             dolor imperdiet nec consequa tacon uedisem.
           </text>
         </div>
-        <div className="min-w-md">
-          <h1 className="font-semibold text-primary80 py-2">Links Rápidos</h1>
+        <div className="w-[100%] md:w-[300px] py-2">
           <LinkList linkItems={navLinks} />
         </div>
-        <div>
+        <div className="">
           <h1 className="font-semibold text-lg text-primary80 py-2">
             Entre em contato
           </h1>

@@ -3,7 +3,7 @@ type phoneIconProps = {
     height: number;
   } & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
 
-const PhoneIcon:React.FC<phoneIconProps> = ({width, height}:phoneIconProps) => {
+const PhoneIcon:React.FC<phoneIconProps> = ({width, height}) => {
   return (
     <svg
       width={width}

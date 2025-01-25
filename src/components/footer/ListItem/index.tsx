@@ -5,11 +5,13 @@ export type listItemProps = {
   path: string;
 };
 
-const ListItem = ({ text, path }: listItemProps) => {
+const ListItem:React.FC<listItemProps> = ({ text, path }) => {
   return (
-    <a href={path} className="font-normal flex items-center py-1">
-      <ArrowRight width={15} height={15} />
-      {text}
+    <a href={path}>
+      <div className="font-normal flex md:w-32 h-3">
+        <ArrowRight width={15} height={15} />
+        {text}
+      </div>
     </a>
   );
 };

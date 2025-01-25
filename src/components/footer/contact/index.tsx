@@ -9,7 +9,7 @@ const Contact = ({ items }: contactProps) => {
     <div>
       {items.map((item, index) => {
         return (
-          <div key={index}>
+          <div key={index} className="flex items-center">
             <TextWithIcon text={item.text} icon={item.icon} />
           </div>
         );

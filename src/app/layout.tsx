@@ -1,9 +1,6 @@
-import Header from "@/components/header";
 import type { Metadata } from "next";
-import "../global.css"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Footer from "@/components/footer";
-
+import "../global.css";
+import Provider from "@/utils/Providers";
 
 export const metadata: Metadata = {
   title: "Pet Match",
@@ -14,17 +11,15 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>)
-{
-  const queryClient = new QueryClient();
+}>) {
+
+
   return (
-    <html>
+    <html lang="pt-BR">
       <body>
-        {/* <QueryClientProvider client={queryClient}> */}
-          <Header />
+        <Provider>
           {children}
-          <Footer />
-        {/* </QueryClientProvider> */}
+        </Provider>
       </body>
     </html>
   );

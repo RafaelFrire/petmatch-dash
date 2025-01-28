@@ -3,16 +3,12 @@ type svgProps = {
   height: number;
 } & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
 
-const ThreeDotIcon: React.FC<svgProps> = ({
-  width,
-  height,
-  ...props
-}) => {
+const ThreeDotIcon: React.FC<svgProps> = ({ width, height, ...props }) => {
   return (
     <svg
       fill="#000000"
       viewBox="0 0 32 32"
-      enable-background="new 0 0 32 32"
+      enableBackground="new 0 0 32 32"
       width={width}
       height={height}
       {...props}
@@ -22,11 +18,11 @@ const ThreeDotIcon: React.FC<svgProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path

@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({
       {label && <label htmlFor={id || name}>{label}</label>}
       <input
         id={name}
+        name={name}
         {...props}
         className={`
             ${borderRounded ? "rounded-full" : "rounded-md"} 

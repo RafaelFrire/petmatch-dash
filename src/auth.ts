@@ -6,11 +6,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "email" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "email",
+          name: "email",
+        },
         password: {
           label: "Password",
           type: "password",
           placeholder: "password",
+          name: "password",
         },
       },
       authorize: async (credentials) => {

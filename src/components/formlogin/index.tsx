@@ -1,25 +1,20 @@
+'use client'
 import { useState } from "react";
 import Button from "../form/Button";
 import Input from "../form/input";
 import loginAction from "@/actions/loginAction";
+import Form from "next/form";
 
-
-
-const FormLogin = () => {
+export default function FormLogin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.id]: event.target.value });
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
-
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault(); // Evita o reload da página
-  //   console.log(formData)
-  // };
 
 
   return (
-    <form
+    <Form
       className="flex flex-col gap-2 w-[90%] md:w-[95%] mx-auto"
       action={loginAction}
     >
@@ -48,8 +43,7 @@ const FormLogin = () => {
       <div className="flex items-center justify-center">
         <h1>OU</h1>
       </div>
-    </form>
+    </Form>
   );
 };
 
-export default FormLogin;

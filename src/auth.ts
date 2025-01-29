@@ -29,6 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               console.log("Authentication failed: Invalid credentials");
               return null;
             }
+
             return user.user;
           }
 

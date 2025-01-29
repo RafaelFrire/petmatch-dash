@@ -1,11 +1,13 @@
-'use client'
+import { auth } from "@/auth";
 import { ButtonRedirect } from "@/components/form/ButtonRedirect";
 import FormLogin from "@/components/formlogin";
+import { redirect } from "next/navigation";
 
-
-export default function Login() {
-
-
+export default async function Login() {
+  const session = await auth();
+  if(session){
+    return redirect("/")
+  }
   return (
     <>
       <div className="h-14"></div>
@@ -16,8 +18,7 @@ export default function Login() {
             <ButtonRedirect text="Entrar" isActive={true} />
             <ButtonRedirect text="Cadastrar" isActive={false} />
           </div>
-          <FormLogin 
-          />
+          <FormLogin />
         </div>
       </div>
     </>

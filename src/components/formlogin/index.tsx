@@ -6,11 +6,11 @@ import Input from "../form/input";
 import loginAction from "@/actions/loginAction";
 import Form from "next/form";
 import { toast } from "sonner";
+import Text from "../Text";
+import AcceptTerms from "../form/acceptTerms";
 
 export default function FormLogin() {
   const [state, formAction] = useActionState(loginAction, null);
-
-  
 
   useEffect(() => {
     if (!state?.sucess) {
@@ -34,16 +34,13 @@ export default function FormLogin() {
           borderRounded={true}
         />
         <div className="h-3"></div>
-        <div className="flex flex-wrap text-xs md:text-base items-center justify-between px-2">
-          <h1>Aceito a Política de Privacidade</h1>
-          <h1>Esqueceu a senha?</h1>
+        <div className="flex flex-wrap text md:text-base items-center justify-between px-2">
+          <AcceptTerms text="Aceito a Política de Privacidade" />
+          <Text text="Esqueceu a senha?" />
         </div>
         <div className="h-3"></div>
         <Button text="Entrar" borderRounded={true} type="submit" />
         <div className="h-6"></div>
-        <div className="flex items-center justify-center">
-          <h1>OU</h1>
-        </div>
       </Form>
     </>
   );

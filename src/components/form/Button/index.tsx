@@ -1,5 +1,6 @@
 type ButtonProps = {
   text: string;
+  classname?: string;
   borderRounded?: boolean;
   backgroundNone?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -8,6 +9,7 @@ const Button: React.FC<ButtonProps> = ({
   text,
   backgroundNone,
   borderRounded,
+  classname,
 }: ButtonProps) => {
   return (
     <button
@@ -18,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
                 ? "bg-none text-black border-2 border-primary100"
                 : "bg-primary100"
             } 
+            ${classname}
              text-white min-h-10`}
     >
       {text}

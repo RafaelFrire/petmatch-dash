@@ -1,13 +1,13 @@
-'use client'
+"use client";
 import { useActionState } from "react";
 import { useEffect } from "react";
-import Button from "../form/Button";
-import Input from "../form/input";
 import loginAction from "@/actions/loginAction";
 import Form from "next/form";
 import { toast } from "sonner";
-import Text from "../Text";
-import AcceptTerms from "../form/acceptTerms";
+import Input from "@/components/form/input";
+import AcceptTerms from "@/components/form/acceptTerms";
+import Button from "@/components/form/Button";
+import Text from "@/components/Text";
 
 export default function FormLogin() {
   const [state, formAction] = useActionState(loginAction, null);

@@ -7,6 +7,7 @@ export type InputProps = {
   name: string;
   borderRounded?: boolean;
   className?: string;
+  error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ const Input: React.FC<InputProps> = ({
   type,
   borderRounded,
   className,
+  error,
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +27,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <div className={`grid gap-2 min-h-10 ${className}`}>
+    <div className={`grid gap-0 min-h-10 ${className}`}>
       {label && <label htmlFor={id || name}>{label}</label>}
       <div className="relative">
         <input
@@ -36,6 +38,7 @@ const Input: React.FC<InputProps> = ({
           className={`
             ${borderRounded ? "rounded-full" : "rounded-sm"} 
             w-full border-2 border-primary100 p-2.5 pr-10 focus:outline-2 focus:outline-secondary100
+            ${error ? "border-red-500" : ""}
           `}
         />
         {type === "password" && (
@@ -51,6 +54,7 @@ const Input: React.FC<InputProps> = ({
           </span>
         )}
       </div>
+      {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );
 };

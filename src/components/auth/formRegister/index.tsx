@@ -6,6 +6,7 @@ import InputFiles from "@/components/form/inputFiles";
 import UserSchema from "@/schemas/registerUser";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
 
 type Inputs = {
   firstName: string;
@@ -26,6 +27,7 @@ export default function FormRegister() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: yupResolver(UserSchema),
@@ -81,6 +83,11 @@ export default function FormRegister() {
         name="phone"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         error={errors?.phone?.message}
+        onChange={(e) => {
+          const mask = phoneMask(e.target.value);
+          setValue("phone", mask)
+        }}
+        maxLength={15}
       />{" "}
       <Input
         label="CEP*"
@@ -88,6 +95,11 @@ export default function FormRegister() {
         name="zipcode"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         error={errors?.zipcode?.message}
+        onChange={(e) => {
+          const mask = cepMask(e.target.value);
+          setValue("zipcode", mask)
+        }}
+        maxLength={9}
       />
       <Input
         label="Endereço*"
@@ -116,6 +128,11 @@ export default function FormRegister() {
         name="documentId"
         error={errors?.documentId?.message}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
+        onChange={(e) => {
+          const mask = rgMask(e.target.value);
+          setValue("documentId", mask)
+        }}
+        maxLength={12}
       />
       <InputFiles
         {...register("attachment")}

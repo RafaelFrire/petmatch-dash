@@ -7,6 +7,8 @@ import UserSchema from "@/schemas/registerUser";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "@/hooks/useAuth";
 
 type Inputs = {
   firstName: string;
@@ -33,7 +35,25 @@ export default function FormRegister() {
     resolver: yupResolver(UserSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  
+
+  const mutation = useMutation({
+    mutationFn: (data: Inputs) => signup(data, data.attachment as File),
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (data.attachment) {
+    console.log("submit11", data)
+    mutation.mutate(data);
+    }
+    console.log("submit", data)
+  };
+
+  const handleFileChange = (e:any) => {
+    // Aqui estamos usando o setValue para manipular o arquivo
+    setValue("attachment", e.target.files[0]);
+  };
 
   return (
     <form
@@ -138,6 +158,7 @@ export default function FormRegister() {
         {...register("attachment")}
         name="attachment"
         label="anexar*"
+        onChange={handleFileChange}
         // error={errors?.attachment?.message}
         classname="col-span-2 md:col-span-1"
       />

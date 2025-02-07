@@ -5,9 +5,12 @@ type inputFileProps = {
   name: string;
   label: string;
   classname: string;
+  error?: string;
+  register: any;
+  setValue: any;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const InputFiles: React.FC<inputFileProps> = ({ name, classname, label }) => {
+const InputFiles: React.FC<inputFileProps> = ({ name, classname, error, register, setValue, label }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -19,6 +22,7 @@ const InputFiles: React.FC<inputFileProps> = ({ name, classname, label }) => {
     const file = event.target.files?.[0]; // Pega o primeiro arquivo selecionado
     if (file) {
       setFileName(file.name); // Atualiza o nome do arquivo no estado
+      setValue(name, file); 
     }
   };
 
@@ -36,11 +40,16 @@ const InputFiles: React.FC<inputFileProps> = ({ name, classname, label }) => {
           type="file"
           id={name}
           hidden
-          ref={inputRef}
+          ref={(e) => {
+            register(name); // Registra o input
+            inputRef.current = e;
+          }}
           accept="image/*,application/pdf"
           onChange={handleFileChange}
         />
       </div>
+      {error && <p className="text-red-500 text-xs">{error}</p>}
+
     </div>
   );
 };

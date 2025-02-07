@@ -40,21 +40,18 @@ export const login = async (
     return null;
   }
 };
-export const signup = async (data: RegisterUser, file: File) => {
+export const signup = async (data: RegisterUser) => {
   try {
     const formData = new FormData();
-    Object.keys(data).forEach(key => {
+
+    Object.keys(data).forEach((key) => {
       formData.append(key, (data as any)[key]);
     });
-    formData.append("file", file);
 
-    const response = await api.post<apiResponse>(
-      "/auth/signup",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+
+    const response = await api.post<apiResponse>("/auth/signup", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
     if (response.status === 200) {
       const { user, token } = response.data;

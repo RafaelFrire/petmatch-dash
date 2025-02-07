@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 const UserSchema = yup.object().shape({
-  firstName: yup.string().required("O primeiro nome é obrigatório"),
-  lastName: yup.string().required("O sobrenome é obrigatório"),
+  name: yup.string().required("O primeiro nome é obrigatório"),
+  lastname: yup.string().required("O sobrenome é obrigatório"),
   email: yup.string().email("Email inválido").required("O email é obrigatório"),
   password: yup
     .string()
@@ -19,17 +19,16 @@ const UserSchema = yup.object().shape({
   zipcode: yup.string().min(8, "CEP inválido").required("O CEP é obrigatório"),
   address: yup.string().required("O endereço é obrigatório"),
   state: yup.string().required("O estado é obrigatório"),
-  city: yup.string().required(),
+  city: yup.string().required("A CCidade é obrigatória"),
   documentId: yup
     .string()
     .required("O documento de identificação é obrigatório"),
-    attachment: yup
+  files: yup
     .mixed<File>()
     .test("fileType", "O arquivo precisa ser um documento válido", (value) => {
-      return value instanceof File || value === undefined;
+      return value instanceof File
     })
-    .nullable()
-    .optional(),
+    .required("Anexar documento."),
 });
 
 export default UserSchema;

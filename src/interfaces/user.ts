@@ -8,8 +8,8 @@ export interface User {
 };
 
 export interface RegisterUser {
-    firstName: string;
-    lastName: string;
+    name: string;
+    lastname: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -19,5 +19,5 @@ export interface RegisterUser {
     state: string;
     city: string;
     documentId: string;
-    attachment?: File | null;
+    files: File;
   };

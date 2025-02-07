@@ -11,8 +11,8 @@ import { useMutation } from "@tanstack/react-query";
 import { signup } from "@/hooks/useAuth";
 
 type Inputs = {
-  firstName: string;
-  lastName: string;
+  name: string;
+  lastname: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -22,7 +22,7 @@ type Inputs = {
   state: string;
   city: string;
   documentId: string;
-  attachment?: File | null;
+  files: File;
 };
 
 export default function FormRegister() {
@@ -35,24 +35,14 @@ export default function FormRegister() {
     resolver: yupResolver(UserSchema),
   });
 
-
-  
-
   const mutation = useMutation({
-    mutationFn: (data: Inputs) => signup(data, data.attachment as File),
+    mutationFn: (data: Inputs) => signup(data),
   });
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    if (data.attachment) {
+    if (data.files) {
     console.log("submit11", data)
     mutation.mutate(data);
     }
-    console.log("submit", data)
-  };
-
-  const handleFileChange = (e:any) => {
-    // Aqui estamos usando o setValue para manipular o arquivo
-    setValue("attachment", e.target.files[0]);
   };
 
   return (
@@ -63,16 +53,16 @@ export default function FormRegister() {
       <Input
         label="Digite seu primeiro nome*"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
-        {...register("firstName")}
-        name="firstName"
-        error={errors?.firstName?.message}
+        {...register("name")}
+        name="name"
+        error={errors?.name?.message}
       />
       <Input
         label="Digite seu sobrenome*"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
-        {...register("lastName")}
-        name="lastName"
-        error={errors?.lastName?.message}
+        {...register("lastname")}
+        name="lastname"
+        error={errors?.lastname?.message}
       />
       <Input
         label="Email*"
@@ -155,11 +145,11 @@ export default function FormRegister() {
         maxLength={12}
       />
       <InputFiles
-        {...register("attachment")}
-        name="attachment"
+        register={register}
+        setValue={setValue}
+        name="files"
         label="anexar*"
-        onChange={handleFileChange}
-        // error={errors?.attachment?.message}
+        error={errors?.files?.message}
         classname="col-span-2 md:col-span-1"
       />
       <div className="h-4"></div>

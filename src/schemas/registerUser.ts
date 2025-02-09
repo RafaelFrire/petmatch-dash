@@ -26,9 +26,11 @@ const UserSchema = yup.object().shape({
   files: yup
     .mixed<File>()
     .test("fileType", "O arquivo precisa ser um documento válido", (value) => {
-      return value instanceof File
+      return value instanceof File;
     })
     .required("Anexar documento."),
+  termsPrivacity: yup.boolean().oneOf([true], "Você deve aceitar os termos").required("Você deve aceitar os termos"),
+  termsAdopter: yup.boolean().oneOf([true], "Você deve aceitar os termos").required("Você deve aceitar os termos"),
 });
 
 export default UserSchema;

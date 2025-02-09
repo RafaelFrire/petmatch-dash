@@ -4,7 +4,7 @@ import Button from "@/components/form/Button";
 import Input from "@/components/form/input";
 import InputFiles from "@/components/form/inputFiles";
 import UserSchema from "@/schemas/registerUser";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
 import { useMutation } from "@tanstack/react-query";
@@ -23,6 +23,8 @@ type Inputs = {
   city: string;
   documentId: string;
   files: File;
+  termsPrivacity: boolean
+  termsAdopter: boolean
 };
 
 export default function FormRegister() {
@@ -30,6 +32,7 @@ export default function FormRegister() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: yupResolver(UserSchema),
@@ -95,7 +98,7 @@ export default function FormRegister() {
         error={errors?.phone?.message}
         onChange={(e) => {
           const mask = phoneMask(e.target.value);
-          setValue("phone", mask)
+          setValue("phone", mask);
         }}
         maxLength={15}
       />{" "}
@@ -107,7 +110,7 @@ export default function FormRegister() {
         error={errors?.zipcode?.message}
         onChange={(e) => {
           const mask = cepMask(e.target.value);
-          setValue("zipcode", mask)
+          setValue("zipcode", mask);
         }}
         maxLength={9}
       />
@@ -140,7 +143,7 @@ export default function FormRegister() {
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         onChange={(e) => {
           const mask = rgMask(e.target.value);
-          setValue("documentId", mask)
+          setValue("documentId", mask);
         }}
         maxLength={12}
       />
@@ -153,14 +156,35 @@ export default function FormRegister() {
         classname="col-span-2 md:col-span-1"
       />
       <div className="h-4"></div>
-      <AcceptTerms
-        text="Li e Aceito a Política de Privacidade"
-        classname="col-span-2"
+      <Controller
+        name="termsPrivacity"
+        control={control}
+        render={({ field }) => (
+          <AcceptTerms
+            text="Li e Aceito a Política de Privacidade"
+            classname="col-span-2"
+            value={field.value}
+            onChange={field.onChange}
+            error={errors.termsPrivacity?.message}
+          />
+        )}
+        rules={{ required: "Você deve aceitar os termos para continuar" }}
       />
-      <AcceptTerms
-        text="Li e Aceito os Termos de Responsabilidade de Adoção"
-        classname="col-span-2"
+      <Controller
+        name="termsAdopter"
+        control={control}
+        render={({ field }) => (
+          <AcceptTerms
+            text="Li e Aceito os Termos de Responsabilidade de Adoção"
+            classname="col-span-2"
+            value={field.value}
+            onChange={field.onChange}
+            error={errors.termsAdopter?.message}
+          />
+        )}
+        rules={{ required: "Você deve aceitar os termos para continuar" }}
       />
+
       <div className="h-4"></div>
       <Button text="Cadastrar" classname="col-span-2" />
       <div className="h-8"></div>

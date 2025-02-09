@@ -45,7 +45,7 @@ export const signup = async (data: RegisterUser) => {
     const formData = new FormData();
 
     Object.keys(data).forEach((key) => {
-      formData.append(key, (data as any)[key]);
+      formData.append(key, (data as never)[key]);
     });
 
 

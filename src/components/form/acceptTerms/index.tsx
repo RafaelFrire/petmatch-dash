@@ -1,26 +1,28 @@
 "use client";
-import { useState } from "react";
 import InputRadius from "../inputRadius";
 
-type termsProps = {
+type TermsProps = {
   text: string;
   classname?: string;
+  error?: string;
+  value: boolean;
+  onChange: (value: boolean) => void;
 };
 
-const AcceptTerms: React.FC<termsProps> = ({ text, classname }) => {
-  const [isActive, setActive] = useState<boolean>(false);
 
-  const handleChangeState = () => {
-    setActive(!isActive);
-  };
+const AcceptTerms: React.FC<TermsProps> = ({ text, classname, error, value, onChange }) => {
+
   return (
-    <div
-      className={`flex gap-1 items-center ${classname}`}
-      onClick={handleChangeState}
-    >
-      <InputRadius active={isActive} />
-      {text}
-    </div>
+      <div
+        className={`flex flex-col gap-1 ${classname}`}
+        onClick={() => onChange(!value)}
+      >
+        <div className="flex gap-1">
+        <InputRadius active={value} />
+        {text}
+        </div>
+        {error && <p className="text-red-500 text-xs px-6">{error}</p>}
+      </div>
   );
 };
 export default AcceptTerms;

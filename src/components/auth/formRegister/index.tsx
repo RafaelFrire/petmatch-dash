@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
 import { useMutation } from "@tanstack/react-query";
 import { signup } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   name: string;
@@ -27,6 +28,7 @@ type Inputs = {
   termsAdopter: boolean
 };
 
+
 export default function FormRegister() {
   const {
     register,
@@ -37,15 +39,20 @@ export default function FormRegister() {
   } = useForm<Inputs>({
     resolver: yupResolver(UserSchema),
   });
+  const router = useRouter();
+
 
   const mutation = useMutation({
     mutationFn: (data: Inputs) => signup(data),
+    onSuccess() {
+      router.push("/login")
+    },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (data.files) {
-    console.log("submit11", data)
     mutation.mutate(data);
     }
+
   };
 
   return (

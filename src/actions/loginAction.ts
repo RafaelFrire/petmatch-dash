@@ -3,13 +3,19 @@ import { signIn } from "@/auth";
 
 export default async function loginAction(_prevState: any, formData: FormData) {
   try {
-    await signIn("credentials", formData);
-    return { sucess: true };
+    const result = await signIn("credentials", {
+      redirect: false, // Impede o redirecionamento automático
+      email: formData.get("email"),
+      password: formData.get("password"),
+    });
+     if (result?.error) {
+      return { success: false, message: "Dados de login incorretos" };
+    }
+    return { success: true, message: "Login realizado com sucesso!" };
   } catch (e) {
     console.error(e);
-    if (e.type === "CredentialsSignin") {
+    if ((e as Error & { type?: string }).type === "CredentialsSignin") {
       return { sucess: false, message: "Dados de login incorretos" };
     }
-    return { sucess: false, message: "Ops, algum erro aconteceu." };
   }
 }

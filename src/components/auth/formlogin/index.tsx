@@ -3,11 +3,11 @@ import { useActionState } from "react";
 import { useEffect } from "react";
 import loginAction from "@/actions/loginAction";
 import Form from "next/form";
-import { toast } from "sonner";
 import Input from "@/components/form/input";
 import AcceptTerms from "@/components/form/acceptTerms";
 import Button from "@/components/form/Button";
 import Text from "@/components/Text";
+import { toast } from "react-toastify";
 
 export default function FormLogin() {
   const [state, formAction] = useActionState(loginAction, null);
@@ -16,7 +16,7 @@ export default function FormLogin() {
     if (!state?.sucess) {
       toast.error(state?.message);
     } else if (state?.sucess) {
-      toast.success("Login realizado com successo!!");
+      toast.success(state?.message);
     }
   }, [state]);
 
@@ -35,7 +35,10 @@ export default function FormLogin() {
         />
         <div className="h-3"></div>
         <div className="flex flex-wrap text md:text-base items-center justify-between px-2">
-          <AcceptTerms text="Aceito a Política de Privacidade" />
+          <AcceptTerms text="Aceito a Política de Privacidade"
+          value={true}
+          onChange={() => {}}
+          />
           <Text text="Esqueceu a senha?" />
         </div>
         <div className="h-3"></div>

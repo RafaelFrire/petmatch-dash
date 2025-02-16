@@ -14,7 +14,7 @@ const AcceptTerms: React.FC<TermsProps> = ({ text, classname, error, value, onCh
 
   return (
       <div
-        className={`flex flex-col gap-1 ${classname}`}
+        className={`flex flex-col gap-1 ${classname} w-64`}
         onClick={() => onChange(!value)}
       >
         <div className="flex gap-1">

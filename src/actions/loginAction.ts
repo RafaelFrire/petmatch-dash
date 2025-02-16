@@ -8,6 +8,8 @@ export default async function loginAction(_prevState: any, formData: FormData) {
       email: formData.get("email"),
       password: formData.get("password"),
     });
+    
+
      if (result?.error) {
       return { success: false, message: "Dados de login incorretos" };
     }
@@ -15,7 +17,7 @@ export default async function loginAction(_prevState: any, formData: FormData) {
   } catch (e) {
     console.error(e);
     if ((e as Error & { type?: string }).type === "CredentialsSignin") {
-      return { sucess: false, message: "Dados de login incorretos" };
+      return { success: false, message: "Dados de login incorretos" };
     }
   }
 }

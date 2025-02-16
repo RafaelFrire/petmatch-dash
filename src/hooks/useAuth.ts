@@ -1,4 +1,3 @@
-'use client'
 import { RegisterUser, User } from "@/interfaces/user";
 import api from "@/utils/api";
 import { AxiosError } from "axios"; // Corrigindo importação

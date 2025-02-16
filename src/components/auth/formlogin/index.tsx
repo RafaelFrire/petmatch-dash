@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useEffect } from "react";
 import loginAction from "@/actions/loginAction";
 import Form from "next/form";
@@ -11,11 +11,27 @@ import { toast } from "react-toastify";
 
 export default function FormLogin() {
   const [state, formAction] = useActionState(loginAction, null);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!acceptTerms) {
+      event.preventDefault(); // Impede o envio do formulário
+      setError("Você deve aceitar os termos antes de continuar.");
+      toast.error("Você deve aceitar os termos antes de continuar.");
+      return;
+    }
+  
+    setError(null); // Remove erro caso tenha sido resolvido
+  };
+
 
   useEffect(() => {
-    if (!state?.sucess) {
+    if (state === null) return; 
+    console.log("state", state?.success)
+    if (!state?.success) {
       toast.error(state?.message);
-    } else if (state?.sucess) {
+    } else if (state?.success) {
       toast.success(state?.message);
     }
   }, [state]);
@@ -25,6 +41,7 @@ export default function FormLogin() {
       <Form
         className="flex flex-col gap-2 w-[90%] md:w-[95%] mx-auto"
         action={formAction}
+        onSubmit={handleSubmit}
       >
         <Input name="email" label="Email" type="email" borderRounded={true} />
         <Input
@@ -34,11 +51,16 @@ export default function FormLogin() {
           borderRounded={true}
         />
         <div className="h-3"></div>
-        <div className="flex flex-wrap text md:text-base items-center justify-between px-2">
-          <AcceptTerms text="Aceito a Política de Privacidade"
-          value={true}
-          onChange={() => {}}
-          />
+        <div className="flex flex-wrap text md:text-base items-center justify-between px-2 md:px-0">
+            <AcceptTerms
+              text="Aceito a Política de Privacidade"
+              value={acceptTerms}
+              onChange={() => setAcceptTerms(!acceptTerms)}
+              error={error || ""} 
+            />
+
+          <div className="h-3"></div>
+
           <Text text="Esqueceu a senha?" />
         </div>
         <div className="h-3"></div>

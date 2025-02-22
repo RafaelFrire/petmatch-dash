@@ -9,12 +9,12 @@ import { navlinkProps } from "./navLink";
 
 const navLinks: navlinkProps[] = [
   { path: "/", text: "Home" },
-  { path: "/ongs", text: "ONGs" },
-  { path: "/pets", text: "Pets" },
-  { path: "/sobre", text: "Sobre nós" },
-  { path: "/eventos", text: "Eventos" },
-  { path: "/artigos", text: "Artigos" },
-  { path: "/contato", text: "Contato" },
+  { path: "/dashboard/ongs", text: "ONGs" },
+  { path: "/dashboard/pets", text: "Pets" },
+  { path: "/dashboard/sobre", text: "Sobre nós" },
+  { path: "/dashboard/event", text: "Eventos" },
+  { path: "/dashboard/blog", text: "Artigos" },
+  { path: "/dashboard/contact", text: "Contato" },
 ];
 
 const Header = () => {

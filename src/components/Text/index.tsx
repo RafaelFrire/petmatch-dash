@@ -1,14 +1,14 @@
 type textProps = {
     text: string
 
-} & React.PropsWithChildren<React.ComponentPropsWithRef<"text">>
+} & React.PropsWithChildren<React.ComponentPropsWithRef<"p">>
 
 
 const Text:React.FC<textProps> = ({text, ...props}:textProps) =>{
     return (
-      <text {...props} className="text-primary-100 ">
+      <p {...props} className="text-primary-100 ">
         {text}
-      </text>
+      </p>
     );    
 }
 

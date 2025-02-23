@@ -15,7 +15,9 @@ export default function BlogPage() {
     <div>
       <TitleWithPaw title="Artigos" />
       <div className="h-8"></div>
-      <Filters options={filterOptions} />
+      <div className="max-w-[75%] mx-auto">
+        <Filters options={filterOptions} />
+      </div>
     </div>
   );
 }

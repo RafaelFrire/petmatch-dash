@@ -1,7 +1,7 @@
 "use server";
 import { signIn } from "@/auth";
 
-export default async function loginAction(_prevState: any, formData: FormData) {
+export default async function loginAction(_prevState: unknown, formData: FormData) {
   try {
     const result = await signIn("credentials", {
       redirect: false, // Impede o redirecionamento automático

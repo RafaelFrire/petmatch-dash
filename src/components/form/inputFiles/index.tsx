@@ -1,14 +1,20 @@
 "use client";
 import { useRef, useState } from "react";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 type inputFileProps = {
   name: string;
   label: string;
   classname: string;
   error?: string;
-  register: any;
-  setValue: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<any>; // Tipo correto para `register`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setValue: UseFormSetValue<any>; // Tipo correto para `register`
 } & React.InputHTMLAttributes<HTMLInputElement>;
+
+
+
 
 const InputFiles: React.FC<inputFileProps> = ({ name, classname, error, register, setValue, label }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);

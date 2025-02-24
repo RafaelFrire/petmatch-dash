@@ -4,6 +4,7 @@ import {
 } from "@/components/dashboard/blog/listArticleCard";
 import Filters from "@/components/filters";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
+import { Suspense } from "react";
 
 const filterOptions = [
   { path: "informacoes", categorie: "Informações" },
@@ -43,7 +44,7 @@ const mockArticles: ListArticleCardProps = {
   ],
 };
 
-export default function BlogPage() {
+function BlogContent() {
   return (
     <div>
       <TitleWithPaw title="Artigos" />
@@ -56,5 +57,14 @@ export default function BlogPage() {
         <ListArticleCard articles={mockArticles.articles} />
       </div>
     </div>
+  );
+}
+
+
+export default function BlogPage() {
+  return (
+    <Suspense fallback={<div>Carregando artigos...</div>}>
+      <BlogContent />
+    </Suspense>
   );
 }

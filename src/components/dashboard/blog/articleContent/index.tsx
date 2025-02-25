@@ -21,7 +21,10 @@ interface ArticleContentProps {
   sections: Section[];
 }
 
-export const ArticleContent: React.FC<ArticleContentProps> = ({ article, sections }) => {
+export const ArticleContent: React.FC<ArticleContentProps> = ({
+  article,
+  sections,
+}) => {
   return (
     <article className="p-6">
       {/* Cabeçalho do Artigo */}
@@ -30,29 +33,35 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article, section
         <div className="h-12"></div>
         <p className="text-gray-700 text-lg">{sections[0].content}</p>
         <div className="h-12"></div>
-
-        <div className="mt-4">
-          <Image
-            src={article.thumbnail}
-            alt={article.title}
-            width={800}
-            height={400}
-            className="rounded-lg object-cover"
-          />
-        </div>
       </header>
 
       {/* Seções do Artigo */}
       {sections.map((section) => (
         <section key={section.id} className="mb-8">
-          <h2 className="text-2xl font-semibold mb-3">{section.title}</h2>
-          <p className="text-gray-700 text-xl">{section.content}</p>
+          <h1 className="text-4xl font-bold text-primary100">
+            {section.title}
+          </h1>
 
           {section.quote && (
-            <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 my-4">
-              {section.quote}
-            </blockquote>
+            <>
+              <div className="h-14"></div>
+              <div className="bg-primary80 p-6 md:p-8 py-4 rounded-sm shadow-md">
+                <blockquote className="relative  text-white text-2xl italic leading-relaxed">
+                  <span className="text-white text-5xl font-bold absolute -top-4 left-4">
+                    “
+                  </span>
+                  <span className="px-12">{section.quote}</span>
+                  <span className="text-white text-5xl font-bold absolute -bottom-4 right-4">
+                    ”
+                  </span>
+                </blockquote>
+              </div>
+              <div className="8"></div>
+            </>
           )}
+
+          <div className="h-12"></div>
+          <p className="text-gray-700 text-lg">{section.content}</p>
 
           {section.image && (
             <div className="mt-4">

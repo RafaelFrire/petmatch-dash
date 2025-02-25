@@ -18,10 +18,12 @@ export const mockOng: Ong = {
 };
 
 const mockArticle = {
-  title: "Cuidados Essenciais com Pets: Como Garantir uma Vida Saudável e Feliz para Seu Animal de Estimação",
+  title:
+    "Cuidados Essenciais com Pets: Como Garantir uma Vida Saudável e Feliz para Seu Animal de Estimação",
   slug: "impacto-tecnologia",
   categorie: "Tecnologia",
-  thumbnail: "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
+  thumbnail:
+    "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
   createdAt: "2025-02-24T12:00:00Z",
 };
 
@@ -29,20 +31,32 @@ const mockSections = [
   {
     id: "1",
     title: "Cuidados Essenciais com Pets: ",
-    content: "Ter um pet é uma responsabilidade que exige dedicação e carinho. Cuidar bem do seu animal de estimação não só garante sua saúde e bem-estar, mas também fortalece o vínculo entre dono e pet. Abaixo, listamos os principais cuidados que você deve ter para proporcionar uma vida longa e feliz ao seu companheiro.",
-    quote: "A tecnologia move o mundo. - Steve Jobs",
-    image: "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
+    content:
+      "Ter um pet é uma responsabilidade que exige dedicação e carinho. Cuidar bem do seu animal de estimação não só garante sua saúde e bem-estar, mas também fortalece o vínculo entre dono e pet. Abaixo, listamos os principais cuidados que você deve ter para proporcionar uma vida longa e feliz ao seu companheiro.",
+    quote:
+      "Uma alimentação equilibrada e adequada é essencial para a saúde e o bem-estar dos animais - Ezekiel Miles ",
+    image:
+      "https://akc.org/wp-content/uploads/2017/11/How-to-train-your-dog-for-new-owners.png",
   },
   {
     id: "2",
     title: "Alimentação Adequada",
-    content: "Uma alimentação equilibrada é essencial para a saúde do seu pet. Ofereça rações de qualidade, adequadas para a idade e espécie do animal. Evite alimentos industrializados e temperados, pois muitos podem ser tóxicos para os bichinhos.",
+    content:
+      "Uma alimentação equilibrada é essencial para a saúde do seu pet. Ofereça rações de qualidade, adequadas para a idade e espécie do animal. Evite alimentos industrializados e temperados, pois muitos podem ser tóxicos para os bichinhos.",
   },
   {
     id: "3",
     title: "Hidratação Constante",
-    content: "Mantenha sempre água fresca e limpa à disposição do seu pet. A hidratação adequada é fundamental para o funcionamento do organismo e previne diversas doenças.",
-    image: "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
+    content:
+      "Mantenha sempre água fresca e limpa à disposição do seu pet. A hidratação adequada é fundamental para o funcionamento do organismo e previne diversas doenças.",
+    // image: "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
+  },
+  {
+    id: "4",
+    title: "Conclusão",
+    content:
+      "Cuidar de um animal de estimação vai muito além de oferecer comida e abrigo. Proporcionar uma alimentação adequada, manter a hidratação constante e garantir uma rotina de cuidados são atitudes essenciais para garantir uma vida saudável e feliz ao seu pet. Ao seguir essas dicas, você estará contribuindo para o bem-estar do seu companheiro de quatro patas!",
+    // image: "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg", // Imagem fictícia
   },
 ];
 
@@ -65,10 +79,7 @@ export default function Blog() {
 
           <div className="h-12"></div>
           <div className="mt-4 w-[90%] mx-auto">
-            <ArticleContent 
-            article={mockArticle}
-            sections={mockSections}
-            />
+            <ArticleContent article={mockArticle} sections={mockSections} />
           </div>
         </div>
 

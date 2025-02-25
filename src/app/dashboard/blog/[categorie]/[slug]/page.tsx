@@ -1,8 +1,10 @@
 "use client";
+import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 import { ArticleContent } from "@/components/dashboard/blog/articleContent";
 import { HeroArticle } from "@/components/dashboard/blog/heroArticle";
+import { LastArticlesList } from "@/components/dashboard/blog/lastArticlesList";
 import { Ong } from "@/interfaces/ong";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 
 export const mockOng: Ong = {
   id: "1",
@@ -60,10 +62,37 @@ const mockSections = [
   },
 ];
 
+export const mockArticles: articleCardProps[] = [
+  {
+    title: "Cuidados Essenciais com Pets",
+    date: "2025-02-24T12:00:00Z",
+    categorie: "Pets",
+    slug: "cuidados-essenciais-pets",
+    imageUrl:
+      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
+  },
+  {
+    title: "Tecnologia no Dia a Dia",
+    date: "2025-02-23T10:30:00Z",
+    categorie: "Tecnologia",
+    slug: "tecnologia-dia-a-dia",
+    imageUrl:
+      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
+  },
+  {
+    title: "Dicas para Programadores Iniciantes",
+    date: "2025-02-22T14:15:00Z",
+    categorie: "Programação",
+    slug: "dicas-programadores-iniciantes",
+    imageUrl:
+      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
+  },
+];
+
 export default function Blog() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  const categorie = params?.categorie as string;
+  // const params = useParams();
+  // const slug = params?.slug as string;
+  // const categorie = params?.categorie as string;
   return (
     <>
       <div className="h-32"></div>
@@ -85,18 +114,10 @@ export default function Blog() {
 
         {/* Sidebar com os últimos artigos */}
         <div className="w-[20%] bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Últimos Artigos</h2>
-          <ul className="space-y-2">
-            <li className="border-b pb-2">Artigo 1</li>
-            <li className="border-b pb-2">Artigo 2</li>
-            <li className="border-b pb-2">Artigo 3</li>
-          </ul>
-
-          {/* Informações adicionais */}
-          <div className="mt-6">
-            <h3 className="text-md font-medium">Blog: {slug}</h3>
-            <h3 className="text-md font-medium">Categoria: {categorie}</h3>
-          </div>
+          <h2 className="text-lg text-primary100 font-bold mb-4">
+            Novos Artigos
+          </h2>
+          <LastArticlesList articles={mockArticles} />
         </div>
       </div>
     </>

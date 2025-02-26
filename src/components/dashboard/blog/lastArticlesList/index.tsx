@@ -7,7 +7,7 @@ type LastArticlesList = {
 
 export const LastArticlesList: React.FC<LastArticlesList> = ({ articles }) => {
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       {articles.map((article) => (
         <LastArticleCard key={article.slug} article={article} />
       ))}

@@ -24,7 +24,6 @@ const Header = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
-      console.log("resolution>", window.innerWidth);
     };
     handleResize()
 

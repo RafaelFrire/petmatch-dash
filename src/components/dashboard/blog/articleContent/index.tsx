@@ -10,8 +10,6 @@ interface ArticleContentProps {
 export const ArticleContent: React.FC<ArticleContentProps> = ({
   article,
 }) => {
-  console.log("TESTETE",article); // Verifique se os dados estão chegando corretamente
-
 
   if (!article) {
     return <div>Article not found</div>;
@@ -23,7 +21,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       <header className="mb-8 ">
         <h1 className="text-4xl font-bold text-primary100">{article?.title}</h1>
         <div className="h-12"></div>
-        <p className="text-gray-700 text-lg">{article?.sections[0]?.content}</p>
+        <p className="text-gray-700 text-lg">{article.content}</p>
         <div className="h-12"></div>
       </header>
 

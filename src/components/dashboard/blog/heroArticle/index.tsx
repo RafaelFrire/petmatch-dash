@@ -12,7 +12,7 @@ type HeroArticleProps = {
 
 export const HeroArticle:React.FC<HeroArticleProps> = ({srcImage, publishedDate, ong}) =>{
     return (
-      <div className="w-full max-h-[500] bg-primary100">
+      <div className="w-full max-h-[500]">
         <div className="flex mx-auto  justify-center">
           <BannerImage
             width={900}

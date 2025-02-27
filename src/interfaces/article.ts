@@ -1,7 +1,9 @@
 export interface Article {
+  id: string;
   title: string;
   slug: string;
   categorie: string;
+  content: string;
   thumbnail: string;
   createdAt: string;
   updatedAt: string; // Adicionando updatedAt

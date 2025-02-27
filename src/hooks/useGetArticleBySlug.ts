@@ -31,19 +31,21 @@ async function getArticleBySlug(slug: string): Promise<ArticleContent | null> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapArticleResponse = (response: any): Article => {
   return {
-    title: response.title,
-    slug: response.slug,
-    categorie: response.categorie,
-    thumbnail: response.thumbnail,
-    createdAt: response.createdAt,
-    updatedAt: response.updatedAt, // Adicionando updatedAt
+    id: response?.id,
+    title: response?.title,
+    slug: response?.slug,
+    content: response?.content,
+    categorie: response?.categorie,
+    thumbnail: response?.thumbnail,
+    createdAt: response?.createdAt,
+    updatedAt: response?.updatedAt, // Adicionando updatedAt
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sections: response.sections.map((section: any) => ({
-      id: section.id, // Mapeando 'id' para 'articleId' se necessário
-      title: section.title,
-      content: section.content,
-      quote: section.quote,
-      image: section.image,
+    sections: response?.sections?.map((section: any) => ({
+      id: section?.id, // Mapeando 'id' para 'articleId' se necessário
+      title: section?.title,
+      content: section?.content,
+      quote: section?.quote,
+      image: section?.image,
     })),
   };
 };

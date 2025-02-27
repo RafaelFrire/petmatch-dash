@@ -3,7 +3,10 @@ import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 import { ArticleContent } from "@/components/dashboard/blog/articleContent";
 import { HeroArticle } from "@/components/dashboard/blog/heroArticle";
 import { LastArticlesList } from "@/components/dashboard/blog/lastArticlesList";
-import { mapArticleResponse, useGetArticleBySlug } from "@/hooks/useGetArticleBySlug";
+import {
+  mapArticleResponse,
+  useGetArticleBySlug,
+} from "@/hooks/useGetArticleBySlug";
 import { Ong } from "@/interfaces/ong";
 import { useParams } from "next/navigation";
 
@@ -19,7 +22,6 @@ export const mockOng: Ong = {
   city: "São Paulo",
   userId: "user-123",
 };
-
 
 export const mockArticles: articleCardProps[] = [
   {
@@ -56,17 +58,13 @@ export default function Blog() {
 
   const article = data ? mapArticleResponse(data) : null;
 
-
-
   if (isLoading) {
     return <div className="text-xl">Loading...</div>;
   }
 
-  // Caso haja erro na requisição, exiba uma mensagem de erro
   if (error) {
     return <div>Error loading article</div>;
   }
-
 
   return (
     <>
@@ -75,8 +73,8 @@ export default function Blog() {
         <div className="w-[80%] p-4 rounded-lg">
           <div className="w-[90%] h-[400px] mx-auto flex justify-center">
             <HeroArticle
-              srcImage="https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg"
-              publishedDate={new Date()}
+              srcImage={article?.thumbnail || ""}
+            publishedDate={new Date()}
               ong={mockOng}
             />
           </div>

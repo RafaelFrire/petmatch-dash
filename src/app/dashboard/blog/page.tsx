@@ -1,9 +1,11 @@
+'use client'
 import {
   ListArticleCard,
   ListArticleCardProps,
 } from "@/components/dashboard/blog/listArticleCard";
 import Filters from "@/components/filters";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
+import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
 import { Suspense } from "react";
 
 const filterOptions = [
@@ -45,6 +47,22 @@ const mockArticles: ListArticleCardProps = {
 };
 
 function BlogContent() {
+  const { data, error, isLoading } = useGetArticleList(1);
+
+  const articles = mapArticleListResponse(data?.articles ?? []);
+  console.log("teste:", data);
+
+  console.log("articless:",articles)
+
+
+  if (isLoading) {
+    return <div className="text-xl">Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading article</div>;
+  }
+
   return (
     <div>
       <TitleWithPaw title="Artigos" />
@@ -54,7 +72,7 @@ function BlogContent() {
       </div>
       <div className="h-14"></div>
       <div className="max-w-[75%] mx-auto">
-        <ListArticleCard articles={mockArticles.articles} />
+        <ListArticleCard articles={articles} />
       </div>
     </div>
   );

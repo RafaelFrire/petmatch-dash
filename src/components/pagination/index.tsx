@@ -1,3 +1,4 @@
+import { useFilters } from "@/hooks/useFilter";
 import React from "react";
 
 interface PaginationProps {
@@ -59,8 +60,20 @@ export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
 }) => {
-  const pages = generatePageNumbers(totalCount, pageSize, siblingCount, currentPage);
+  const pages = generatePageNumbers(
+    totalCount,
+    pageSize,
+    siblingCount,
+    currentPage
+  );
   const totalPages = Math.ceil(totalCount / pageSize);
+  const { setFilters } = useFilters();
+
+  React.useEffect(() => {
+    setFilters({
+      page: String(currentPage),
+    });
+  }, [currentPage]);
 
   return (
     <div className="flex items-center gap-2">
@@ -75,12 +88,15 @@ export const Pagination: React.FC<PaginationProps> = ({
           key={index}
           onClick={() => typeof page === "number" && onPageChange(page)}
           disabled={typeof page !== "number"}
+          className={currentPage === page ? "text-primary100" : ""}
         >
           {page}
         </button>
       ))}
       <button
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() =>
+          currentPage < totalPages && onPageChange(currentPage + 1)
+        }
         disabled={currentPage === totalPages}
       >
         Next

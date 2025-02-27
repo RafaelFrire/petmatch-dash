@@ -1,10 +1,10 @@
 'use client'
 import {
   ListArticleCard,
-  ListArticleCardProps,
 } from "@/components/dashboard/blog/listArticleCard";
 import Filters from "@/components/filters";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
+import { useFilters } from "@/hooks/useFilter";
 import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
 import { Suspense } from "react";
 
@@ -17,43 +17,16 @@ const filterOptions = [
   { path: "saude", categorie: "Saúde" },
 ];
 
-const mockArticles: ListArticleCardProps = {
-  articles: [
-    {
-      title: "Como cuidar de um cachorro",
-      date: "10 de agosto de 2024",
-      slug:"como_cuidar_de_um_cachorro",
-      categorie: "informacoes",
-      imageUrl:
-        "https://akc.org/wp-content/uploads/2017/11/How-to-train-your-dog-for-new-owners.png",
-    },
-    {
-      title: "FAZ O M!",
-      date: "10 de agosto de 2024",
-      slug:"como_cuidar_de_um_cachorro",
-      categorie: "informacoes",
-      imageUrl:
-        "https://akc.org/wp-content/uploads/2017/11/How-to-train-your-dog-for-new-owners.png",
-    },
-    {
-      title: "ANO NOVO VIDA NOVA 360°",
-      date: "10 de agosto de 2024",
-      slug:"como_cuidar_de_um_cachorro",
-      categorie: "informacoes",
-      imageUrl:
-        "https://akc.org/wp-content/uploads/2017/11/How-to-train-your-dog-for-new-owners.png",
-    },
-  ],
-};
 
 function BlogContent() {
-  const { data, error, isLoading } = useGetArticleList(1);
+  const { searchParams } = useFilters();
+  const currentPage = Number(searchParams.get("page"));
+  const { data, error, isLoading } = useGetArticleList(currentPage);
 
+
+
+  // console.log("ok",params);
   const articles = mapArticleListResponse(data?.articles ?? []);
-  console.log("teste:", data);
-
-  console.log("articless:",articles)
-
 
   if (isLoading) {
     return <div className="text-xl">Loading...</div>;

@@ -6,6 +6,7 @@ import Filters from "@/components/filters";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useFilters } from "@/hooks/useFilter";
 import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
+import { useParams } from "next/navigation";
 import { Suspense } from "react";
 
 const filterOptions = [
@@ -20,11 +21,15 @@ const filterOptions = [
 
 function BlogContent() {
   const { searchParams } = useFilters();
+  const params = useParams();
+
   const currentPage = Number(searchParams.get("page"));
-  const { data, error, isLoading } = useGetArticleList(currentPage);
+  const categorie = Array.isArray(params.categorie) ? params.categorie[0] : params.categorie;
 
+  console.log("categorie", params)
+  console.log("currentPage", currentPage)
 
-
+  const { data, error, isLoading } = useGetArticleList(currentPage, categorie);
   // console.log("ok",params);
   const articles = mapArticleListResponse(data?.articles ?? []);
 

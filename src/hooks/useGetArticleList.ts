@@ -5,12 +5,16 @@ import { Article } from "@/interfaces/article";
 import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 
 async function getArticleList(
-  page: number
+  page: number,
+  categorie?: string,
 ): Promise<{ articles: Article[]; page: number; limit: number } | null> {
   try {
-    const res = await apiRequest(`/articles?page=${page}&limit=15`, {
-      method: "GET",
-    });
+    const res = await apiRequest(
+      `/articles?page=${page}&limit=15&categorie=${categorie}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (!res.ok) {
       toast.error("Falha ao carregar artigos.");
@@ -48,9 +52,10 @@ export const mapArticleListResponse = (response: any): articleCardProps[] => {
 
 };
 
-export function useGetArticleList(page: number) {
-  return useQuery({
-    queryKey: ["fetchArticles", page],
-    queryFn: () => getArticleList(page),
-  });
-}
+  
+  export function useGetArticleList(page: number, categorie?: string) {
+    return useQuery({
+      queryKey: ["fetchArticles", page],
+      queryFn: () => getArticleList(page, categorie),
+    });
+  }

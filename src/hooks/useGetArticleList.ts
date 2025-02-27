@@ -10,7 +10,9 @@ async function getArticleList(
 ): Promise<{ articles: Article[]; page: number; limit: number } | null> {
   try {
     const res = await apiRequest(
-      `/articles?page=${page}&limit=15&categorie=${categorie}`,
+      `/articles?page=${page}&limit=15${
+        categorie ? `&categorie=${categorie}` : ""
+      }`,
       {
         method: "GET",
       }

@@ -7,10 +7,11 @@ import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 async function getArticleList(
   page: number,
   categorie?: string,
+  limit?: number,
 ): Promise<{ articles: Article[]; page: number; limit: number } | null> {
   try {
     const res = await apiRequest(
-      `/articles?page=${page}&limit=15${
+      `/articles?page=${page}&limit=${limit || 15}${
         categorie ? `&categorie=${categorie}` : ""
       }`,
       {
@@ -41,6 +42,7 @@ export const mapArticleListResponse = (response: any): articleCardProps[] => {
   }
 
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return response.map((article: any) => ({
     // id: article?.id,
     title: article?.title,
@@ -55,9 +57,14 @@ export const mapArticleListResponse = (response: any): articleCardProps[] => {
 };
 
   
-  export function useGetArticleList(page: number, categorie?: string) {
+
+  export function useGetArticleList(
+    page: number,
+    limit?: number,
+    categorie?: string,
+  ) {
     return useQuery({
       queryKey: ["fetchArticles", page],
-      queryFn: () => getArticleList(page, categorie),
+      queryFn: () => getArticleList(page, categorie, limit),
     });
   }

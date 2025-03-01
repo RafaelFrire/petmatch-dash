@@ -2,7 +2,7 @@ import { useFilters } from "@/hooks/useFilter";
 import React from "react";
 
 interface PaginationProps {
-  totalCount: number;
+  totalPages: number;
   pageSize: number;
   siblingCount?: number;
   currentPage: number;
@@ -10,12 +10,11 @@ interface PaginationProps {
 }
 
 const generatePageNumbers = (
-  totalCount: number,
+  totalPages: number,
   pageSize: number,
   siblingCount: number,
   currentPage: number
 ) => {
-  const totalPages = Math.ceil(totalCount / pageSize);
   const totalNumbers = siblingCount * 2 + 5;
 
   if (totalPages <= totalNumbers) {
@@ -54,31 +53,30 @@ const generatePageNumbers = (
 };
 
 export const Pagination: React.FC<PaginationProps> = ({
-  totalCount,
+  totalPages,
   pageSize,
   siblingCount = 1,
   currentPage,
   onPageChange,
 }) => {
   const pages = generatePageNumbers(
-    totalCount,
+    totalPages,
     pageSize,
     siblingCount,
     currentPage
   );
-  const totalPages = Math.ceil(totalCount / pageSize);
   const { setFilters } = useFilters();
 
-  React.useEffect(() => {
-    setFilters({
-      page: String(currentPage),
-    });
-  }, [currentPage]);
+  const handlePageChange = (page: number) => {
+    setFilters({ page: String(page) }); 
+    onPageChange(page); 
+  };
+
 
   return (
     <div className="flex items-center gap-2">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         Previous
@@ -86,7 +84,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {pages.map((page, index) => (
         <button
           key={index}
-          onClick={() => typeof page === "number" && onPageChange(page)}
+          onClick={() => typeof page === "number" && handlePageChange(page)}
           disabled={typeof page !== "number"}
           className={currentPage === page ? "text-primary100" : ""}
         >
@@ -95,7 +93,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       ))}
       <button
         onClick={() =>
-          currentPage < totalPages && onPageChange(currentPage + 1)
+          currentPage < totalPages && handlePageChange(currentPage + 1)
         }
         disabled={currentPage === totalPages}
       >

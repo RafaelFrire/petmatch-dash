@@ -21,7 +21,7 @@ export const ListArticleCard: React.FC<ListArticleCardProps> = ({
       </div>
       <div className="w-full flex justify-end py-4 px-4">
         <Pagination
-          totalCount={72}
+          totalPages={5}
           pageSize={15}
           currentPage={currentPage}
           onPageChange={(page) => setCurrentPage(page)}

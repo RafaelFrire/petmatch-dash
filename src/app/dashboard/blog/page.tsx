@@ -1,11 +1,13 @@
-'use client'
-import {
-  ListArticleCard,
-} from "@/components/dashboard/blog/listArticleCard";
+"use client";
+import { ListArticleCard } from "@/components/dashboard/blog/listArticleCard";
 import Filters from "@/components/filters";
+import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useFilters } from "@/hooks/useFilter";
-import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
+import {
+  mapArticleListResponse,
+  useGetArticleList,
+} from "@/hooks/useGetArticleList";
 import { useParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -18,23 +20,27 @@ const filterOptions = [
   { path: "saude", categorie: "Saúde" },
 ];
 
-
 function BlogContent() {
   const { searchParams } = useFilters();
   const params = useParams();
 
   const currentPage = Number(searchParams.get("page"));
-  const categorie = Array.isArray(params.categorie) ? params.categorie[0] : params.categorie;
+  const categorie = Array.isArray(params.categorie)
+    ? params.categorie[0]
+    : params.categorie;
 
-  console.log("categorie", params)
-  console.log("currentPage", currentPage)
+  console.log("categorie", params);
+  console.log("currentPage", currentPage);
 
-  const { data, error, isLoading } = useGetArticleList(currentPage, categorie);
-  // console.log("ok",params);
+  const { data, error, isLoading } = useGetArticleList(currentPage, 12, categorie);
   const articles = mapArticleListResponse(data?.articles ?? []);
 
   if (isLoading) {
-    return <div className="text-xl">Loading...</div>;
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
   }
 
   if (error) {
@@ -55,7 +61,6 @@ function BlogContent() {
     </div>
   );
 }
-
 
 export default function BlogPage() {
   return (

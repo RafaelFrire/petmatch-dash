@@ -3,10 +3,14 @@ import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 import { ArticleContent } from "@/components/dashboard/blog/articleContent";
 import { HeroArticle } from "@/components/dashboard/blog/heroArticle";
 import { LastArticlesList } from "@/components/dashboard/blog/lastArticlesList";
+import SpinLoader from "@/components/spinLoader";
 import {
   mapArticleResponse,
   useGetArticleBySlug,
 } from "@/hooks/useGetArticleBySlug";
+import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
+
+
 import { Ong } from "@/interfaces/ong";
 import { useParams } from "next/navigation";
 
@@ -57,9 +61,20 @@ export default function Blog() {
   const { data, error, isLoading } = useGetArticleBySlug(slug);
 
   const article = data ? mapArticleResponse(data) : null;
+  const { data: lastArticleList } = useGetArticleList(1, 9);
+
+
+  const articles = mapArticleListResponse(lastArticleList?.articles);
+
+  console.log("articles", lastArticleList);
+
 
   if (isLoading) {
-    return <div className="text-xl">Loading...</div>;
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
   }
 
   if (error) {
@@ -74,7 +89,7 @@ export default function Blog() {
           <div className="w-[90%] h-[400px] mx-auto flex justify-center">
             <HeroArticle
               srcImage={article?.thumbnail || ""}
-            publishedDate={new Date()}
+              publishedDate={new Date()}
               ong={mockOng}
             />
           </div>
@@ -92,7 +107,7 @@ export default function Blog() {
           </h2>
           {/* <div className="h-3 bg-primary100"></div> */}
 
-          <LastArticlesList articles={mockArticles} />
+          <LastArticlesList articles={articles || []} />
         </div>
       </div>
     </>

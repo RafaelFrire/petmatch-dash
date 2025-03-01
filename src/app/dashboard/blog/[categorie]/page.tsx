@@ -1,6 +1,7 @@
 'use client'
 import { ListArticleCard } from "@/components/dashboard/blog/listArticleCard";
 import Filters from "@/components/filters";
+import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useFilters } from "@/hooks/useFilter";
 import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
@@ -32,7 +33,11 @@ export default function BlogPage() {
   const articles = mapArticleListResponse(data?.articles ?? []);
 
   if (isLoading) {
-    return <div className="text-xl">Loading...</div>;
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
   }
 
   if (error) {

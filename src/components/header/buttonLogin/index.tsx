@@ -10,7 +10,6 @@ type buttonProps = {
 const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
   const { data: session, status } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  console.log("session", session);
 
   if (status === "loading") return <div className="w-20 h-8 bg-white animate-pulse rounded-md"></div>;
 

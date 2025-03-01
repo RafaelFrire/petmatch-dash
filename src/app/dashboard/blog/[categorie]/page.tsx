@@ -26,7 +26,11 @@ export default function BlogPage() {
     console.log("categorie", categorie)
     console.log("currentPage", currentPage)
 
-  const { data, error, isLoading } = useGetArticleList(currentPage, categorie);
+  const { data, error, isLoading } = useGetArticleList(
+    currentPage,
+    12,
+    categorie
+  );
 
   console.log("data", data)
 

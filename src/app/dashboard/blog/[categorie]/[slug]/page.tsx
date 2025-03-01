@@ -1,5 +1,4 @@
 "use client";
-import { articleCardProps } from "@/components/dashboard/blog/articleCard";
 import { ArticleContent } from "@/components/dashboard/blog/articleContent";
 import { HeroArticle } from "@/components/dashboard/blog/heroArticle";
 import { LastArticlesList } from "@/components/dashboard/blog/lastArticlesList";
@@ -10,49 +9,10 @@ import {
 } from "@/hooks/useGetArticleBySlug";
 import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
 
-
-import { Ong } from "@/interfaces/ong";
 import { useParams } from "next/navigation";
 
-export const mockOng: Ong = {
-  id: "1",
-  name: "Patas Felizes",
-  slug: "patas-felizes",
-  cnpj: "12.345.678/0001-99",
-  phone: "(11) 98765-4321",
-  address: "Rua das Esperanças, 123",
-  zipcode: "01010-000",
-  state: "SP",
-  city: "São Paulo",
-  userId: "user-123",
-};
 
-export const mockArticles: articleCardProps[] = [
-  {
-    title: "Cuidados Essenciais com Pets",
-    date: "2025-02-24T12:00:00Z",
-    categorie: "Pets",
-    slug: "cuidados-essenciais-pets",
-    imageUrl:
-      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
-  },
-  {
-    title: "Tecnologia no Dia a Dia",
-    date: "2025-02-23T10:30:00Z",
-    categorie: "Tecnologia",
-    slug: "tecnologia-dia-a-dia",
-    imageUrl:
-      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
-  },
-  {
-    title: "Dicas para Programadores Iniciantes",
-    date: "2025-02-22T14:15:00Z",
-    categorie: "Programação",
-    slug: "dicas-programadores-iniciantes",
-    imageUrl:
-      "https://www.science.org/do/10.1126/science.abi5787/full/main_puppies_1280p-1710959220337.jpg",
-  },
-];
+
 
 export default function Blog() {
   const params = useParams();
@@ -90,7 +50,18 @@ export default function Blog() {
             <HeroArticle
               srcImage={article?.thumbnail || ""}
               publishedDate={new Date()}
-              ong={mockOng}
+              ong={{
+                id: "1",
+                name: "Patas Felizes",
+                slug: "patas-felizes",
+                cnpj: "12.345.678/0001-99",
+                phone: "(11) 98765-4321",
+                address: "Rua das Esperanças, 123",
+                zipcode: "01010-000",
+                state: "SP",
+                city: "São Paulo",
+                userId: "user-123",
+              }}
             />
           </div>
 

@@ -1,4 +1,4 @@
-import PawDog from "@/icons/PawDog";
+import PawDogRed from "@/icons/PawDogRed";
 
 type buttonRedirectProps = {
   text: string;
@@ -11,7 +11,7 @@ export const ButtonRedirect: React.FC<buttonRedirectProps> = ({ text, redirect, 
     <a href={redirect}>
       <div className="flex items-center text-xl gap-1">
         <h1 className={`${isActive ? "text-primary100" : ""}`}>{text}</h1>
-        {isActive ? <PawDog width={28} height={28} /> : false}
+        {isActive ? <PawDogRed width={28} height={28} /> : false}
       </div>
     </a>
   );

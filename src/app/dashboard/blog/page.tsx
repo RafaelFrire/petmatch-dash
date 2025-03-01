@@ -29,9 +29,6 @@ function BlogContent() {
     ? params.categorie[0]
     : params.categorie;
 
-  console.log("categorie", params);
-  console.log("currentPage", currentPage);
-
   const { data, error, isLoading } = useGetArticleList(currentPage, 12, categorie);
   const articles = mapArticleListResponse(data?.articles ?? []);
 

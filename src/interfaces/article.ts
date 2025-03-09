@@ -5,9 +5,10 @@ export interface Article {
   categorie: string;
   content: string;
   thumbnail: string;
+  banner: string;
   createdAt: string;
   updatedAt: string; // Adicionando updatedAt
-  sections: Section[];
+  section: Section[];
 }
 
 export interface Section {
@@ -17,4 +18,5 @@ export interface Section {
   content: string;
   quote?: string;
   image?: string;
+  position: number;
 }

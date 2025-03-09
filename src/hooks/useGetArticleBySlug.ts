@@ -36,17 +36,18 @@ export const mapArticleResponse = (response: any): Article => {
     slug: response?.slug,
     content: response?.content,
     categorie: response?.categorie,
+    banner: response?.banner,
     thumbnail: response?.thumbnail,
     createdAt: response?.createdAt,
     updatedAt: response?.updatedAt, // Adicionando updatedAt
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sections: response?.sections?.map((section: any) => ({
+    section: response?.section?.map((section: any) => ({
       id: section?.id, // Mapeando 'id' para 'articleId' se necessário
       title: section?.title,
       content: section?.content,
       quote: section?.quote,
       image: section?.image,
-    })),
+    })) || [],
   };
 };
 

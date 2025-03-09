@@ -26,7 +26,7 @@ export default function Blog() {
 
   const articles = mapArticleListResponse(lastArticleList?.articles);
 
-  console.log("articles", lastArticleList);
+  console.log("article", article); 
 
 
   if (isLoading) {
@@ -48,7 +48,7 @@ export default function Blog() {
         <div className="w-[80%] p-4 rounded-lg">
           <div className="w-[90%] h-[400px] mx-auto flex justify-center">
             <HeroArticle
-              srcImage={article?.thumbnail || ""}
+              srcImage={article?.banner || ""}
               publishedDate={new Date()}
               ong={{
                 id: "1",

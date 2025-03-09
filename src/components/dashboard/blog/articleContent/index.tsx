@@ -26,7 +26,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       </header>
 
       {/* Seções do Artigo */}
-      {article?.sections.map((section) => (
+      {article?.section.map((section) => (
         <section key={section.id} className="mb-8">
           <h1 className="text-4xl font-bold text-primary100">
             {section?.title}

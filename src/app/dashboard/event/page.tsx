@@ -1,3 +1,4 @@
+import { EventFilter } from "@/components/dashboard/event/eventFilter";
 import { ListEventCard } from "@/components/dashboard/event/listEventCard";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { Event } from "@/interfaces/event";
@@ -56,20 +57,37 @@ export const eventsMock: Event[] = [
 ];
 
 
+export const filterCategories = [
+  
+  { categorie: "Feira de Adoção", count: 10 },
+  { categorie: "Treinamento", count: 10 },
+  { categorie: "Feira de Vacinação", count: 10 },
+  { categorie: "Passeio Comunitário", count: 10 },
+  { categorie: "Outros", count: 10 },
+];
+
 export default function EventPage(){
   return (
     <div>
       <TitleWithPaw title="Eventos" />
       <div className="h-8"></div>
-      <div className="max-w-[75%] mx-auto">
-        <h1>class</h1>
-        <ListEventCard articles={eventsMock.map((event) => ({
-          title: event.title,
-          date: event.date.toISOString(),
-          categorie: event.categorie,
-          slug: event.slug,
-          imageUrl: event.imageUrl,
-        })) || []} />
+      <div className="flex flex-wrap-reverse lg:flex-wrap max-w-[80%] mx-auto">
+        <div className="mx-auto w-[65%]">
+          <ListEventCard
+            articles={
+              eventsMock.map((event) => ({
+                title: event.title,
+                date: event.date.toISOString(),
+                categorie: event.categorie,
+                slug: event.slug,
+                imageUrl: event.imageUrl,
+              })) || []
+            }
+          />
+        </div>
+        <div className="w-[30%]">
+          <EventFilter categories={filterCategories} />
+        </div>
       </div>
     </div>
   );

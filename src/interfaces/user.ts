@@ -18,6 +18,6 @@ export interface RegisterUser {
     address: string;
     state: string;
     city: string;
-    documentId: string;
+    document: string;
     files: File;
   };

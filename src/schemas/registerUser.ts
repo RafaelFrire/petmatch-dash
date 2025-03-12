@@ -20,7 +20,7 @@ const UserSchema = yup.object().shape({
   address: yup.string().required("O endereço é obrigatório"),
   state: yup.string().required("O estado é obrigatório"),
   city: yup.string().required("A CCidade é obrigatória"),
-  documentId: yup
+  document: yup
     .string()
     .required("O documento de identificação é obrigatório"),
   files: yup

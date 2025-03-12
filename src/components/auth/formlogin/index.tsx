@@ -8,11 +8,13 @@ import AcceptTerms from "@/components/form/acceptTerms";
 import Button from "@/components/form/Button";
 import Text from "@/components/Text";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function FormLogin() {
   const [state, formAction] = useActionState(loginAction, null);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!acceptTerms) {
@@ -32,6 +34,7 @@ export default function FormLogin() {
     if (!state?.success) {
       toast.error(state?.message);
     } else if (state?.success) {
+      router.push("/dashboard/event")
       toast.success(state?.message);
     }
   }, [state]);

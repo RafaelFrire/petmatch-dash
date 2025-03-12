@@ -22,7 +22,7 @@ type Inputs = {
   address: string;
   state: string;
   city: string;
-  documentId: string;
+  document: string;
   files: File;
   termsPrivacity: boolean
   termsAdopter: boolean
@@ -144,13 +144,13 @@ export default function FormRegister() {
       />
       <Input
         label="Documento de identificação*"
-        {...register("documentId")}
-        name="documentId"
-        error={errors?.documentId?.message}
+        {...register("document")}
+        name="document"
+        error={errors?.document?.message}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         onChange={(e) => {
           const mask = rgMask(e.target.value);
-          setValue("documentId", mask);
+          setValue("document", mask);
         }}
         maxLength={12}
       />

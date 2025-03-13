@@ -4,10 +4,12 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 type ButtonFilterProps = {
-  categorie: { path: string; categorie: string };
+  categorie: { path: string; categorie: string, basepath: string};
 } & React.HTMLAttributes<HTMLButtonElement>;
 
-export const ButtonFilter: React.FC<ButtonFilterProps> = ({ categorie }) => {
+export const ButtonFilter: React.FC<ButtonFilterProps> = ({
+  categorie,
+}) => {
   const pathname = usePathname();
   const { setFilters } = useFilters();
 
@@ -15,13 +17,13 @@ export const ButtonFilter: React.FC<ButtonFilterProps> = ({ categorie }) => {
 
   const handleSelect = () => {
     const formatCategorie = categorie.path.toLowerCase();
-    setFilters({ categorie: formatCategorie });
+    setFilters({ basepath: categorie.basepath, categorie: formatCategorie });
   };
 
   useEffect(() => {
     const splitPath = pathname.split("/");
     setActive(splitPath.includes(categorie.path.toLowerCase()));
-  }, [pathname, categorie.path]); // Adicionando dependências corretas
+  }, [pathname]); // Adicionando dependências corretas
 
   return (
     <div

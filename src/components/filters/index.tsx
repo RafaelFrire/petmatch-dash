@@ -1,8 +1,8 @@
 import { ButtonFilter } from "./buttonFilter";
 
 type filterProps = {
-    options: {path: string, categorie: string}[];
-}
+  options: { path: string; categorie: string, basepath: string }[];
+};
 
 export default function Filters({ options }: filterProps) {
   return (

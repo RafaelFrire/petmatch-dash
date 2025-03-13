@@ -8,12 +8,12 @@ import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticle
 import { useParams } from "next/navigation";
 
 const filterOptions = [
-  { path: "informacoes", categorie: "Informações" },
-  { path: "passeio", categorie: "Passeio" },
-  { path: "vacinacao", categorie: "Vacinação" },
-  { path: "treinamento", categorie: "Treinamento" },
-  { path: "encontro", categorie: "Encontro" },
-  { path: "saude", categorie: "Saúde" },
+  { path: "informacoes", categorie: "Informações", basepath: "blog" },
+  { path: "passeio", categorie: "Passeio", basepath: "blog" },
+  { path: "vacinacao", categorie: "Vacinação", basepath: "blog" },
+  { path: "treinamento", categorie: "Treinamento", basepath: "blog" },
+  { path: "encontro", categorie: "Encontro", basepath: "blog" },
+  { path: "saude", categorie: "Saúde", basepath: "blog" },
 ];
 
 export default function BlogPage() {

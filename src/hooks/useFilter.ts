@@ -7,8 +7,13 @@ export function useFilters() {
 
   // Função para atualizar os filtros na URL
   const setFilters = (filters: Record<string, string | null>) => {
-    let newCategorie = params.categorie || "";
+    let newCategorie = params.categorie || "/";
     let newSlug = params.slug || "/";
+    let basepath = params.basepath || "/";
+
+    console.log("filters", filters)
+
+
     const query = new URLSearchParams(searchParams.toString());
     if (filters.categorie) {
       newCategorie = filters.categorie;
@@ -17,13 +22,18 @@ export function useFilters() {
       newSlug = filters.slug;
     }
 
+    if (filters.basepath) {
+      basepath = filters.basepath || "/";
+    }
+
     Object.entries(filters).forEach(([key, value]) => {
-      if (key !== "categorie" && key !== "slug") {
+      if (key !== "categorie" && key !== "slug" && key !== "basepath") {
         if (value) query.set(key, value);
         else query.delete(key);
       }
     });
-    const newPath = `/dashboard/blog/${newCategorie}/${newSlug}?${query.toString()}`;
+    const newPath = `/dashboard/${basepath}/${newCategorie}/${newSlug}?${query.toString()}`;
+    console.log(newPath);
     router.push(newPath, { scroll: false });
   };
 

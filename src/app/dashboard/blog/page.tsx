@@ -12,12 +12,12 @@ import { useParams } from "next/navigation";
 import { Suspense } from "react";
 
 const filterOptions = [
-  { path: "informacoes", categorie: "Informações" },
-  { path: "passeio", categorie: "Passeio" },
-  { path: "vacinacao", categorie: "Vacinação" },
-  { path: "treinamento", categorie: "Treinamento" },
-  { path: "encontro", categorie: "Encontro" },
-  { path: "saude", categorie: "Saúde" },
+  { path: "informacoes", categorie: "Informações", basepath: "blog" },
+  { path: "passeio", categorie: "Passeio", basepath: "blog" },
+  { path: "vacinacao", categorie: "Vacinação", basepath: "blog" },
+  { path: "treinamento", categorie: "Treinamento", basepath: "blog" },
+  { path: "encontro", categorie: "Encontro", basepath: "blog" },
+  { path: "saude", categorie: "Saúde", basepath: "blog" },
 ];
 
 function BlogContent() {

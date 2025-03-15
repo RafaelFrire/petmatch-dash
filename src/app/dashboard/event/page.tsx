@@ -1,9 +1,10 @@
+"use client";
 import { EventFilter } from "@/components/dashboard/event/eventFilter";
 import { ListEventCard } from "@/components/dashboard/event/listEventCard";
+import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
+import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import { Event } from "@/interfaces/event";
-
-
 
 // const filterOptions = [
 //   { path: "informacoes", categorie: "Informações" },
@@ -20,7 +21,7 @@ export const eventsMock: Event[] = [
     title: "Feira de Adoção de Pets",
     description:
       "Evento para adoção de cães e gatos resgatados por ONGs parceiras.",
-    imageUrl: "",
+    imageUrl: "https://empreendedor.com.br/wp-content/uploads/2015/09/pet-walking-1-768x578.jpg",
     slug: "feira-de-adocao-de-pets",
     categorie: "Adoção",
     date: new Date("2025-04-15T10:00:00Z"),
@@ -33,7 +34,7 @@ export const eventsMock: Event[] = [
     title: "Mutirão de Castração",
     description:
       "Campanha de castração gratuita para cães e gatos de famílias de baixa renda.",
-    imageUrl: "",
+    imageUrl: "https://empreendedor.com.br/wp-content/uploads/2015/09/pet-walking-1-768x578.jpg",
     slug: "mutirao-de-castracao",
     categorie: "Saúde Animal",
     date: new Date("2025-05-10T09:00:00Z"),
@@ -46,7 +47,7 @@ export const eventsMock: Event[] = [
     title: "Palestra sobre Posse Responsável",
     description:
       "Evento educativo sobre os cuidados necessários para adotar um pet.",
-    imageUrl: "",
+    imageUrl: "https://empreendedor.com.br/wp-content/uploads/2015/09/pet-walking-1-768x578.jpg",
     slug: "palestra-posse-responsavel",
     categorie: "Educação",
     date: new Date("2025-06-20T18:30:00Z"),
@@ -56,9 +57,7 @@ export const eventsMock: Event[] = [
   },
 ];
 
-
 export const filterCategories = [
-  
   { categorie: "Feira de Adoção", count: 10 },
   { categorie: "Treinamento", count: 10 },
   { categorie: "Feira de Vacinação", count: 10 },
@@ -66,24 +65,30 @@ export const filterCategories = [
   { categorie: "Outros", count: 10 },
 ];
 
-export default function EventPage(){
+export default function EventPage() {
+  const { data, error, isLoading } = useGetEventList(1, 12);
+  const events = mapEventListResponse(data);
+
+  console.log("events", events);
+  if (isLoading) {
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading article</div>;
+  }
+
   return (
     <div>
       <TitleWithPaw title="Eventos" />
       <div className="h-8"></div>
       <div className="flex flex-wrap-reverse lg:flex-wrap max-w-[80%] mx-auto">
         <div className="mx-auto w-[65%]">
-          <ListEventCard
-            articles={
-              eventsMock.map((event) => ({
-                title: event.title,
-                date: event.date.toISOString(),
-                categorie: event.categorie,
-                slug: event.slug,
-                imageUrl: event.imageUrl,
-              })) || []
-            }
-          />
+          <ListEventCard events={events || []} />
         </div>
         <div className="w-[30%]">
           <EventFilter categories={filterCategories} />

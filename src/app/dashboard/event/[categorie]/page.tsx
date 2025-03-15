@@ -1,8 +1,13 @@
+'use client'
 import { EventFilter } from "@/components/dashboard/event/eventFilter";
 import { ListEventCard } from "@/components/dashboard/event/listEventCard";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { filterCategories } from "../page";
 import { Event } from "@/interfaces/event";
+import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
+import SpinLoader from "@/components/spinLoader";
+import { useFilters } from "@/hooks/useFilter";
+import { useParams } from "next/navigation";
 
 
 
@@ -48,23 +53,41 @@ export const eventsMock: Event[] = [
   },
 ];
 export default function EventPage(){
+  const { searchParams } = useFilters();
+  const params = useParams();
+
+  
+  const currentPage = Number(searchParams.get("page"));
+  const categorie = Array.isArray(params.categorie) ? params.categorie[0] : params.categorie;
+
+  const { data, error, isLoading } = useGetEventList(
+    currentPage,
+    12,
+    categorie
+  );
+  const events = mapEventListResponse(data);
+
+  console.log(events);
+
+  if (isLoading) {
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading article</div>;
+  }
+
   return (
     <div>
       <TitleWithPaw title="Eventos" />
       <div className="h-8"></div>
       <div className="flex flex-wrap-reverse lg:flex-wrap max-w-[80%] mx-auto">
         <div className="mx-auto w-[65%]">
-          <ListEventCard
-            articles={
-              eventsMock.map((event) => ({
-                title: event.title,
-                date: event.date.toISOString(),
-                categorie: event.categorie,
-                slug: event.slug,
-                imageUrl: event.imageUrl,
-              })) || []
-            }
-          />
+          <ListEventCard events={events} />
         </div>
         <div className="w-[30%]">
           <EventFilter categories={filterCategories} />

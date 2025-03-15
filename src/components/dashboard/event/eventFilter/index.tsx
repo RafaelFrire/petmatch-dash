@@ -37,17 +37,18 @@ export const EventFilter:React.FC<eventFilterProps> = ({categories}) =>{
           <div className="h-2"></div>
           <Line height="1.5px" width="full" classname="bg-sencondary60" />
           <div className="h-2"></div>
-          {categories.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="flex items-center justify-between px-2"
-              >
-                <p>{item.categorie}</p>
-                <p>{`(${item.count})`}</p>
-              </div>
-            );
-          })}
+          {Array.isArray(categories) &&
+            categories.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex items-center justify-between px-2"
+                >
+                  <p>{item.categorie}</p>
+                  <p>{`(${item.count})`}</p>
+                </div>
+              );
+            })}
 
           <div className="px-4 py-2">
             <h1 className="text-md text-primary80 font-bold">Tags</h1>
@@ -59,7 +60,11 @@ export const EventFilter:React.FC<eventFilterProps> = ({categories}) =>{
               return (
                 <ButtonFilter
                   key={index}
-                  categorie={{ path: item.path, categorie: item.categorie, basepath: "event" }}
+                  categorie={{
+                    path: item.path,
+                    categorie: item.categorie,
+                    basepath: "event",
+                  }}
                 />
               );
             })}

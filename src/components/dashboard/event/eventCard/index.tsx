@@ -32,7 +32,9 @@ export const EventCard: React.FC<eventCardProps> = ({
         <div className="w-full h-[35%] flex flex-col justify-center text-start py-2 px-4 rounded-t-none rounded-b-lg rounded-l-md rounded-r-md border-2 border-primary100">
           <div className="flex items-center gap-1">
             <Calendar width={20} height={20} color="#B80000" />
-            <h1 className="text-sm text-gray-600 font-semibold">{new Date(date).toLocaleDateString()}</h1>
+            <h1 className="text-sm text-gray-600 font-semibold">
+              {"10/10/2024"}
+            </h1>
           </div>
           <div>
             <h1 className="text-xl font-bold text-primary100 py-1">{title}</h1>

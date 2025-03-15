@@ -27,7 +27,7 @@ export const ButtonFilter: React.FC<ButtonFilterProps> = ({
 
   return (
     <div
-      className={`flex justify-center items-center min-h-10 font-semibold cursor-pointer border-primary100 border-2 transition-colors duration-200 ${
+      className={`text-sm md:text-sm flex justify-center items-center min-h-10 font-semibold cursor-pointer border-primary100 border-2 transition-colors duration-200 ${
         isActive ? "bg-primary100 text-white" : ""
       }`}
       onClick={handleSelect}

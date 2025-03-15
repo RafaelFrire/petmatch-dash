@@ -48,7 +48,7 @@ function BlogContent() {
     <div>
       <TitleWithPaw title="Artigos" />
       <div className="h-8"></div>
-      <div className="max-w-[75%] mx-auto">
+      <div className="w-[95%] md:max-w-[75%] mx-auto">
         <Filters options={filterOptions} />
       </div>
       <div className="h-14"></div>

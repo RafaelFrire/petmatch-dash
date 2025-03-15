@@ -6,9 +6,9 @@ type eventFilterProps = {
 };
 
 type filterOptions = {
- label: string,
- value: string,
-}
+  label: string;
+  value: string;
+};
 
 // const filterCategories:filterOptions[] = [
 //     {label: "Feira de Adoção", value: "feira_de_adocao"},
@@ -27,34 +27,34 @@ const filterOptions = [
   { path: "medical", categorie: "Madical" },
 ];
 
-export const EventFilter:React.FC<eventFilterProps> = ({categories}) =>{
-    return (
-      <div className="min-w-[340px] max-h-[350px] border-2 rounded-md border-primary100">
-        <div>
-          <div className="px-4 py-2">
-            <h1 className="text-md text-primary80 font-bold">Categorias</h1>
-          </div>
-          <div className="h-2"></div>
-          <Line height="1.5px" width="full" classname="bg-sencondary60" />
-          <div className="h-2"></div>
-          {Array.isArray(categories) &&
-            categories.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="flex items-center justify-between px-2"
-                >
-                  <p>{item.categorie}</p>
-                  <p>{`(${item.count})`}</p>
-                </div>
-              );
-            })}
+export const EventFilter: React.FC<eventFilterProps> = ({ categories }) => {
+  return (
+    <div className="min-w-[200px] max-h-[350px] mx-auto border-2 rounded-md border-primary100 py-2">
+      <div>
+        <div className="px-4 py-2">
+          <h1 className="text-md text-primary80 font-bold">Categorias</h1>
+        </div>
+        <div className="h-2"></div>
+        <Line height="1.5px" width="full" classname="bg-sencondary60" />
+        <div className="h-2"></div>
+        {Array.isArray(categories) &&
+          categories.map((item, index) => {
+            return (
+              <div
+                key={index}
+                className="flex items-center justify-between px-2"
+              >
+                <p>{item.categorie}</p>
+                <p>{`(${item.count})`}</p>
+              </div>
+            );
+          })}
 
-          <div className="px-4 py-2">
+        <div className="hidden md:block">
+          <div className=" px-4 py-2">
             <h1 className="text-md text-primary80 font-bold">Tags</h1>
           </div>
-          <Line height="1.5px" width="full" classname="bg-sencondary60" />
-
+          <Line height="1.5px" width="full" classname=" bg-sencondary60" />
           <div className="grid grid-cols-3 gap-3 w-[90%] mx-auto py-4">
             {filterOptions.map((item, index) => {
               return (
@@ -71,5 +71,6 @@ export const EventFilter:React.FC<eventFilterProps> = ({categories}) =>{
           </div>
         </div>
       </div>
-    );
-}
+    </div>
+  );
+};

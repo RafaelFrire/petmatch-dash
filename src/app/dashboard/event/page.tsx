@@ -87,10 +87,12 @@ export default function EventPage() {
       <TitleWithPaw title="Eventos" />
       <div className="h-8"></div>
       <div className="flex flex-wrap-reverse lg:flex-wrap max-w-[80%] mx-auto">
-        <div className="mx-auto w-[65%]">
+        <div className=" w-[100%] mx-auto md:w-[65%]">
           <ListEventCard events={events || []} />
         </div>
-        <div className="w-[30%]">
+        <div className="h-8"></div>
+
+        <div className="w-[100%]  mx-auto md:w-[30%]  py-4">
           <EventFilter categories={filterCategories} />
         </div>
       </div>

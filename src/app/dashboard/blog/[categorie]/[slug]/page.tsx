@@ -7,12 +7,12 @@ import {
   mapArticleResponse,
   useGetArticleBySlug,
 } from "@/hooks/useGetArticleBySlug";
-import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
+import {
+  mapArticleListResponse,
+  useGetArticleList,
+} from "@/hooks/useGetArticleList";
 
 import { useParams } from "next/navigation";
-
-
-
 
 export default function Blog() {
   const params = useParams();
@@ -23,11 +23,7 @@ export default function Blog() {
   const article = data ? mapArticleResponse(data) : null;
   const { data: lastArticleList } = useGetArticleList(1, 9);
 
-
   const articles = mapArticleListResponse(lastArticleList?.articles);
-
-  console.log("article", article); 
-
 
   if (isLoading) {
     return (

@@ -27,10 +27,10 @@ const Footer = () => {
       <Line width="100%" height="1.5px" classname="my-4" />
       <div className="flex justify-around flex-wrap items-center py-12">
         <div className="max-w-[300px]">
-          <text>
+          <p>
             Proin ullamcorper pretium orci. Donec nec scelerisque leo. Nam massa
             dolor imperdiet nec consequa tacon uedisem.
-          </text>
+          </p>
         </div>
         <div className="w-[100%] md:w-[300px] py-2">
           <LinkList linkItems={navLinks} />

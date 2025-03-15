@@ -27,20 +27,25 @@ const Button = ({ variant = "primary", children }: { variant?: "primary" | "outl
   );
 };
 export interface EventHeroProps {
-    event: {
-        title: string;
-        type: string;
-        date: string;
-        time: string;
-        location: string;
-        address: string;
-        city: string;
-        state: string;
-        organizer: string;
-        description: string;
-        additionalInfo: string;
-        bannerImage: string;
-    };
+  event: {
+    title: string;
+    type: string;
+    date: string;
+    time: string;
+    location: string;
+    address: string;
+    city: string;
+    state: string;
+    organizer: string;
+    additionalInfo: string;
+    bannerImage: string;
+    id: string;
+    description: string;
+    imageUrl: string;
+    slug: string;
+    categorie: string;
+    ongId: string;
+  };
 }
 
 export default function EventHero({ event }: EventHeroProps) {
@@ -49,7 +54,7 @@ export default function EventHero({ event }: EventHeroProps) {
     <div className="min-h-screen bg-gray-100">
       <div className="relative w-full h-80 md:h-96">
         <Image
-          src={event.bannerImage}
+          src={event.imageUrl}
           alt={event.title}
           fill
           priority
@@ -57,7 +62,7 @@ export default function EventHero({ event }: EventHeroProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full p-6 text-white">
-          <Badge>{event.type}</Badge>
+          <Badge>{event.categorie}</Badge>
           <h1 className="text-3xl font-bold mt-2">{event.title}</h1>
           <p className="opacity-90">Organizado por {event.organizer}</p>
         </div>
@@ -70,28 +75,32 @@ export default function EventHero({ event }: EventHeroProps) {
               <InfoItem
                 icon={<Calendar color="#B80000" />}
                 title="Data"
-                text={event.date}
+                text={new Date(event.date).toLocaleDateString() || "Data não informada"}
               />
               <InfoItem
                 icon={<Clock color="#B80000" />}
                 title="Horário"
-                text={event.time}
+                text={event.time || "Horário não informado"}
               />
               <InfoItem
                 icon={<MapPin color="#B80000" />}
                 title="Local"
-                text={`${event.location}, ${event.address}, ${event.city} - ${event.state}`}
+                text={
+                  event.location && event.address && event.city && event.state
+                    ? `${event.location}, ${event.address}, ${event.city} - ${event.state}`
+                    : "Localização não informada"
+                }
               />
             </div>
           </Card>
 
           <Card>
             <h2 className="text-xl font-bold">Sobre o evento</h2>
-            <p>{event.description}</p>
+            <p>{event?.description || ""}</p>
             <h3 className="text-lg font-semibold mt-4">
               Informações adicionais
             </h3>
-            <p>{event.additionalInfo}</p>
+            <p>{event?.description || ""}</p>
           </Card>
         </div>
 

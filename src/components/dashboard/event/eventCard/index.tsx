@@ -17,7 +17,7 @@ export const EventCard: React.FC<eventCardProps> = ({
   slug,
 }) => {
   return (
-    <a href={`/dashboard/blog/${categorie}/${slug}`}>
+    <a href={`/dashboard/event/${categorie}/${slug}`}>
       <div className="flex flex-col items-center w-full h-[350px] border-t-2 border-r-2 border-l-2 rounded-lg cursor-pointer border-primary100 bg-white overflow-hidden">
         <div className="w-full h-[75%]">
           <Image
@@ -33,7 +33,7 @@ export const EventCard: React.FC<eventCardProps> = ({
           <div className="flex items-center gap-1">
             <Calendar width={20} height={20} color="#B80000" />
             <h1 className="text-sm text-gray-600 font-semibold">
-              {"10/10/2024"}
+              {new Date(date).toLocaleDateString()}
             </h1>
           </div>
           <div>

@@ -39,18 +39,18 @@ const Header = () => {
 
   return (
     <header className="py-4">
-      {isMobile ? (
+      <div className="md:hidden">
         <MobileHeader />
-      ) : (
-        <>
-          <div className="flex justify-center items-center gap-10">
-            <InputSearch placeholder="Encontre o seu pet" />
-            <ButtonLogin text="Login" />
-          </div>
-          <Line width="100%" height="1.5px" classname="my-4" />
-          <Navbar navLinks={navLinks} />
-        </>
-      )}
+      </div>
+
+      <div className="hidden md:block">
+        <div className="flex justify-center items-center gap-10">
+          <InputSearch placeholder="Encontre o seu pet" />
+          <ButtonLogin text="Login" />
+        </div>
+        <Line width="100%" height="1.5px" classname="my-4" />
+        <Navbar navLinks={navLinks} />
+      </div>
     </header>
   );
 };

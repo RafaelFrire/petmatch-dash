@@ -20,19 +20,24 @@ export const ListArticleCard: React.FC<ListArticleCardProps> = ({
             <ArticleCard key={index} {...article} />
           ))
         ) : (
-            <div className="col-span-3 py-3 text-center">
-            <h1 className="text-2xl text-primary100">Nenhum artigo encontrado..</h1>
-            </div>
+          <div className="col-span-3 py-3 text-center">
+            <h1 className="text-2xl text-primary100">
+              Nenhum artigo encontrado..
+            </h1>
+          </div>
         )}
       </div>
-      <div className="w-full flex justify-end py-4 px-4">
-        <Pagination
-          totalPages={5}
-          pageSize={15}
-          currentPage={currentPage}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
+
+      {articles.length > 0 ? (
+        <div className="w-full flex justify-end py-4 px-4">
+          <Pagination
+            totalPages={5}
+            pageSize={15}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

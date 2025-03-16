@@ -18,9 +18,7 @@ export const ListEventCard: React.FC<ListArticleCardProps> = ({
     <div className="mx-auto">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 mx-auto">
         {events.length > 0 ? (
-          events.map((event, index) => (
-            <EventCard key={index} {...event} />
-          ))
+          events.map((event, index) => <EventCard key={index} {...event} />)
         ) : (
           <div className="col-span-3 py-3 text-center">
             <h1 className="text-2xl text-primary100">
@@ -29,14 +27,16 @@ export const ListEventCard: React.FC<ListArticleCardProps> = ({
           </div>
         )}
       </div>
-      <div className="w-full flex justify-end py-4 px-4">
-        <Pagination
-          totalPages={5}
-          pageSize={15}
-          currentPage={currentPage}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
+      {events.length > 0 ? (
+        <div className="w-full flex justify-end py-4 px-4">
+          <Pagination
+            totalPages={5}
+            pageSize={15}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

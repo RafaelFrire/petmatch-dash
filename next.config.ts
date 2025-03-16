@@ -2,16 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      "akc.org",
-      "www.science.org",
-      "source.unsplash.com",
-      "empreendedor.com.br",
-      "media.istockphoto.com",
-      "https://",
-      "https://",
-
-    ], // Adicione o domínio aqui
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost", // O domínio que você quer permitir
+        port: "3333", // O porto do servidor
+        pathname: "/api/search/**", // O caminho específico para as imagens
+      },
+    ],
   },
 };
 

@@ -1,6 +1,27 @@
 import Image from "next/image";
 import { Calendar, Clock, MapPin, ArrowRight } from "lucide-react";
 import { ReactNode } from "react";
+import getImageUrl from "@/utils/getImageUrl";
+
+export interface EventHeroProps {
+  event: {
+    id: string;
+    ongId: string;
+    slug: string;
+    categorie: string;
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    address: string;
+    city: string;
+    state: string;
+    organizer: string;
+    additionalInfo: string;
+    description: string;
+    imageUrl: string;
+  };
+}
 
 // Componente de Badge
 const Badge = ({ children }: { children: ReactNode }) => (
@@ -26,27 +47,7 @@ const Button = ({ variant = "primary", children }: { variant?: "primary" | "outl
     <button className={`${baseStyles} ${variants[variant]}`}>{children}</button>
   );
 };
-export interface EventHeroProps {
-  event: {
-    title: string;
-    type: string;
-    date: string;
-    time: string;
-    location: string;
-    address: string;
-    city: string;
-    state: string;
-    organizer: string;
-    additionalInfo: string;
-    bannerImage: string;
-    id: string;
-    description: string;
-    imageUrl: string;
-    slug: string;
-    categorie: string;
-    ongId: string;
-  };
-}
+
 
 export default function EventHero({ event }: EventHeroProps) {
 
@@ -54,7 +55,7 @@ export default function EventHero({ event }: EventHeroProps) {
     <div className="min-h-screen bg-gray-100">
       <div className="relative w-full h-80 md:h-96">
         <Image
-          src={event.imageUrl}
+          src={`${getImageUrl(event.imageUrl)}`} // A URL completa para a imagem
           alt={event.title}
           fill
           priority
@@ -75,7 +76,10 @@ export default function EventHero({ event }: EventHeroProps) {
               <InfoItem
                 icon={<Calendar color="#B80000" />}
                 title="Data"
-                text={new Date(event.date).toLocaleDateString() || "Data não informada"}
+                text={
+                  new Date(event.date).toLocaleDateString() ||
+                  "Data não informada"
+                }
               />
               <InfoItem
                 icon={<Clock color="#B80000" />}
@@ -100,7 +104,7 @@ export default function EventHero({ event }: EventHeroProps) {
             <h3 className="text-lg font-semibold mt-4">
               Informações adicionais
             </h3>
-            <p>{event?.description || ""}</p>
+            <p>{event?.additionalInfo || ""}</p>
           </Card>
         </div>
 

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Calendar } from "lucide-react";
+import getImageUrl from "@/utils/getImageUrl";
 
 export type eventCardProps = {
   title: string;
@@ -21,7 +22,8 @@ export const EventCard: React.FC<eventCardProps> = ({
       <div className="flex flex-col items-center w-full h-[350px] border-t-2 border-r-2 border-l-2 rounded-lg cursor-pointer border-primary100 bg-white overflow-hidden">
         <div className="w-full h-[75%]">
           <Image
-            src={imageUrl}
+            // src={imageUrl}
+            src={`${getImageUrl(imageUrl)}`}
             alt="article"
             width={500}
             height={300}

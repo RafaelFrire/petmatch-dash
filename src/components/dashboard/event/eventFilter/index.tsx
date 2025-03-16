@@ -10,21 +10,13 @@ type filterOptions = {
   value: string;
 };
 
-// const filterCategories:filterOptions[] = [
-//     {label: "Feira de Adoção", value: "feira_de_adocao"},
-//     {label: "Treinamento", value: "treinamento"},
-//     {label: "Feira de Vacinação", value: "feira_de_vacinacao"},
-//     {label: "Passeio Comunitário", value: "passeio_comunitario"},
-//     {label: "Outros", value: "outros"},
-// ]
-
 const filterOptions = [
   { path: "adocao", categorie: "Adoção" },
-  { path: "passeio", categorie: "passeio" },
+  { path: "passeio", categorie: "Passeio" },
   { path: "vacinacao", categorie: "Vacinação" },
   { path: "treinamento", categorie: "Treinamento" },
   { path: "encontro", categorie: "Encontro" },
-  { path: "medical", categorie: "Madical" },
+  { path: "saude", categorie: "Saúde" },
 ];
 
 export const EventFilter: React.FC<eventFilterProps> = ({ categories }) => {

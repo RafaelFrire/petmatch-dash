@@ -32,7 +32,7 @@ export function useFilters() {
         else query.delete(key);
       }
     });
-    const newPath = `/dashboard/${basepath}/${newCategorie}/${newSlug}?${query.toString()}`;
+    const newPath = `/${basepath}/${newCategorie}/${newSlug}?${query.toString()}`;
     console.log(newPath);
     router.push(newPath, { scroll: false });
   };

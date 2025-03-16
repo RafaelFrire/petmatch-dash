@@ -2,12 +2,12 @@ import { toast } from "react-toastify";
 import { apiRequest } from "./useApi";
 import { useQuery } from "@tanstack/react-query";
 import { Article } from "@/interfaces/article";
-import { eventCardProps } from "@/components/dashboard/event/eventCard";
+import { eventCardProps } from "@/components/pages/event/eventCard";
 
 async function getEventList(
   page: number,
   categorie?: string,
-  limit?: number,
+  limit?: number
 ): Promise<{ articles: Article[]; page: number; limit: number } | null> {
   try {
     const res = await apiRequest(
@@ -36,7 +36,7 @@ async function getEventList(
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapEventListResponse = (response: any): eventCardProps[] => {
-  if(!Array.isArray(response)){
+  if (!Array.isArray(response)) {
     return []; // Retorna um array vazio para evitar erros
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,18 +49,15 @@ export const mapEventListResponse = (response: any): eventCardProps[] => {
     date: article?.createdAt,
     slug: article?.slug,
   }));
-
 };
 
-  
-
-  export function useGetEventList(
-    page: number,
-    limit?: number,
-    categorie?: string,
-  ) {
-    return useQuery({
-      queryKey: ["fetchEvents", page],
-      queryFn: () => getEventList(page, categorie, limit),
-    });
-  }
+export function useGetEventList(
+  page: number,
+  limit?: number,
+  categorie?: string
+) {
+  return useQuery({
+    queryKey: ["fetchEvents", page],
+    queryFn: () => getEventList(page, categorie, limit),
+  });
+}

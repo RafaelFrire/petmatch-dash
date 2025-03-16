@@ -34,7 +34,7 @@ export default function FormLogin() {
     if (!state?.success) {
       toast.error(state?.message);
     } else if (state?.success) {
-      router.push("/dashboard/event")
+      router.push("/event")
       toast.success(state?.message);
     }
   }, [state]);

@@ -1,10 +1,13 @@
-'use client'
-import { ListArticleCard } from "@/components/dashboard/blog/listArticleCard";
+"use client";
+import { ListArticleCard } from "@/components/pages/blog/listArticleCard";
 import Filters from "@/components/filters";
 import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useFilters } from "@/hooks/useFilter";
-import { mapArticleListResponse, useGetArticleList } from "@/hooks/useGetArticleList";
+import {
+  mapArticleListResponse,
+  useGetArticleList,
+} from "@/hooks/useGetArticleList";
 import { useParams } from "next/navigation";
 
 const filterOptions = [
@@ -17,14 +20,16 @@ const filterOptions = [
 ];
 
 export default function BlogPage() {
-    const { searchParams } = useFilters();
-    const params = useParams();
-  
-    const currentPage = Number(searchParams.get("page"));
-    const categorie = Array.isArray(params.categorie) ? params.categorie[0] : params.categorie;
-  
-    console.log("categorie", categorie)
-    console.log("currentPage", currentPage)
+  const { searchParams } = useFilters();
+  const params = useParams();
+
+  const currentPage = Number(searchParams.get("page"));
+  const categorie = Array.isArray(params.categorie)
+    ? params.categorie[0]
+    : params.categorie;
+
+  console.log("categorie", categorie);
+  console.log("currentPage", currentPage);
 
   const { data, error, isLoading } = useGetArticleList(
     currentPage,
@@ -32,7 +37,7 @@ export default function BlogPage() {
     categorie
   );
 
-  console.log("data", data)
+  console.log("data", data);
 
   const articles = mapArticleListResponse(data?.articles ?? []);
 

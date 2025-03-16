@@ -2,12 +2,12 @@ import { toast } from "react-toastify";
 import { apiRequest } from "./useApi";
 import { useQuery } from "@tanstack/react-query";
 import { Article } from "@/interfaces/article";
-import { articleCardProps } from "@/components/dashboard/blog/articleCard";
+import { articleCardProps } from "@/components/pages/blog/articleCard";
 
 async function getArticleList(
   page: number,
   categorie?: string,
-  limit?: number,
+  limit?: number
 ): Promise<{ articles: Article[]; page: number; limit: number } | null> {
   try {
     const res = await apiRequest(
@@ -36,10 +36,9 @@ async function getArticleList(
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapArticleListResponse = (response: any): articleCardProps[] => {
-  if(!Array.isArray(response)){
+  if (!Array.isArray(response)) {
     return []; // Retorna um array vazio para evitar erros
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return response.map((article: any) => ({
@@ -50,18 +49,15 @@ export const mapArticleListResponse = (response: any): articleCardProps[] => {
     date: article?.createdAt,
     slug: article?.slug,
   }));
-
 };
 
-  
-
-  export function useGetArticleList(
-    page: number,
-    limit?: number,
-    categorie?: string,
-  ) {
-    return useQuery({
-      queryKey: ["fetchArticles", page],
-      queryFn: () => getArticleList(page, categorie, limit),
-    });
-  }
+export function useGetArticleList(
+  page: number,
+  limit?: number,
+  categorie?: string
+) {
+  return useQuery({
+    queryKey: ["fetchArticles", page],
+    queryFn: () => getArticleList(page, categorie, limit),
+  });
+}

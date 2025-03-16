@@ -1,6 +1,6 @@
-'use client'
-import { EventFilter } from "@/components/dashboard/event/eventFilter";
-import { ListEventCard } from "@/components/dashboard/event/listEventCard";
+"use client";
+import { EventFilter } from "@/components/pages/event/eventFilter";
+import { ListEventCard } from "@/components/pages/event/listEventCard";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { filterCategories } from "../page";
 import { Event } from "@/interfaces/event";
@@ -8,8 +8,6 @@ import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import SpinLoader from "@/components/spinLoader";
 import { useFilters } from "@/hooks/useFilter";
 import { useParams } from "next/navigation";
-
-
 
 export const eventsMock: Event[] = [
   {
@@ -52,13 +50,14 @@ export const eventsMock: Event[] = [
     ongId: "789e6543-e21b-45c6-b321-fedcba654321",
   },
 ];
-export default function EventPage(){
+export default function EventPage() {
   const { searchParams } = useFilters();
   const params = useParams();
 
-  
   const currentPage = Number(searchParams.get("page"));
-  const categorie = Array.isArray(params.categorie) ? params.categorie[0] : params.categorie;
+  const categorie = Array.isArray(params.categorie)
+    ? params.categorie[0]
+    : params.categorie;
 
   const { data, error, isLoading } = useGetEventList(
     currentPage,

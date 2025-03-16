@@ -1,7 +1,7 @@
 "use client";
-import { ArticleContent } from "@/components/dashboard/blog/articleContent";
-import { HeroArticle } from "@/components/dashboard/blog/heroArticle";
-import { LastArticlesList } from "@/components/dashboard/blog/lastArticlesList";
+import { ArticleContent } from "@/components/pages/blog/articleContent";
+import { HeroArticle } from "@/components/pages/blog/heroArticle";
+import { LastArticlesList } from "@/components/pages/blog/lastArticlesList";
 import SpinLoader from "@/components/spinLoader";
 import {
   mapArticleResponse,

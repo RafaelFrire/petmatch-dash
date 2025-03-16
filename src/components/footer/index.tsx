@@ -11,8 +11,8 @@ const navLinks: listItemProps[] = [
   { path: "/ongs", text: "ONGs" },
   { path: "/pets", text: "Pets" },
   { path: "/sobre", text: "Sobre nós" },
-  { path: "/eventos", text: "Eventos" },
-  { path: "/artigos", text: "Artigos" },
+  { path: "/event", text: "Eventos" },
+  { path: "/blog", text: "Artigos" },
   { path: "/contato", text: "Contato" },
 ];
 

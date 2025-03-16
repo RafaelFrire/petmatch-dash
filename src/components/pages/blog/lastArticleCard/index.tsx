@@ -10,7 +10,7 @@ export const LastArticleCard: React.FC<LastArticleCardProps> = ({
   article,
 }) => {
   return (
-    <a href={`/dashboard/blog/${article.categorie}/${article.slug}`}>
+    <a href={`/blog/${article.categorie}/${article.slug}`}>
       <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer">
         {/* Imagem do artigo */}
         <Image

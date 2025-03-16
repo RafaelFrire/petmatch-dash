@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import Banner from "@/components/dashboard/home/banner";
+import Banner from "@/components/pages/home/banner";
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Calendar } from "lucide-react";
 import getImageUrl from "@/utils/getImageUrl";
 
-export type eventCardProps = {
+export type articleCardProps = {
   title: string;
   date: string;
   categorie: string;
@@ -10,7 +10,7 @@ export type eventCardProps = {
   imageUrl: string;
 };
 
-export const EventCard: React.FC<eventCardProps> = ({
+export const ArticleCard: React.FC<articleCardProps> = ({
   title,
   date,
   imageUrl,
@@ -18,12 +18,11 @@ export const EventCard: React.FC<eventCardProps> = ({
   slug,
 }) => {
   return (
-    <a href={`/dashboard/event/${categorie}/${slug}`}>
+    <a href={`/blog/${categorie}/${slug}`}>
       <div className="flex flex-col items-center w-full h-[350px] border-t-2 border-r-2 border-l-2 rounded-lg cursor-pointer border-primary100 bg-white overflow-hidden">
         <div className="w-full h-[75%]">
           <Image
-            // src={imageUrl}
-            src={`${getImageUrl(imageUrl)}`}
+            src={getImageUrl(imageUrl)}
             alt="article"
             width={500}
             height={300}

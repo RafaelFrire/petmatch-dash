@@ -12,7 +12,7 @@ const MobileHeader = () =>{
       <div className="flex items-center justify-between px-2 py-2">
         <Link path={"/"} icon={<HomeIcon width={30} height={30} />} />
         <Link path={"#"} icon={<SearchIcon width={30} height={30} />} />
-        <Link path={"/dashboard/pets"} icon={<PawDog width={30} height={30} />} />
+        <Link path={"/pets"} icon={<PawDog width={30} height={30} />} />
         <Link path={"/"} icon={<ThreeDotIcon width={30} height={30} />} />
         <Link path={"/login"} icon={<UserIcon width={30} height={30} />} />
       </div>

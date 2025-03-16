@@ -1,9 +1,7 @@
 import { apiRequest } from "./useApi";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
-import { EventHeroProps } from "@/components/dashboard/event/eventHero";
-
-
+import { EventHeroProps } from "@/components/pages/event/eventHero";
 
 async function getEventBySlug(slug: string): Promise<EventHeroProps | null> {
   try {
@@ -11,7 +9,7 @@ async function getEventBySlug(slug: string): Promise<EventHeroProps | null> {
       method: "GET",
     });
 
-     if (!res.ok) {
+    if (!res.ok) {
       toast.error("Falha ao carregar evento.");
       return null;
     }
@@ -25,7 +23,7 @@ async function getEventBySlug(slug: string): Promise<EventHeroProps | null> {
     return null;
   }
 }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapEventResponse = (response: any): Partial<EventHeroProps> => {
   return {
     event: {
@@ -48,10 +46,9 @@ export const mapEventResponse = (response: any): Partial<EventHeroProps> => {
   };
 };
 
-
 export function useGetEventBySlug(slug: string) {
   return useQuery({
     queryKey: ["fetchEvent", slug],
-    queryFn: () => getEventBySlug(slug), 
+    queryFn: () => getEventBySlug(slug),
   });
 }

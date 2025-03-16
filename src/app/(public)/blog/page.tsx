@@ -1,5 +1,5 @@
 "use client";
-import { ListArticleCard } from "@/components/dashboard/blog/listArticleCard";
+import { ListArticleCard } from "@/components/pages/blog/listArticleCard";
 import Filters from "@/components/filters";
 import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
@@ -29,7 +29,11 @@ function BlogContent() {
     ? params.categorie[0]
     : params.categorie;
 
-  const { data, error, isLoading } = useGetArticleList(currentPage, 12, categorie);
+  const { data, error, isLoading } = useGetArticleList(
+    currentPage,
+    12,
+    categorie
+  );
   const articles = mapArticleListResponse(data?.articles ?? []);
 
   if (isLoading) {

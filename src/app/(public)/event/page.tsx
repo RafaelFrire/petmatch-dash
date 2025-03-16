@@ -1,11 +1,10 @@
 "use client";
 
-import { EventFilter } from "@/components/dashboard/event/eventFilter";
-import { ListEventCard } from "@/components/dashboard/event/listEventCard";
+import { EventFilter } from "@/components/pages/event/eventFilter";
+import { ListEventCard } from "@/components/pages/event/listEventCard";
 import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
-
 
 export const filterCategories = [
   { categorie: "Feira de Adoção", count: 10 },
@@ -19,7 +18,6 @@ export default function EventPage() {
   const { data, error, isLoading } = useGetEventList(1, 12);
   const events = mapEventListResponse(data);
 
-  console.log("events", events);
   if (isLoading) {
     return (
       <div className="py-10">

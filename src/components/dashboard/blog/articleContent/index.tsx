@@ -1,4 +1,5 @@
 import { Article } from "@/interfaces/article";
+import getImageUrl from "@/utils/getImageUrl";
 import Image from "next/image";
 
 
@@ -56,7 +57,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
           {section?.image && (
             <div className="mt-4">
               <Image
-                src={section?.image}
+                src={getImageUrl(section?.image)}
                 alt={section?.title}
                 width={800}
                 height={400}

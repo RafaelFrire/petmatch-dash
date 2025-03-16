@@ -37,7 +37,6 @@ async function getArticleList(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapArticleListResponse = (response: any): articleCardProps[] => {
   if(!Array.isArray(response)){
-    console.error("mapArticleListResponse: response não é um array", response);
     return []; // Retorna um array vazio para evitar erros
   }
 

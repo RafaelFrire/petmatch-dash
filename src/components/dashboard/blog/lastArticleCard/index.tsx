@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { articleCardProps } from "../articleCard";
+import getImageUrl from "@/utils/getImageUrl";
 
 type LastArticleCardProps = {
   article: articleCardProps;
@@ -13,7 +14,7 @@ export const LastArticleCard: React.FC<LastArticleCardProps> = ({
       <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer">
         {/* Imagem do artigo */}
         <Image
-          src={article.imageUrl}
+          src={getImageUrl(article.imageUrl)}
           alt={article.title}
           className="w-32 h-24 object-cover rounded-md"
           width={200}

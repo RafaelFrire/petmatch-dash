@@ -11,6 +11,7 @@ import {
   mapArticleListResponse,
   useGetArticleList,
 } from "@/hooks/useGetArticleList";
+import getImageUrl from "@/utils/getImageUrl";
 
 import { useParams } from "next/navigation";
 
@@ -24,6 +25,8 @@ export default function Blog() {
   const { data: lastArticleList } = useGetArticleList(1, 9);
 
   const articles = mapArticleListResponse(lastArticleList?.articles);
+
+  console.log("article", article);
 
   if (isLoading) {
     return (
@@ -44,7 +47,7 @@ export default function Blog() {
         <div className="w-[80%] p-4 rounded-lg">
           <div className="w-[90%] h-[400px] mx-auto flex justify-center">
             <HeroArticle
-              srcImage={article?.banner || ""}
+              srcImage={getImageUrl(article?.thumbnail || "")}
               publishedDate={new Date()}
               ong={{
                 id: "1",

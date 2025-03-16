@@ -8,15 +8,15 @@ type bannerImageProps = {
 
 export const BannerImage:React.FC<bannerImageProps> = ({width, height, src, ...props}) => {
   return (
-      <Image
-        src={src}
-        width={width}
-        height={height}
-        layout="responsive"
-        className="object-center"
-        {...props}
-        alt="Banner de adoção"
-        loading="lazy"
-      />
+    <Image
+      src={src}
+      width={width}
+      height={height}
+      layout="responsive"
+      className="object-center"
+      {...props}
+      alt="Banner de adoção"
+      loading="lazy"
+    />
   );
 };

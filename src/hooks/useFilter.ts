@@ -11,8 +11,7 @@ export function useFilters() {
     let newSlug = params.slug || "/";
     let basepath = params.basepath || "/";
 
-    console.log("filters", filters)
-
+    
 
     const query = new URLSearchParams(searchParams.toString());
     if (filters.categorie) {
@@ -33,7 +32,8 @@ export function useFilters() {
       }
     });
     const newPath = `/${basepath}/${newCategorie}/${newSlug}?${query.toString()}`;
-    console.log(newPath);
+    console.log("newPath: ", newPath);
+    console.log("base: ", basepath);
     router.push(newPath, { scroll: false });
   };
 

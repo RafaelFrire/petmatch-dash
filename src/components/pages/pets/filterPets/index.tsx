@@ -1,3 +1,6 @@
+'use client'
+import { useFilters } from "@/hooks/useFilter";
+
 interface FilterAccordionProps {
   name: string;
 }
@@ -14,19 +17,32 @@ const filterOptions = [
 
   const FilterSelect: React.FC<FilterAccordionProps> = ({ name }) => {
     const filter = filterOptions.find((filter) => filter.name === name);
-    return (
-      <div className="border border-primary100 rounded-[20px] overflow-hidden p-2">
-        <select className="w-full md:p-2 font-montserrat text-primary100 text-base bg-white border-none outline-none">
-          <option value="">{name}</option>
-          {filter?.options.map((option, index) => (
-            <option key={index} value={option}>{option}</option>
-          ))}
-        </select>
-      </div>
-    );
+
+     const { setFilters } = useFilters();
+
+     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+       console.log(event.target.value);
+       if (filter) {
+         setFilters({ basepath: "pets", [filter.id]: event.target.value });
+       }
+     };
+     return (
+       <div className="border border-primary100 rounded-[20px] overflow-hidden p-2">
+         <select
+           className="w-full md:p-2 font-montserrat text-primary100 text-base bg-white border-none outline-none"
+           onChange={handleChange}
+         >
+           <option value="">{name}</option>
+           {filter?.options.map((option, index) => (
+             <option key={index} value={option}>
+               {option}
+             </option>
+           ))}
+         </select>
+       </div>
+     );
   };
 
-// components/FilterSidebar.tsx
 
 const FilterSidebar: React.FC = () => {
   return (

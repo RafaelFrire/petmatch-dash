@@ -10,12 +10,12 @@ export default function PetPage() {
     
       const { data, error, isLoading } = useGetPetBySlug(slug);
 
+      console.log("data", data);
+
       if (isLoading) {
         return (
           <div className="py-10">
-            <SpinLoader 
-            
-            />
+            <SpinLoader />
           </div>
         );
       }

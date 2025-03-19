@@ -6,13 +6,20 @@ import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 
-export const filterCategories = [
+
+type FilterCategory = {
+  categorie: string;
+  count: number;
+};
+
+const filterCategories: FilterCategory[] = [
   { categorie: "Feira de Adoção", count: 10 },
   { categorie: "Treinamento", count: 10 },
   { categorie: "Feira de Vacinação", count: 10 },
   { categorie: "Passeio Comunitário", count: 10 },
   { categorie: "Outros", count: 10 },
 ];
+
 
 export default function EventPage() {
   const { data, error, isLoading } = useGetEventList(1, 12);

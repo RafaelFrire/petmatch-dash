@@ -1,8 +1,44 @@
+"use client";
 import { PetsGallerySection } from "@/components/pages/pets";
 import FilterSidebar from "@/components/pages/pets/filterPets";
+import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
+import { useFilters } from "@/hooks/useFilter";
+import { mapPetListResponse, useGetPetList } from "@/hooks/useGetPetsList";
+import { Suspense, useEffect, useMemo } from "react";
 
-export default function PetsPage() {
+function PetsContent() {
+  const { searchParams, getFiltersFromParams } = useFilters();
+  const filters = getFiltersFromParams();
+  const currentPage = Number(searchParams.get("page"));
+
+  const queryString = new URLSearchParams(filters).toString();
+
+  const { data, isLoading, error, refetch } = useGetPetList(
+    currentPage,
+    12,
+    queryString
+  );
+
+  const petsList = useMemo(() => {
+    return mapPetListResponse(data?.pets || []);
+  }, [data]);
+
+  useEffect(() => {
+    refetch(); // Refaz a requisição toda vez que filters mudar
+  }, [filters, refetch]);
+
+  if (isLoading) {
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading article</div>;
+  }
   return (
     <div className="min-h-screen w-full">
       <div className="h-6"></div>
@@ -13,9 +49,17 @@ export default function PetsPage() {
           <FilterSidebar />
         </div>
         <div className="w-[95%] md:w-[90%] mx-auto">
-          <PetsGallerySection />
+          <PetsGallerySection petsList={petsList} />
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PetsPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <PetsContent />
+    </Suspense>
   );
 }

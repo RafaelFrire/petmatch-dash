@@ -2,12 +2,23 @@
 import { EventFilter } from "@/components/pages/event/eventFilter";
 import { ListEventCard } from "@/components/pages/event/listEventCard";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
-import { filterCategories } from "../page";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import SpinLoader from "@/components/spinLoader";
 import { useFilters } from "@/hooks/useFilter";
 import { useParams } from "next/navigation";
 
+type FilterCategory = {
+  categorie: string;
+  count: number;
+};
+
+const filterCategories: FilterCategory[] = [
+  { categorie: "Feira de Adoção", count: 10 },
+  { categorie: "Treinamento", count: 10 },
+  { categorie: "Feira de Vacinação", count: 10 },
+  { categorie: "Passeio Comunitário", count: 10 },
+  { categorie: "Outros", count: 10 },
+];
 
 export default function EventPage() {
   const { searchParams } = useFilters();

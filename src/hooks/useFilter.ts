@@ -37,5 +37,13 @@ export function useFilters() {
     router.push(newPath, { scroll: false });
   };
 
-  return { setFilters, searchParams };
+  const getFiltersFromParams = () => {
+    const paramsObject: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      if (value) paramsObject[key] = value; // Só adiciona se não for vazio
+    });
+    return paramsObject;
+  };
+
+  return { setFilters, searchParams, getFiltersFromParams };
 }

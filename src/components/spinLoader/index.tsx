@@ -3,7 +3,7 @@ const SpinLoader = () => {
     <div role="status" className="flex justify-center ">
       <svg
         aria-hidden="true"
-        className="w-24 h-24 text-gray-200 animate-spin dark:text-primary100 fill-white"
+        className="w-24 h-24 text-primary80 animate-spin dark:text-primary100 fill-zinc-100"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

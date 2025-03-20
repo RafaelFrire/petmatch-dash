@@ -1,0 +1,48 @@
+
+import { useState } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const images = [
+  "https://images.unsplash.com/photo-1517849845537-4d257902454a",
+  "https://images.unsplash.com/photo-1525253086316-d0c936c814f8",
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+];
+
+export default function PetCarrousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  return (
+    <div className="relative w-full max-w-lg mx-auto">
+      <div className="space-y-4">
+        <Image
+          src={images[currentIndex]}
+          width={600}
+          height={400}
+          className="w-full h-[400px] object-cover rounded-lg"
+          alt="Carousel Image"
+        />
+      </div>
+      <button
+        onClick={prevImage}
+        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button
+        onClick={nextImage}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+      >
+        <ChevronRight size={24} />
+      </button>
+    </div>
+  );
+}

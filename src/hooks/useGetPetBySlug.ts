@@ -21,6 +21,7 @@ async function getPetBySlug(slug: string): Promise<PetResponse | null> {
     }
 
     const data = await res.json();
+    console.log(data)
     toast.success("pet encontrado!");
     return data;
   } catch (err) {
@@ -33,19 +34,19 @@ async function getPetBySlug(slug: string): Promise<PetResponse | null> {
 export const mapPetResponse = (response: any): PetResponse => {
   return {
     pet: {
-      id: response?.id,
-      name: response?.name,
-      species: response?.species,
-      slug: response?.slug,
-      breed: response?.breed,
-      color: response?.color,
-      size: response?.size,
-      health: response?.health,
-      temperament: response?.temperament,
-      birthdate: response?.birthdate,
-      status: response?.status,
-      history: response?.history,
-      ongId: response?.ongId,
+      id: response?.pet?.id,
+      name: response?.pet?.name,
+      species: response?.pet?.species,
+      slug: response?.pet?.slug,
+      breed: response?.pet?.breed,
+      color: response?.pet?.color,
+      size: response?.pet?.size,
+      health: response?.pet?.health,
+      temperament: response?.pet?.temperament,
+      birthdate: response?.pet?.birthdate,
+      status: response?.pet?.status,
+      history: response?.pet?.history,
+      ongId: response?.pet?.ongId,
     },
     images: response?.images?.map((image: string) => ({ url: image })) || [],
   };

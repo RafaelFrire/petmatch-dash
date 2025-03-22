@@ -1,5 +1,6 @@
 'use client'
-import PetHero, { petHeroProps } from "@/components/pages/pets/petHero";
+import VisitSection from "@/components/pages/pets/ongMap";
+import PetHero from "@/components/pages/pets/petHero";
 import { PetHistory } from "@/components/pages/pets/petHistory";
 import ProgressBarList, { ProgressBarListProps } from "@/components/pages/pets/ProgressBarList";
 import { SimilarPetsSection } from "@/components/pages/pets/similarPet";
@@ -17,25 +18,6 @@ const mockProgressBarList: ProgressBarListProps = {
   ],
 };
 
-const petMock: petHeroProps = {
-  pet: {
-    id: "1",
-    name: "Bolt",
-    species: "Cachorro",
-    breed: "Vira-lata",
-    color: "Caramelo",
-    size: "Médio",
-    health: "Vacinado e castrado",
-    temperament: "Brincalhão e dócil",
-    birthdate: new Date("2022-06-15"),
-    status: true,
-    history: "A história do Akira começou muito antes de ele nascer. Sua mãe foi resgatada pela XX quando, grávida, vagava pelas ruas em busca de abrigo e comida. Ela estava em uma situação desesperadora, sem saber onde encontrar ajuda. A ONG a acolheu e deu todo o suporte necessário, mas a mãe do Akira ainda enfrentava muitos desafios. Ela era uma cadela forte e corajosa, mas também estava assustada e vulnerável. A ONG fez o possível para cuidar dela, mas a vida na rua havia deixado suas marcas.",
-    slug: "bolt-caramelo-vira-lata",
-    ongId: "ong-123"
-  }
-};
-
-
 export default function PetPage() {
       const params = useParams();
       const slug = params?.slug as string;
@@ -44,6 +26,8 @@ export default function PetPage() {
 
       const { pet, images } = mapPetResponse(data);
 
+      console.log("images", images)
+      console.log("pet", pet)
 
       if (isLoading) {
         return (
@@ -59,7 +43,7 @@ export default function PetPage() {
       return (
         <div>
           <main className="max-w-7xl mx-auto px-4 py-8">
-            <PetHero pet={pet} images={images.map(image => image.url)} />
+            <PetHero pet={pet} images={images.map((image) => image.url)} />
             <div className="h-14"></div>
             <PetHistory
               pet={{
@@ -81,6 +65,7 @@ export default function PetPage() {
                 <SimilarPetsSection />
               </div>
             </div>
+            <VisitSection />
           </main>
         </div>
       );

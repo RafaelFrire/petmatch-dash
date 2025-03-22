@@ -17,15 +17,15 @@ export type petHeroProps = {
     history: string;
     slug: string;
     ongId: string;
-  
-  }
-}
+  };
+  images: string[];
+};
 
-const PetHero: React.FC<petHeroProps> = ({ pet }) => {
+const PetHero: React.FC<petHeroProps> = ({ pet, images }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div className="space-y-4">
-        <PetCarrousel />
+        <PetCarrousel images={images} />
       </div>
 
       {/* Pet Info */}

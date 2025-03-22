@@ -47,7 +47,7 @@ export const mapPetResponse = (response: any): PetResponse => {
       history: response?.history,
       ongId: response?.ongId,
     },
-    images: response?.images.map((image: string) => ({ url: image })),
+    images: response?.images?.map((image: string) => ({ url: image })) || [],
   };
 };
 

@@ -5,3 +5,9 @@ export const formatDateDayMonthYear = (date: Date): string => {
     year: "numeric",
   });
 };
+
+
+export const formatDateLocal = (date:Date) =>{
+    return new Date(date).toLocaleDateString()
+  
+  }

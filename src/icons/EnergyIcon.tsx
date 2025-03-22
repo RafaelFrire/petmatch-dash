@@ -1,0 +1,25 @@
+type svgProps = {
+    width: number;
+    height: number;
+  } & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
+  
+  const EnergyIcon: React.FC<svgProps> = ({ width, height }: svgProps) => {
+    return (
+      <svg
+        width={width}
+        height={height}
+        viewBox="0 0 58 58"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="29" cy="29" r="28.5" stroke="#B80000" />
+        <path
+          d="M35.1996 10.5L30.5982 26.0796L30.4087 26.7213H31.0777H38.017L24.4306 45.3678L28.4018 31.93L28.5914 31.2882H27.9223H20.6689L26.8049 10.5H35.1996Z"
+          fill="#B80000"
+          stroke="#B80000"
+        />
+      </svg>
+    );
+  };
+  
+  export default EnergyIcon;

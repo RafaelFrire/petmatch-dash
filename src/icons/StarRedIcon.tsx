@@ -1,0 +1,27 @@
+
+
+type svgProps = {
+    width: number;
+    height: number;
+  } & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
+  
+  const StartRedIcon    : React.FC<svgProps> = ({ width, height }: svgProps) => {
+    return (
+      <svg
+        width={width}
+        height={height}
+        viewBox="0 0 58 58"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="29" cy="29" r="28.5" stroke="#B80000" />
+        <path
+          d="M28.925 38.0219L28.6667 37.866L28.4083 38.0219L19.1228 43.6263L21.5869 33.0636L21.6555 32.7697L21.4274 32.5721L13.2231 25.4647L24.0256 24.5482L24.326 24.5227L24.4437 24.2451L28.6667 14.2813L32.8896 24.2451L33.0073 24.5227L33.3077 24.5482L44.1103 25.4647L35.9059 32.5721L35.6778 32.7697L35.7464 33.0636L38.2105 43.6263L28.925 38.0219Z"
+          fill="#B80000"
+          stroke="#B80000"
+        />
+      </svg>
+    );
+  };
+  
+  export default StartRedIcon   ;

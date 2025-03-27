@@ -1,8 +1,8 @@
 type svgProps = {
-    isMale: boolean;
-    width: number;
-    height: number;
-  } & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
+  isMale: boolean;
+  width: number;
+  height: number;
+} & React.PropsWithChildren<React.ComponentPropsWithRef<"svg">>;
 
 export const GenderIcon: React.FC<svgProps> = ({ isMale, width, height }) => {
   return (
@@ -16,9 +16,9 @@ export const GenderIcon: React.FC<svgProps> = ({ isMale, width, height }) => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="#00B878"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-venus"
           >
             <path d="M12 15v7" />
@@ -34,9 +34,9 @@ export const GenderIcon: React.FC<svgProps> = ({ isMale, width, height }) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="#00B878"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="lucide lucide-mars"
         >
           <path d="M16 3h5v5" />

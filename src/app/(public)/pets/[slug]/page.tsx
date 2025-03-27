@@ -26,9 +26,6 @@ export default function PetPage() {
 
       const { pet, images } = mapPetResponse(data);
 
-      console.log("images", images)
-      console.log("pet", pet)
-
       if (isLoading) {
         return (
           <div className="py-10">

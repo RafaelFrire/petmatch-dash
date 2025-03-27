@@ -7,13 +7,14 @@ export function useFilters() {
 
   // Função para atualizar os filtros na URL
   const setFilters = (filters: Record<string, string | null>) => {
-    let newCategorie = params.categorie || "/";
-    let newSlug = params.slug || "/";
-    let basepath = params.basepath || "/";
+    let newCategorie = params.categorie;
+    let newSlug = params.slug;
+    let basepath = params.basepath;
 
-    
+    console.log("filters", filters)
 
     const query = new URLSearchParams(searchParams.toString());
+
     if (filters.categorie) {
       newCategorie = filters.categorie;
     }
@@ -25,16 +26,30 @@ export function useFilters() {
       basepath = filters.basepath || "/";
     }
 
+      // Atualiza os parâmetros de paginação
+    if (filters.page) query.set("page", filters.page);
+    if (filters.limit) query.set("limit", filters.limit);
+
     Object.entries(filters).forEach(([key, value]) => {
-      if (key !== "categorie" && key !== "slug" && key !== "basepath") {
-        if (value) query.set(key, value);
-        else query.delete(key);
+      if (!["categorie", "slug", "basepath", "page", "limit"].includes(key)) {
+        if (value) {
+          query.set(key, value);
+        } else {
+          query.delete(key);
+        }
       }
     });
-    const newPath = `/${basepath}/${newCategorie}/${newSlug}?${query.toString()}`;
-    console.log("newPath: ", newPath);
-    console.log("base: ", basepath);
-    router.push(newPath, { scroll: false });
+    
+    const pathSegments = [basepath, newCategorie, newSlug].filter(Boolean).join('/');
+    const newPath = `/${pathSegments}${query.toString() ? '?' + query.toString() : ''}`;
+
+    try {
+      const url = new URL(newPath, window.location.origin); // ✅ Agora funciona
+      console.log("url", url)
+      router.push(url.toString(), { scroll: false });
+    } catch (error) {
+      console.error("Erro ao construir a URL:", error);
+    }
   };
 
   const getFiltersFromParams = () => {

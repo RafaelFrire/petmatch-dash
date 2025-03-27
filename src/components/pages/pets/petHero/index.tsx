@@ -22,6 +22,26 @@ export type petHeroProps = {
 };
 
 const PetHero: React.FC<petHeroProps> = ({ pet, images }) => {
+  function calcAge(date: Date): string {
+    const today = new Date();
+    const birthdate = new Date(date);
+    const age = today.getFullYear() - birthdate.getFullYear();
+    let monthDiff = today.getMonth() - birthdate.getMonth();
+    monthDiff = Math.max(1, monthDiff);
+
+  
+    if (age < 0 || (age === 0 && monthDiff > 0)) {
+      return `${monthDiff} meses`;
+    }
+    
+    if (age === 1) {
+      return `1 ano e ${monthDiff} mes`;
+    }
+
+    return `${age} anos${monthDiff ? ` e ${monthDiff} mes` : ''}`;
+  }
+  
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div className="space-y-4">
@@ -31,8 +51,8 @@ const PetHero: React.FC<petHeroProps> = ({ pet, images }) => {
       {/* Pet Info */}
       <div className="md:col-span-2">
         <Card>
-          <h1 className="text-2xl font-bold text-red-500">Jorlan All day</h1>
-          <p className="text-gray-500">Macho • 2 Anos</p>
+          <h1 className="text-2xl font-bold text-red-500">{pet.name}</h1>
+          <p className="text-gray-500">Macho {calcAge(pet.birthdate)}</p>
           <div className="grid grid-cols-2 gap-4 mt-4">
             <p>
               <span className="text-gray-500">Nascimento:</span> {"10/10/2021"}

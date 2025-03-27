@@ -2,6 +2,7 @@ import { useFilters } from "@/hooks/useFilter";
 import React from "react";
 
 interface PaginationProps {
+  baseurl: string;
   totalPages: number;
   pageSize: number;
   siblingCount?: number;
@@ -58,6 +59,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   siblingCount = 1,
   currentPage,
   onPageChange,
+  baseurl,
 }) => {
   const pages = generatePageNumbers(
     totalPages,
@@ -68,25 +70,26 @@ export const Pagination: React.FC<PaginationProps> = ({
   const { setFilters } = useFilters();
 
   const handlePageChange = (page: number) => {
-    setFilters({ page: String(page) }); 
-    onPageChange(page); 
+    setFilters({basepath:baseurl, page: String(page) });
   };
 
-
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3 text-lg">
       <button
         onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        className={`${
+          currentPage === 1 ? "bg-zinc-300" : "bg-white"
+        } border-2 border-zinc-300 px-2  rounded-md text-primary100 font-bold`}
       >
-        Previous
+        {"<"}
       </button>
       {pages.map((page, index) => (
         <button
           key={index}
           onClick={() => typeof page === "number" && handlePageChange(page)}
           disabled={typeof page !== "number"}
-          className={currentPage === page ? "text-primary100" : ""}
+          className={currentPage === page ? "text-primary100" : "border border-zinc-400 px-2 rounded-md"}
         >
           {page}
         </button>
@@ -96,8 +99,11 @@ export const Pagination: React.FC<PaginationProps> = ({
           currentPage < totalPages && handlePageChange(currentPage + 1)
         }
         disabled={currentPage === totalPages}
+        className={`${
+          currentPage === 1 ? "bg-zinc-300" : "bg-white"
+        } border-2 border-zinc-300 px-2  rounded-md text-primary100 font-bold`}
       >
-        Next
+        {">"}
       </button>
     </div>
   );

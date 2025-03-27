@@ -1,6 +1,7 @@
 "use client";
 import { PetsGallerySection } from "@/components/pages/pets";
 import FilterSidebar from "@/components/pages/pets/filterPets";
+import { Pagination } from "@/components/pagination";
 import SpinLoader from "@/components/spinLoader";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useFilters } from "@/hooks/useFilter";
@@ -44,6 +45,17 @@ function PetsContent() {
       <div className="h-6"></div>
       <TitleWithPaw title="Pets" />
       <div className="h-10"></div>
+      <div className="flex justify-end w-[90%] md:w-[80%] mx-auto">
+        <Pagination
+          totalPages={5}
+          pageSize={15}
+          currentPage={currentPage}
+          onPageChange={() => {}}
+          baseurl="pets"
+        />
+      </div>
+      <div className="h-10"></div>
+
       <div className="flex flex-wrap flex-row md:flex-nowrap md:justify-center gap-10 md:gap-1 md:w-[90%] mx-auto">
         <div className="w-[95%] md:w-[30%] mx-auto">
           <FilterSidebar />

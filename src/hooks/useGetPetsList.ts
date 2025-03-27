@@ -30,7 +30,7 @@ async function getPetList(
     }
 
     const data = await res.json();
-    toast.success("Pets carregados.");
+    // toast.success("Pets carregados.");
     return data;
   } catch (err) {
     toast.error("Houve um problema na requisição.");

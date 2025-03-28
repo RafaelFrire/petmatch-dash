@@ -1,3 +1,4 @@
+'use client'
 import { About } from "@/components/pages/about";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 

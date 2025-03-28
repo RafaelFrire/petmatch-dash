@@ -11,7 +11,7 @@ const navLinks: navlinkProps[] = [
   { path: "/", text: "Home" },
   { path: "/ongs", text: "ONGs" },
   { path: "/pets", text: "Pets" },
-  { path: "/sobre", text: "Sobre nós" },
+  { path: "/about", text: "Sobre nós" },
   { path: "/event", text: "Eventos" },
   { path: "/blog", text: "Artigos" },
   { path: "/contact", text: "Contato" },

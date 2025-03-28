@@ -37,10 +37,20 @@ const Description = () => {
 
 const QuoteBox = () => {
   return (
-    <div className="bg-red-100 p-6 rounded-lg mt-8 max-w-2xl mx-auto">
-      <p className="text-xl font-semibold text-gray-800">
-        “Mais do que uma plataforma, este sistema é um elo de amor e esperança, construído por quem acredita que todo animal merece uma chance de ser amado.”
+    <div className="bg-red-100 p-6 rounded-lg mt-8 max-w-2xl mx-auto relative">
+      <span className="text-primary100 text-5xl font-bold absolute top-[10]">
+        “
+      </span>
+      <p className="text-xl font-semibold text-gray-800 inline px-3">
+        <span className="px-4">
+          Mais do que uma plataforma, este sistema é um elo de amor e esperança,
+          construído por quem acredita que todo animal merece uma chance de ser
+          amado.
+        </span>
       </p>
+      <span className="text-primary100 text-5xl font-bold absolute bottom-[30%] left-[42%]">
+        ”
+      </span>
       <h3 className="text-xl font-bold mt-4 text-gray-900">Fundadores</h3>
     </div>
   );

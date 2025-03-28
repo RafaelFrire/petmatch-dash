@@ -36,8 +36,8 @@ interface PetsGallerySectionProps {
 
 export const PetsGallerySection:React.FC<PetsGallerySectionProps> = ({petsList}): JSX.Element => {
   return (
-    <section className="w-full max-w-[941px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[68px] w-full mx-auto">
+    <section className="w-full max-w-[1100px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full mx-auto">
         {petsList.map((item: PetsResponse, index: number) => (
           <PetCard
             key={index}

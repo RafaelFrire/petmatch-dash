@@ -46,7 +46,7 @@ const filterOptions = [
 
 const FilterSidebar: React.FC = () => {
   return (
-    <div className="w-[95%] md:w-[300px] md:mr-10 px-2 mx-auto">
+    <div className="w-[95%] md:w-full md:mr-10 px-2 mx-auto">
       <div className="w-full border-2 border-primary100 rounded-[10px] shadow-md p-6">
         <h2 className="text-lg font-montserrat font-normal text-primary100 mb-5">
           Filtros

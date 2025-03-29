@@ -1,5 +1,5 @@
 import { MapPin, Mail, Phone, Facebook, Instagram, Youtube } from "lucide-react";
-import GoogleMap from "../../googleMap";
+import GoogleMap from "../../../googleMap";
 import PawDogRed from "@/icons/PawDogRed";
 import { ReactNode } from "react";
 

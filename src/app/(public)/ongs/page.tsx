@@ -1,9 +1,12 @@
+import { OngsListSection } from "@/components/pages/ongs"
+import { TitleWithPaw } from "@/components/TitleWithPaw"
 
 
 export default function Ongs(){
     return (
         <div>
-        <h1>Ongs</h1>
+            <TitleWithPaw title="ONGs"/>
+            <OngsListSection />
         </div>
     )
 }

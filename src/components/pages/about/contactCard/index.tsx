@@ -1,6 +1,9 @@
 'use client';
 
+import { Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
+import { ReactNode } from 'react';
+
 
 const ContactCard = () => {
   return (
@@ -22,13 +25,13 @@ const ContactCard = () => {
           <div className="space-y-6 mt-4">
             <ContactInfo
               title="Telefone"
-              iconSrc="/group.png"
+              iconSrc={<Phone color="#B80000" />}
               altText="Phone Icon"
               info="(702) 555-0122"
             />
             <ContactInfo
               title="E-mail"
-              iconSrc="/group-1.png"
+              iconSrc={<Mail color="#B80000" />}
               altText="Email Icon"
               info="deanna.curtis@example.com"
             />
@@ -49,17 +52,17 @@ const ContactCard = () => {
 
 interface ContactInfoProps {
   title: string;
-  iconSrc: string;
+  iconSrc: ReactNode;
   altText: string;
   info: string;
 }
 
-const ContactInfo = ({ title, iconSrc, altText, info }: ContactInfoProps) => {
+const ContactInfo = ({ title, iconSrc, info }: ContactInfoProps) => {
   return (
     <div>
       <h4 className="font-montserrat font-semibold text-primary100 text-base mb-2">{title}</h4>
-      <div className="flex items-center">
-        <Image className="w-[18px] h-[18px] mr-3" alt={altText} src={iconSrc} width={18} height={18} />
+      <div className="flex items-center gap-3">
+        {iconSrc}
         <span className="font-montserrat font-normal text-primary80 text-base">{info}</span>
       </div>
       <div className="mt-4 border-b border-gray-300"></div>

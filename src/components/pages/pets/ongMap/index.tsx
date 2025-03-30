@@ -1,7 +1,6 @@
 import { MapPin, Mail, Phone, Facebook, Instagram, Youtube } from "lucide-react";
 import GoogleMap from "../../../googleMap";
 import PawDogRed from "@/icons/PawDogRed";
-import { ReactNode } from "react";
 
 const address = {
     location: {
@@ -27,10 +26,9 @@ const VisitSection:React.FC<visitSectionProps> = () => {
   return (
     <div className="mt-12">
       <div className="flex">
-        <PawDogRed
-        height={30} width={30} />
+        <PawDogRed height={30} width={30} />
         <h2 className="text-2xl font-bold text-primary100 mb-6">
-          Venha Visitá-Lo
+          Venhá nos Visitar
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

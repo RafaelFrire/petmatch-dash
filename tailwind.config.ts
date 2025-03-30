@@ -8,6 +8,22 @@ export default {
   ],
   theme: {
     extend: {
+      scrollbar: {
+        DEFAULT: {
+          width: "8px",
+          height: "8px",
+        },
+        track: {
+          background: "#f1f1f1",
+        },
+        thumb: {
+          background: "#B80000",
+          borderRadius: "4px",
+        },
+        thumbHover: {
+          background: "#B80000",
+        },
+      },
       colors: {
         primary100: "#B80000",
         primary80: "#db0000",

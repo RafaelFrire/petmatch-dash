@@ -6,15 +6,25 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
 import { Bounce, ToastContainer } from "react-toastify";
+import { usePathname } from "next/navigation";
 
 export default function Provider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
+  const pathname = usePathname();
+
+
+  const hideBannerOn = ["/login", "/signup", "/dashboard"];
+
+  const dynamicRoutes = ["*"];
+
+  const isDynamicRoute = dynamicRoutes.some((route) => pathname.startsWith(route));
+
 
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
         <Header />
-        <Banner />
+        {!hideBannerOn.includes(pathname) && !isDynamicRoute && <Banner />}
         {children}
         <Footer />
 

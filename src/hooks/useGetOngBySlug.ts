@@ -21,8 +21,7 @@ async function getOngBySlug(slug: string): Promise<OngResponse | null> {
     }
 
     const data = await res.json();
-    console.log(data)
-    toast.success("pet encontrado!");
+      toast.success("ong encontrado!");
     return data;
   } catch (err) {
     toast.error("Houve um problema na requisição.");

@@ -1,68 +1,69 @@
 import React from "react";
 import { HeartIcon } from "lucide-react";
 import PawDogRed from "@/icons/PawDogRed";
-const animals:animalCardProps[] = [
-    {
-        animal: {
-            id: "1",
-            name: "Ruby",
-            breed: "Aussiedoodle",
-            gender: "Male",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-    {
-        animal: {
-            id: "2",
-            name: "Mauve",
-            breed: "Aussiedoodle",
-            gender: "Female",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-    {
-        animal: {
-            id: "3",
-            name: "Elisa",
-            breed: "Aussiedoodle",
-            gender: "Male",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-    {
-        animal: {
-            id: "4",
-            name: "Ollie",
-            breed: "Aussiedoodle",
-            gender: "Male",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-    {
-        animal: {
-            id: "5",
-            name: "Ollie",
-            breed: "Aussiedoodle",
-            gender: "Male",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-    {
-        animal: {
-            id: "10",
-            name: "Ollie",
-            breed: "Aussiedoodle",
-            gender: "Male",
-            age: "10 weeks",
-            image: "/assets/Rectangle-17480.png",
-        },
-    },
-];
+import getImageUrl from "@/utils/getImageUrl";
+// const animals:animalCardProps[] = [
+//     {
+//         animal: {
+//             id: "1",
+//             name: "Ruby",
+//             breed: "Aussiedoodle",
+//             gender: "Male",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+//     {
+//         animal: {
+//             id: "2",
+//             name: "Mauve",
+//             breed: "Aussiedoodle",
+//             gender: "Female",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+//     {
+//         animal: {
+//             id: "3",
+//             name: "Elisa",
+//             breed: "Aussiedoodle",
+//             gender: "Male",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+//     {
+//         animal: {
+//             id: "4",
+//             name: "Ollie",
+//             breed: "Aussiedoodle",
+//             gender: "Male",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+//     {
+//         animal: {
+//             id: "5",
+//             name: "Ollie",
+//             breed: "Aussiedoodle",
+//             gender: "Male",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+//     {
+//         animal: {
+//             id: "10",
+//             name: "Ollie",
+//             breed: "Aussiedoodle",
+//             gender: "Male",
+//             age: "10 weeks",
+//             image: "/assets/Rectangle-17480.png",
+//         },
+//     },
+// ];
 
 type animalCardProps = {
   animal: {
@@ -78,25 +79,25 @@ type animalCardProps = {
 const AnimalCard: React.FC<animalCardProps> = ({ animal }) => {
   return (
     <a href="#">
-    <div className="h-[468px] border-2 border-primary100 rounded-[10px] overflow-hidden shadow-lg">
-      <img
-        className="w-full h-[326px] object-cover"
-        src={animal.image}
-        alt={animal.name}
-      />
-      <div className="p-3">
-        <div className="flex justify-between items-center mt-4">
-          <h3 className="font-bold text-xl text-primary100">{animal.name}</h3>
-          <button className="w-[33px] h-[38px] flex items-center justify-center rounded-[20px] border-2 border-primary-100">
-            <HeartIcon className="w-[21px] h-6 text-primary100" />
-          </button>
+      <div className="h-[468px] border-2 border-primary100 rounded-[10px] overflow-hidden shadow-lg">
+        <img
+          className="w-full h-[326px] object-cover"
+          src={getImageUrl(animal.image)}
+          alt={animal.name}
+        />
+        <div className="p-3">
+          <div className="flex justify-between items-center mt-4">
+            <h3 className="font-bold text-xl text-primary100">{animal.name}</h3>
+            <button className="w-[33px] h-[38px] flex items-center justify-center rounded-[20px] border-2 border-primary-100">
+              <HeartIcon className="w-[21px] h-6 text-primary100" />
+            </button>
+          </div>
+          <p className="text-xl text-primary100">{animal.breed}</p>
+          <p className="text-xl text-primary100">
+            {animal.gender} - {animal.age}
+          </p>
         </div>
-        <p className="text-xl text-primary100">{animal.breed}</p>
-        <p className="text-xl text-primary100">
-          {animal.gender} - {animal.age}
-        </p>
       </div>
-    </div>
     </a>
   );
 };
@@ -118,7 +119,11 @@ const Carousel:React.FC<carouselProps> = ({ animals }) => {
   );
 };
 
-export const AvailableAnimalsSection = () => {
+type AvailableAnimalsSectionProps = {
+  animals: animalCardProps[]; // aqui está o segredo
+};
+
+export const AvailableAnimalsSection = ({animals}:AvailableAnimalsSectionProps) => {
   return (
     <section className="w-full py-16">
       <div className="container mx-auto">

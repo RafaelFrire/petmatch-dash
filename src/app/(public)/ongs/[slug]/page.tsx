@@ -5,6 +5,7 @@ import HistoryOng from "@/components/pages/ongs/historyOng";
 import VisitSection from "@/components/pages/pets/ongMap";
 import SpinLoader from "@/components/spinLoader";
 import { mapOngResponse, useGetOngBySlug } from "@/hooks/useGetOngBySlug";
+import { mapPetByOngResponse, useGetPetByOngSlug } from "@/hooks/useGetPetsByOngSlug";
 import { useParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -19,11 +20,14 @@ function OngContent(){
   
     const { data, error, isLoading } = useGetOngBySlug(slug);
 
-    const { ong, images } = mapOngResponse(data);
+    const { data:petsData } = useGetPetByOngSlug(slug);
 
-    console.log("ong", ong)
+    const { ong } = mapOngResponse(data);
+    const { pets } = mapPetByOngResponse(petsData);
 
 
+
+    console.log(pets, "pets");
     if (isLoading) {
       return (
         <div className="py-10">
@@ -44,10 +48,20 @@ function OngContent(){
 
         <div className="w-[75%] mx-auto">
           <HistoryOng />
-          <VisitSection />
-          <AvailableAnimalsSection />
+          {/* <VisitSection /> */}
+          <AvailableAnimalsSection
+            animals={pets.map((item) => ({
+              animal: {
+                id: item.pet.id,
+                name: item.pet.name,
+                image: item.images[0]?.url,
+                breed: item.pet.breed,
+                gender: "Não informado", // se tiver esse dado, substitua
+                age: "10",
+              },
+            }))}
+          />
         </div>
-        
       </div>
     );
 }

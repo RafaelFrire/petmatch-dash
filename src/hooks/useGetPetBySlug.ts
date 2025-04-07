@@ -21,7 +21,6 @@ async function getPetBySlug(slug: string): Promise<PetResponse | null> {
     }
 
     const data = await res.json();
-    console.log(data)
     toast.success("pet encontrado!");
     return data;
   } catch (err) {

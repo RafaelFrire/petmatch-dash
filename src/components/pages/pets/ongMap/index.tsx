@@ -1,6 +1,7 @@
-import { MapPin, Mail, Phone, Facebook, Instagram, Youtube } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import GoogleMap from "../../../googleMap";
 import PawDogRed from "@/icons/PawDogRed";
+import { phoneMask } from "@/utils/MaskStrings";
 
 const address = {
     location: {
@@ -22,7 +23,7 @@ type visitSectionProps = {
   };
 };
 
-const VisitSection:React.FC<visitSectionProps> = () => {
+const VisitSection:React.FC<visitSectionProps> = ({ong}) => {
   return (
     <div className="mt-12">
       <div className="flex">
@@ -35,7 +36,7 @@ const VisitSection:React.FC<visitSectionProps> = () => {
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <MapPin className="text-sencondary100" />
-            <span>Salto - SP</span>
+            <span>{ong.city} - {ong.state}</span>
           </div>
           <div className="flex items-center space-x-2">
             <Mail className="text-sencondary100" />
@@ -43,17 +44,17 @@ const VisitSection:React.FC<visitSectionProps> = () => {
           </div>
           <div className="flex items-center space-x-2">
             <Phone className="text-sencondary100" />
-            <span>(11) 0000-0000</span>
+            <span>{phoneMask(ong.phone)}</span>
           </div>
           <p className="text-sm text-gray-500 mt-4">
             A ONG abre TODOS OS DIAS DAS:
           </p>
-          <p>09:00 às 17:00</p>
-          <div className="flex space-x-4 pt-4">
+          {ong.time}
+          {/* <div className="flex space-x-4 pt-4">
             <Facebook className="text-primary100 cursor-pointer" />
             <Instagram className="text-primary100 cursor-pointer" />
             <Youtube className="text-primary100 cursor-pointer" />
-          </div>
+          </div> */}
         </div>
         <div className="h-[300px] bg-gray-200 rounded-lg ">
           <GoogleMap location={address.location} />

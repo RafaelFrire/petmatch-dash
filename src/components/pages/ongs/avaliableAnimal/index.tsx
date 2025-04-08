@@ -2,6 +2,7 @@ import React from "react";
 import { HeartIcon } from "lucide-react";
 import PawDogRed from "@/icons/PawDogRed";
 import getImageUrl from "@/utils/getImageUrl";
+import { Ong } from "@/interfaces/ong";
 // const animals:animalCardProps[] = [
 //     {
 //         animal: {
@@ -72,13 +73,14 @@ type animalCardProps = {
     image: string;
     breed: string;
     gender: string;
+    slug: string;
     age: string;
   };
 };
 
 const AnimalCard: React.FC<animalCardProps> = ({ animal }) => {
   return (
-    <a href="#">
+    <a href={`/pets/${animal.slug}`}>
       <div className="h-[468px] border-2 border-primary100 rounded-[10px] overflow-hidden shadow-lg">
         <img
           className="w-full h-[326px] object-cover"
@@ -105,8 +107,6 @@ const AnimalCard: React.FC<animalCardProps> = ({ animal }) => {
 type carouselProps = {
     animals: animalCardProps[]
 }
-
-
 const Carousel:React.FC<carouselProps> = ({ animals }) => {
   return (
     <div className="flex overflow-x-auto gap-4 p-4 scrollbar-hide">
@@ -121,6 +121,7 @@ const Carousel:React.FC<carouselProps> = ({ animals }) => {
 
 type AvailableAnimalsSectionProps = {
   animals: animalCardProps[]; // aqui está o segredo
+  ong?: Ong;
 };
 
 export const AvailableAnimalsSection = ({animals}:AvailableAnimalsSectionProps) => {

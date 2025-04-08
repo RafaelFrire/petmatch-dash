@@ -25,6 +25,7 @@ function OngContent(){
     const { ong } = mapOngResponse(data);
     const { pets } = mapPetByOngResponse(petsData);
 
+    console.log(ong, "ong");
 
 
     console.log(pets, "pets");
@@ -48,19 +49,36 @@ function OngContent(){
 
         <div className="w-[75%] mx-auto">
           <HistoryOng />
-          {/* <VisitSection /> */}
-          <AvailableAnimalsSection
-            animals={pets.map((item) => ({
-              animal: {
-                id: item.pet.id,
-                name: item.pet.name,
-                image: item.images[0]?.url,
-                breed: item.pet.breed,
-                gender: "Não informado", // se tiver esse dado, substitua
-                age: "10",
-              },
-            }))}
+          <VisitSection 
+          ong={{
+            city: ong.city,
+            state: ong.state,
+            zipcode: ong.zipcode,
+            another: "",
+            time: "09:00 às 17:00",
+            phone: ong.phone,
+            email: "email",
+          }}
           />
+          {
+            pets.length > 0 && (
+              <AvailableAnimalsSection
+              animals={pets.map((item) => ({
+                animal: {
+                  id: item.pet.id,
+                  name: item.pet.name,
+                  image: item.images[0]?.url,
+                  breed: item.pet.breed,
+                  slug: item.pet.slug,
+                  gender: "Não informado", // se tiver esse dado, substitua
+                  age: "10",
+                },
+              }))}
+            />
+            )
+
+          }
+         
         </div>
       </div>
     );

@@ -36,7 +36,7 @@ const VisitSection:React.FC<visitSectionProps> = ({ong}) => {
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <MapPin className="text-sencondary100" />
-            <span>{ong.city} - {ong.state}</span>
+            <span>{ong?.city || ""} - {ong?.state}</span>
           </div>
           <div className="flex items-center space-x-2">
             <Mail className="text-sencondary100" />
@@ -44,12 +44,12 @@ const VisitSection:React.FC<visitSectionProps> = ({ong}) => {
           </div>
           <div className="flex items-center space-x-2">
             <Phone className="text-sencondary100" />
-            <span>{phoneMask(ong.phone)}</span>
+            <span>{phoneMask(ong?.phone || "")}</span>
           </div>
           <p className="text-sm text-gray-500 mt-4">
             A ONG abre TODOS OS DIAS DAS:
           </p>
-          {ong.time}
+          {ong?.time}
           {/* <div className="flex space-x-4 pt-4">
             <Facebook className="text-primary100 cursor-pointer" />
             <Instagram className="text-primary100 cursor-pointer" />
@@ -57,7 +57,7 @@ const VisitSection:React.FC<visitSectionProps> = ({ong}) => {
           </div> */}
         </div>
         <div className="h-[300px] bg-gray-200 rounded-lg ">
-          <GoogleMap location={address.location} />
+          <GoogleMap location={address?.location} />
         </div>
       </div>
     </div>

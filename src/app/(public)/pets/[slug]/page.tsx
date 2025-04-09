@@ -5,6 +5,7 @@ import { PetHistory } from "@/components/pages/pets/petHistory";
 import ProgressBarList, { ProgressBarListProps } from "@/components/pages/pets/ProgressBarList";
 import { SimilarPetsSection } from "@/components/pages/pets/similarPet";
 import SpinLoader from "@/components/spinLoader";
+import { mapOngResponse, useGetOngById } from "@/hooks/useGetOngById";
 import { mapPetResponse, useGetPetBySlug } from "@/hooks/useGetPetBySlug";
 import { useParams } from "next/navigation";
 
@@ -23,6 +24,9 @@ export default function PetPage() {
       const slug = params?.slug as string;
     
       const { data, error, isLoading } = useGetPetBySlug(slug);
+      const { data: ongData } = useGetOngById(slug);
+
+      const ong = mapOngResponse(ongData)
 
       const { pet, images } = mapPetResponse(data);
 
@@ -62,7 +66,17 @@ export default function PetPage() {
                 <SimilarPetsSection />
               </div>
             </div>
-            <VisitSection />
+            <VisitSection 
+              ong={{
+                city: "",
+                state: ong?.state,
+                zipcode: ong.zipcode,
+                another: "",
+                time: "09:00 às 17:00",
+                phone: ong.phone,
+                email: "email",
+              }}
+            />
           </main>
         </div>
       );

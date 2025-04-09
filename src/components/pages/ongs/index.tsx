@@ -14,7 +14,7 @@ type ongCardProps = {
 }
 
 const OngCard:React.FC<ongCardProps> = ({ ong }) => (
-  <a href={`/ongs/${ong.slug}`}>
+  <a href={`/ongs/${ong.slug}`} >
     <div className="rounded-[10px] overflow-hidden shadow-md border">
       <div className="relative">
         <div className="absolute top-3.5 left-0 bg-primary100 text-white text-sm px-3 py-1 rounded-md">
@@ -75,7 +75,9 @@ export const OngsListSection:React.FC<OngListProps> = ({ongs}) => {
           className={`grid gap-6 ${
             ongs.length >= 4
               ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-              : `grid-cols-${ongs.length}`
+              : `grid-cols-1 ${
+                  ongs.length >= 2 ? "md:grid-cols-" + ongs.length : ""
+                }`
           }`}
         >
           {ongs.map((ong, index) => (

@@ -25,10 +25,7 @@ function OngContent(){
     const { ong } = mapOngResponse(data);
     const { pets } = mapPetByOngResponse(petsData);
 
-    console.log(ong, "ong");
 
-
-    console.log(pets, "pets");
     if (isLoading) {
       return (
         <div className="py-10">
@@ -51,7 +48,7 @@ function OngContent(){
           <HistoryOng />
           <VisitSection 
           ong={{
-            city: ong.city,
+            city: "",
             state: ong.state,
             zipcode: ong.zipcode,
             another: "",

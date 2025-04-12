@@ -4,8 +4,8 @@ export interface User {
   lastname: string;
   email: string;
   password: string;
-  token: string;
-  role: string;
+  role: "ADMIN" | "ONG" | "ADOPTER";
+  status: "ACTIVE" | "INACTIVE";
 };
 
 export interface RegisterUser {

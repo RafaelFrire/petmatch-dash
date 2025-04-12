@@ -23,6 +23,7 @@ export const ButtonFilter: React.FC<ButtonFilterProps> = ({
   useEffect(() => {
     const splitPath = pathname.split("/");
     setActive(splitPath.includes(categorie.path.toLowerCase()));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]); // Adicionando dependências corretas
 
   return (

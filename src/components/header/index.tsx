@@ -1,5 +1,4 @@
-'use client'
-import { useEffect, useState } from "react";
+"use client";
 import Line from "../line";
 import MobileHeader from "../Mobile/mobileHeader";
 import ButtonLogin from "./buttonLogin";
@@ -18,25 +17,6 @@ const navLinks: navlinkProps[] = [
 ];
 
 const Header = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    handleResize()
-
-    // Adiciona o listener para detectar mudanças no tamanho da tela
-    window.addEventListener("resize", handleResize);
-
-    // Remove o listener ao desmontar o componente
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isMobile]); // Rodamos apenas uma vez ao montar o componente
-
-
   return (
     <header className="py-4">
       <div className="md:hidden">

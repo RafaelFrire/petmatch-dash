@@ -15,18 +15,21 @@ export default function Provider({ children }: { children: ReactNode }) {
 
   const hideBannerOn = ["/login", "/signup", "/dashboard"];
 
-  const dynamicRoutes = ["*"];
+  const hiddenfull = ["/dashboard"];
+  const dynamicRoutes = ["/*"];
 
   const isDynamicRoute = dynamicRoutes.some((route) => pathname.startsWith(route));
+  const shouldHideHeaderAndFooter = hiddenfull.some((route) => pathname.startsWith(route));
+  const shouldHideBanner = hideBannerOn.includes(pathname) || isDynamicRoute;
 
 
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <Header />
-        {!hideBannerOn.includes(pathname) && !isDynamicRoute && <Banner />}
+        {!shouldHideHeaderAndFooter && <Header />}
+        {!shouldHideBanner && <Banner />}
         {children}
-        <Footer />
+        {!shouldHideHeaderAndFooter && <Footer />}
 
         <ToastContainer
           position="top-right"

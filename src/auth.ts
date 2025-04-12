@@ -33,7 +33,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return user.user;
           }
 
-          console.log("Authentication failed: Invalid input types");
           return null;
         } catch (error) {
           console.error("Authentication error:", error);
@@ -42,6 +41,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.role = user.role;
+        token.status = user.status;
+        token.lastname = user.lastname;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.role && typeof token.role === "string") session.user.role = token.role;
+      if (token?.status && typeof token.status === "string") session.user.status = token.status;
+      if (token?.lastname && typeof token.lastname === "string") session.user.lastname = token.lastname;
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },

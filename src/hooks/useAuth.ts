@@ -3,14 +3,11 @@ import api from "@/utils/api";
 import { AxiosError } from "axios"; // Corrigindo importação
 import { toast } from "react-toastify";
 
-
 type apiResponse = {
   user: User;
   token: string;
   message: string;
 };
-
-
 
 export const login = async (
   email: string,
@@ -26,6 +23,7 @@ export const login = async (
     );
     if (response.status === 200) {
       const { user, token } = response.data;
+      console.log("Usuário logado com sucesso:", user);
       return { user, token };
     } else if (response.status === 401) {
       throw new Error("Senha incorreta. Por favor, tente novamente.");
@@ -57,10 +55,9 @@ export const signup = async (data: RegisterUser) => {
     });
 
     if (response.status === 201) {
-      toast.success("Usuário criado com sucesso!")
-
+      toast.success("Usuário criado com sucesso!");
     } else if (response.status === 409) {
-      toast.error("Email já em uso.")
+      toast.error("Email já em uso.");
       throw new Error("Email já em uso.");
     } else {
       toast.error(`Erro inesperado: ${response.status}`);
@@ -69,7 +66,7 @@ export const signup = async (data: RegisterUser) => {
   } catch (err) {
     if (err instanceof AxiosError) {
       console.error("Erro na requisição:", err.response?.data || err.message);
-      toast.error("Erro na requisição:" + err.message)
+      toast.error("Erro na requisição:" + err.message);
       throw new Error(
         `Erro na autenticação: ${err.response?.status || "Desconhecido"}`
       );

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import HeartIcon from "@/icons/HeartIcon";
 import { Ong } from "@/interfaces/ong";
 import { StarIcon } from "lucide-react";

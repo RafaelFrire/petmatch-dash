@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Line from "@/components/line";
 import { GenderIcon } from "@/icons/GenderIcon";
 import React, { ReactNode } from "react";

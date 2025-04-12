@@ -34,6 +34,7 @@ export const ListEventCard: React.FC<ListArticleCardProps> = ({
             pageSize={15}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
+            baseurl="events"
           />
         </div>
       ) : null}

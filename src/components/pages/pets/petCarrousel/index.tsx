@@ -4,12 +4,6 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import getImageUrl from "@/utils/getImageUrl";
 
-const images = [
-  "https://images.unsplash.com/photo-1517849845537-4d257902454a",
-  "https://images.unsplash.com/photo-1525253086316-d0c936c814f8",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
-];
-
 type petCarrouselProps = {
   images: string[];
 }

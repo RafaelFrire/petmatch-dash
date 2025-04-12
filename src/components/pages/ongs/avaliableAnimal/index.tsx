@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { HeartIcon } from "lucide-react";
 import PawDogRed from "@/icons/PawDogRed";

@@ -2,7 +2,7 @@ import PawDogRed from "@/icons/PawDogRed";
 
 type TitleWithPawProps = { 
     title: string;
- }
+ } & React.HTMLAttributes<HTMLDivElement>;
 
 export const TitleWithPaw:React.FC<TitleWithPawProps> = ({title}) => {
     return (

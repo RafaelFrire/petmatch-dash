@@ -13,7 +13,7 @@ const navLinks: listItemProps[] = [
   { path: "/about", text: "Sobre nós" },
   { path: "/event", text: "Eventos" },
   { path: "/blog", text: "Artigos" },
-  { path: "/contato", text: "Contato" },
+  // { path: "/contato", text: "Contato" },
 ];
 
 const ContactInfo: textWithIconProps[] = [

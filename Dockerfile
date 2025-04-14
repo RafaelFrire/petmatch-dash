@@ -11,7 +11,5 @@ RUN apt-get update && apt-get install -y python3 make g++
 RUN yarn install
 
 
-# RUN yarn seed
-
 CMD ["yarn", "start"]
 EXPOSE 3000

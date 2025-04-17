@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MoreVertical } from "lucide-react";
 import { DynamicTable } from "../../../dynamicTable";
+import { EventsHeader } from "./headerTable";
 
 export const EventsTableSection = () => {
   const columns = [
@@ -67,6 +68,8 @@ export const EventsTableSection = () => {
   return (
     <section className="p-4 w-full">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Campanhas</h2>
+   
+        <EventsHeader />
       <DynamicTable columns={columns} data={tableData} />
     </section>
   );

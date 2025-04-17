@@ -39,7 +39,7 @@ import LogoutButton from "../loginButton";
     ];
   
     return (
-      <nav className="flex flex-col h-[977px] justify-between px-6 py-8 bg-white shadow-md max-w-[310px]">
+      <nav className="flex flex-col min-h-[100vh] justify-between px-6 py-8 bg-white shadow-md max-w-[310px]">
         <div className="flex flex-col items-start gap-10">
           <Logo />
   

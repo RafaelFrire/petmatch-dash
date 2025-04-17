@@ -44,7 +44,7 @@ export const DynamicTable = ({ columns, data }: Props) => {
                   type="checkbox"
                   checked={selectAll}
                   onChange={toggleSelectAll}
-                  className="accent-primary-500"
+                  className="accent-primary100 w-4 h-4 "
                 />
               </th>
               {columns.map((col) => (
@@ -67,11 +67,11 @@ export const DynamicTable = ({ columns, data }: Props) => {
                     type="checkbox"
                     checked={selected.includes(item.id)}
                     onChange={() => toggleSelect(item.id)}
-                    className="accent-primary-500"
+                    className="accent-primary100 w-4 h-4"
                   />
                 </td>
                 {columns.map((col) => (
-                  <td key={col.id} className="px-4 py-2 whitespace-nowrap">
+                  <td key={col.id} className={`px-4 py-2 whitespace-nowrap ${col.label === "#Número" ? "text-sencondary100" : ""}`}>
                     {col.render ? col.render(item) : item[col.id]}
                   </td>
                 ))}

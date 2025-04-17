@@ -19,10 +19,8 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
   }
 
   return (
-    <html lang="pt-BR">
-      <body className="bg-[#FCFCFD]">
+    <div>
         <ProviderDashboard>{children}</ProviderDashboard>
-      </body>
-    </html>
+    </div>
   );
 }

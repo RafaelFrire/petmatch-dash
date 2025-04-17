@@ -16,7 +16,7 @@ export default function Provider({ children }: { children: ReactNode }) {
   const hideBannerOn = ["/login", "/signup", "/dashboard"];
 
   const hiddenfull = ["/dashboard"];
-  const dynamicRoutes = ["/*"];
+  const dynamicRoutes = ["/dashboard"];
 
   const isDynamicRoute = dynamicRoutes.some((route) => pathname.startsWith(route));
   const shouldHideHeaderAndFooter = hiddenfull.some((route) => pathname.startsWith(route));

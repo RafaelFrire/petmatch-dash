@@ -1,6 +1,7 @@
 import {
     HomeIcon,
     ImageIcon,
+    MessageCircleMore,
     SettingsIcon,
     SquarePenIcon,
   } from "lucide-react";
@@ -10,11 +11,31 @@ import LogoutButton from "../loginButton";
   
   const SideNavigation = () => {
     const navItems = [
-      { icon: <HomeIcon className="w-7 h-7" />, label: "Dashboard", active: false, route: "/dashboard" },
-      { icon: <SquarePenIcon className="w-7 h-7" />, label: "Animais", active: false, route: "/dashboard/animals" },
-      { icon: <ImageIcon className="w-7 h-7 text-primary100" />, label: "Eventos", active: true, route: "/dashboard/events"},
-      { icon: <SettingsIcon className="w-7 h-7" />, label: "Controle ONG", active: false, route: "/dashboard/ongs"},
-      { icon: <SettingsIcon className="w-7 h-7" />, label: "Controle Usuários", active: false, route: "/"},
+      {
+        icon: <HomeIcon className="w-7 h-7" />,
+        label: "Dashboard",
+        route: "/dashboard",
+      },
+      {
+        icon: <SquarePenIcon className="w-7 h-7" />,
+        label: "Animais",
+        route: "/dashboard/animals",
+      },
+      {
+        icon: <ImageIcon className="w-7 h-7 " />,
+        label: "Campanhas",
+        route: "/dashboard/events",
+      },
+      {
+        icon: <MessageCircleMore className="w-7 h-7" />,
+        label: "Mensagens",
+        route: "/dashboard/chat",
+      },
+      {
+        icon: <SettingsIcon className="w-7 h-7" />,
+        label: "Configurações",
+        route: "/dashboard/settings",
+      },
     ];
   
     return (
@@ -28,7 +49,6 @@ import LogoutButton from "../loginButton";
                 key={index}
                 icon={item.icon}
                 label={item.label}
-                active={item.active}
                 path={item.route}
               />
             ))}

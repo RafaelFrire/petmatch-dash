@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import ProviderDashboard from "@/utils/ProvidersDashboard";
 
 type PrivateLayoutProps = {
   children: ReactNode;
@@ -18,12 +19,10 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="p-4 bg-white shadow">
-        <h1 className="text-xl font-bold">Área Privada</h1>
-      </header>
-
-      <main className="p-6">{children}</main>
-    </div>
+    <html lang="pt-BR">
+      <body className="bg-[#FCFCFD]">
+        <ProviderDashboard>{children}</ProviderDashboard>
+      </body>
+    </html>
   );
 }

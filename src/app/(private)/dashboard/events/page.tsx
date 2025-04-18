@@ -6,7 +6,7 @@ export default function eventsPage(){
         <div className="w-[90%] mx-auto">
             <div className="h-8"></div>
             <EventsTableSection />
-
+            
         </div>
     )
 }

@@ -2,8 +2,14 @@
 import { MoreVertical } from "lucide-react";
 import { DynamicTable } from "../../../dynamicTable";
 import { EventsHeader } from "./headerTable";
+import Modal from "@/components/modal";
+import { useState } from "react";
+import { FormRegisterEvent } from "../formRegisterEvent";
 
 export const EventsTableSection = () => {
+  const [isModalOpen, setModalOpen] = useState(true);
+
+
   const columns = [
     { id: "number", label: "#Número" },
     { id: "campaign", label: "Campanha" },
@@ -65,12 +71,18 @@ export const EventsTableSection = () => {
     },
   ];
 
+  const handleRegisterEvent = () =>{
+    setModalOpen(true)
+  }
   return (
     <section className="p-4 w-full">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Campanhas</h2>
-   
-        <EventsHeader />
+
+      <EventsHeader register={handleRegisterEvent} />
       <DynamicTable columns={columns} data={tableData} />
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(!isModalOpen)}>
+        <FormRegisterEvent />
+      </Modal>
     </section>
   );
 };

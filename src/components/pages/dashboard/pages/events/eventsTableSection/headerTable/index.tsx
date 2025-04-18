@@ -1,6 +1,12 @@
 import { Search, Trash2, Filter, Download, Plus } from "lucide-react";
 
-export const EventsHeader = () => {
+type eventsHeaderProps = {
+  register?: () => void;
+}
+
+export const EventsHeader:React.FC<eventsHeaderProps> = ({register}) => {
+
+
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 border-b border-[#eaecf0] bg-white">
       {/* Input de pesquisa */}
@@ -32,7 +38,9 @@ export const EventsHeader = () => {
           Exportar
         </button>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary80 text-white rounded-md text-sm hover:bg-primary-600 transition">
+        <button className="flex items-center gap-2 px-4 py-2 bg-primary80 text-white rounded-md text-sm hover:bg-primary-600 transition"
+        onClick={register}
+        >
           <Plus className="w-4 h-4" />
           Cadastrar
         </button>

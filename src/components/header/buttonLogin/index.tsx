@@ -1,7 +1,9 @@
 import Text from "@/components/Text";
 import UserIcon from "@/icons/UserIcon";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 type buttonProps = {
   text: string;
@@ -10,6 +12,8 @@ type buttonProps = {
 const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
   const { data: session, status } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const router = useRouter()
 
   if (status === "loading") return <div className="w-20 h-8 bg-white animate-pulse rounded-md"></div>;
 
@@ -36,6 +40,12 @@ const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
       {/* Dropdown Menu */}
       {dropdownOpen && session && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+          >
+            dashboard
+          </button>
           <button
             onClick={() => signOut()}
             className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FormRegisterEvent } from "../formRegisterEvent";
 
 export const EventsTableSection = () => {
-  const [isModalOpen, setModalOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
 
 
   const columns = [

@@ -1,5 +1,6 @@
 // components/Modal.tsx
 import { ReactNode } from 'react';
+import { X } from 'lucide-react';
 
 type ModalProps = {
   isOpen: boolean;
@@ -16,9 +17,9 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-8 relative">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-primary100 hover:text-primary80"
+          className="absolute top-2 right-4 text-primary100 font-bold text-2xl hover:text-primary80"
         >
-          ✖
+          <X height={25} width={25}  />
         </button>
 
         {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}

@@ -1,3 +1,5 @@
+'use client'
+
 import InputCustom from "@/components/form/inputCustom";
 import InputFiles from "@/components/form/inputFiles";
 import eventSchema from "@/schemas/eventSchema";
@@ -6,7 +8,6 @@ import { useForm } from "react-hook-form";
 
 export type FormValues = {
   title: string;
-  slug: string;
   categorie: string;
   date: string;
   time: string;
@@ -16,10 +17,8 @@ export type FormValues = {
   state: string;
   description: string;
   additionalInfo?: string;
-  files: (File | undefined)[];
-
+  files?: (File | undefined);
 };
-
 
 export const FormRegisterEvent = () => {
   const {
@@ -34,6 +33,7 @@ export const FormRegisterEvent = () => {
   const onSubmit = (data: FormValues) => {
     console.log("Form data:", data);
   };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -41,80 +41,73 @@ export const FormRegisterEvent = () => {
     >
       <InputCustom
         label="Título do evento*"
-        name="title"
-        error={"Campo obrigatório"}
+        error={errors?.title?.message}
+        {...register("title")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
-      {/* <InputCustom
-        label="Slug (ex: nome-do-evento)*"
-        name="slug"
-        error={"Campo obrigatório"}
-        className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
-      /> */}
-
       <InputCustom
         label="Categoria*"
-        name="categorie"
-        error={"Campo obrigatório"}
+        error={errors?.categorie?.message}
+        {...register("categorie")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Data do Evento*"
-        name="date"
         type="date"
-        error={"Campo obrigatório"}
+        error={errors?.date?.message}
+        {...register("date")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Horário*"
-        name="time"
         type="time"
-        error={"Campo obrigatório"}
+        error={errors?.time?.message}
+        {...register("time")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Local (nome do local)*"
-        name="location"
-        error={"Campo obrigatório"}
+        error={errors?.location?.message}
+        {...register("location")}
         className="col-span-2 md:col-span- h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Endereço*"
-        name="address"
-        error={"Campo obrigatório"}
+        error={errors?.address?.message}
+        {...register("address")}
         className="col-span-2 md:col-span-2 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Cidade*"
-        name="city"
-        error={"Campo obrigatório"}
+        error={errors?.city?.message}
+        {...register("city")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Estado*"
-        name="state"
-        error={"Campo obrigatório"}
+        error={errors?.state?.message}
+        {...register("state")}
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
 
       <InputCustom
         label="Descrição*"
-        name="description"
-        error={"Campo obrigatório"}
+        error={errors?.description?.message}
+        {...register("description")}
         className="col-span-2 text-sm font-medium resize-none"
       />
 
       <InputCustom
         label="Informações adicionais"
-        name="additionalInfo"
-        error={""}
+        error={errors?.additionalInfo?.message}
+        {...register("additionalInfo")}
         className="col-span-2 text-sm font-medium resize-none"
       />
 
@@ -129,7 +122,10 @@ export const FormRegisterEvent = () => {
       />
 
       <div className="col-span-2 text-sm font-medium">
-        <button className="bg-primary100 text-white rounded-md px-4 py-2 hover:bg-primary200 transition duration-300" type="submit">
+        <button
+          className="bg-primary100 text-white rounded-md px-4 py-2 hover:bg-primary200 transition duration-300"
+          type="submit"
+        >
           Cadastrar
         </button>
       </div>

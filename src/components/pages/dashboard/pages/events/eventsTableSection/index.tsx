@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MoreVertical } from "lucide-react";
 import { DynamicTable } from "../../../dynamicTable";

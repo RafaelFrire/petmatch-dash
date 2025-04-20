@@ -43,9 +43,9 @@ const InputCustom: React.FC<InputProps> = ({
           ${borderRounded ? "rounded-full" : ""}
           ${error ? "border-red-500 focus:border-red-500 dark:focus:border-red-500" : ""}
         `}
-        onFocus={(e) => {
-          props.onFocus?.(e); // mantém o onFocus que vier nos props
-        }}
+          onFocus={(e) => {
+            props.onFocus?.(e); // mantém o onFocus que vier nos props
+          }}
         {...props}
       />
       <label

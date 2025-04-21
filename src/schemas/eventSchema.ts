@@ -11,7 +11,12 @@ const eventSchema = yup.object().shape({
   state: yup.string().required("Campo obrigatório"),
   description: yup.string().required("Campo obrigatório"),
   additionalInfo: yup.string().optional(),
-  files: (yup.mixed<File>()).optional(),
+  files: yup
+    .mixed<File>()
+    .test("fileType", "O arquivo precisa ser um documento válido", (value) => {
+      return value instanceof File;
+    })
+    .required("Anexar documento."),
 });
 
 export default eventSchema;

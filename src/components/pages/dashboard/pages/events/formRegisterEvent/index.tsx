@@ -2,9 +2,13 @@
 
 import InputCustom from "@/components/form/inputCustom";
 import InputFiles from "@/components/form/inputFiles";
+import SpinLoader from "@/components/spinLoader";
+import postEvent from "@/hooks/usePostEvent";
 import eventSchema from "@/schemas/eventSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export type FormValues = {
   title: string;
@@ -17,7 +21,7 @@ export type FormValues = {
   state: string;
   description: string;
   additionalInfo?: string;
-  files?: (File | undefined);
+  files: File;
 };
 
 export const FormRegisterEvent = () => {
@@ -30,14 +34,44 @@ export const FormRegisterEvent = () => {
     resolver: yupResolver(eventSchema),
   });
 
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: postEvent,
+    onSuccess: () => {
+      toast.success("Evento criado com sucesso!");
+    },
+    onError: () => {
+      toast.error("Erro ao criar evento.");
+    },
+  });
+
   const onSubmit = (data: FormValues) => {
     console.log("Form data:", data);
+    if (data.files) {
+      mutate({ ...data, date: new Date(data.date) }); // Convertendo 'date' para o tipo Date
+    }
   };
+
+  if (isPending) {
+    return (
+      <div className="py-10">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  
+  if (isError) {
+    return (
+      <div className="py-10 text-center text-primary100 text-3xl">
+        <h1>Houve um problema.</h1>
+      </div>
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-[350px] md:max-w-[600px] overflow-y-auto max-h-[90vh]"
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-[350px] md:max-w-[600px] overflow-y-auto py-2  max-h-[80vh]"
     >
       <InputCustom
         label="Título do evento*"

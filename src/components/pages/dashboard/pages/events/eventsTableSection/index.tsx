@@ -82,7 +82,9 @@ export const EventsTableSection = () => {
       <EventsHeader register={handleRegisterEvent} />
       <DynamicTable columns={columns} data={tableData} />
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(!isModalOpen)}>
-        <FormRegisterEvent />
+        <FormRegisterEvent 
+        handleCloseModal={() => setModalOpen(false)}
+        />
       </Modal>
     </section>
   );

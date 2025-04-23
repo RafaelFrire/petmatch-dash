@@ -21,7 +21,6 @@ const filterOptions = [
      const { setFilters } = useFilters();
 
      const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-       console.log(event.target.value);
        if (filter) {
          setFilters({ basepath: "pets", [filter.id]: event.target.value });
        }

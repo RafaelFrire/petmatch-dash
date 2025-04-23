@@ -28,16 +28,11 @@ export default function BlogPage() {
     ? params.categorie[0]
     : params.categorie;
 
-  console.log("categorie", categorie);
-  console.log("currentPage", currentPage);
-
   const { data, error, isLoading } = useGetArticleList(
     currentPage,
     12,
     categorie
   );
-
-  console.log("data", data);
 
   const articles = mapArticleListResponse(data?.articles ?? []);
 

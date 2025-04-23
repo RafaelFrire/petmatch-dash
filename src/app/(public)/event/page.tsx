@@ -25,7 +25,6 @@ export default function EventPage() {
   const { data, error, isLoading } = useGetEventList(1, 12);
   const events = mapEventListResponse(data);
 
-  console.log("events", events);
   if (isLoading) {
     return (
       <div className="py-10">

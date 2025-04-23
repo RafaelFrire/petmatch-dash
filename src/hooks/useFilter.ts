@@ -11,8 +11,6 @@ export function useFilters() {
     let newSlug = params.slug;
     let basepath = params.basepath;
 
-    console.log("filters", filters)
-
     const query = new URLSearchParams(searchParams.toString());
 
     if (filters.categorie) {
@@ -45,7 +43,6 @@ export function useFilters() {
 
     try {
       const url = new URL(newPath, window.location.origin); // ✅ Agora funciona
-      console.log("url", url)
       router.push(url.toString(), { scroll: false });
     } catch (error) {
       console.error("Erro ao construir a URL:", error);

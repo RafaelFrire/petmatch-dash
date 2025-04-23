@@ -26,8 +26,6 @@ export default function Blog() {
 
   const articles = mapArticleListResponse(lastArticleList?.articles);
 
-  console.log("article", article);
-
   if (isLoading) {
     return (
       <div className="py-10">

@@ -23,7 +23,6 @@ export const login = async (
     );
     if (response.status === 200) {
       const { user, token } = response.data;
-      console.log("Usuário logado com sucesso:", user);
       return { user, token };
     } else if (response.status === 401) {
       throw new Error("Senha incorreta. Por favor, tente novamente.");

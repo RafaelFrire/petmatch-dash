@@ -13,7 +13,6 @@ async function getPetsByOngSlug(slug: string): Promise<PetResponse | null> {
     const res = await apiRequest(`/pets/${slug}/ong`, {
       method: "GET",
     });
-    console.log("freire", res);
 
     if (!res.ok) {
       toast.error("Falha ao carregar pets.");

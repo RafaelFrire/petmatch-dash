@@ -59,7 +59,8 @@ export default function EventHero({ event }: EventHeroProps) {
           alt={event.title}
           fill
           priority
-          className="object-cover"
+          className="object-cover object-center rounded-t-lg"
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full p-6 text-white">

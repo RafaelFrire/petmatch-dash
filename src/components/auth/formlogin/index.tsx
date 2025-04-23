@@ -31,7 +31,6 @@ export default function FormLogin() {
 
   useEffect(() => {
     if (state === null) return; 
-    console.log("state", state?.success)
     if (!state?.success) {
       toast.error(state?.message);
     } else if (state?.success) {

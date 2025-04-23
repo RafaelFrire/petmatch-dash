@@ -23,22 +23,25 @@ export type FormValues = {
   files: File;
 };
 
-export const FormRegisterEvent = () => {
-  const { data: session } = useSession()
+type formRegisterEventProps = {
+  handleCloseModal?: () => void;
+}
 
-  console.log("session", session?.user)
+export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseModal}) => {
+  const { data: session } = useSession()
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(eventSchema),
   });
 
 
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending, isError, isSuccess } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/events/create", {
         method: "POST",
@@ -65,9 +68,8 @@ export const FormRegisterEvent = () => {
 
     // Adiciona o arquivo
     if (data.files) {
-      formData.append("files", data.files); // <-- nome deve bater com o usado no multer
+      formData.append("files", data.files); 
     }
-
     mutate(formData);
   };
 
@@ -78,6 +80,13 @@ export const FormRegisterEvent = () => {
         <SpinLoader />
       </div>
     );
+  }
+
+  if(isSuccess){
+    reset()
+    if (handleCloseModal) {
+      handleCloseModal();
+    }
   }
 
   

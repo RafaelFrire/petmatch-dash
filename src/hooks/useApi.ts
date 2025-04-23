@@ -22,9 +22,6 @@ export async function apiRequest(
     },
   });
 
-  console.log("url request:", response);
-  console.log("base url:", baseUrl);
-
   if (response.status === 401) {
     setCookie("jwt", "");
     await signOut();

@@ -1,12 +1,11 @@
-'use client'
-
 import InputCustom from "@/components/form/inputCustom";
 import InputFiles from "@/components/form/inputFiles";
 import SpinLoader from "@/components/spinLoader";
-import postEvent from "@/hooks/usePostEvent";
+import { apiRequest } from "@/hooks/useApi";
 import eventSchema from "@/schemas/eventSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -25,6 +24,10 @@ export type FormValues = {
 };
 
 export const FormRegisterEvent = () => {
+  const { data: session } = useSession()
+
+  console.log("session", session?.user)
+
   const {
     register,
     handleSubmit,
@@ -34,22 +37,40 @@ export const FormRegisterEvent = () => {
     resolver: yupResolver(eventSchema),
   });
 
+
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: postEvent,
-    onSuccess: () => {
-      toast.success("Evento criado com sucesso!");
-    },
-    onError: () => {
-      toast.error("Erro ao criar evento.");
-    },
+    mutationFn: (formData: FormData) =>
+      apiRequest("/events/create", {
+        method: "POST",
+        body: formData,
+      }),
+    onSuccess: () => toast.success("Evento criado com sucesso!"),
+    onError: () => toast.error("Erro ao criar evento."),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data: FormValues) => {
+    const formData = new FormData();
+
+    const slug = `${data.title}-${data.date}`.replace(/\s+/g, "-").toLowerCase();
+
+    formData.append("ongId", session?.user.id || "");
+    formData.append("slug", slug);
+
+    // Todos os campos exceto o arquivo
+    Object.entries(data).forEach(([key, value]) => {
+      if (key !== "files") {
+        formData.append(key, value);
+      }
+    });
+
+    // Adiciona o arquivo
     if (data.files) {
-      mutate({ ...data, date: new Date(data.date) }); // Convertendo 'date' para o tipo Date
+      formData.append("files", data.files); // <-- nome deve bater com o usado no multer
     }
+
+    mutate(formData);
   };
+
 
   if (isPending) {
     return (
@@ -148,7 +169,6 @@ export const FormRegisterEvent = () => {
       <InputFiles
         register={register}
         setValue={setValue}
-        id="files"
         name="files"
         label="Imagem do Evento*"
         error={errors.files?.message as string}

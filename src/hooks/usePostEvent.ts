@@ -1,43 +1,41 @@
 import { toast } from "react-toastify";
-import { apiRequest } from "./useApi";
 import { Event } from "@/interfaces/event";
+// import api from "@/utils/api";
+import { apiRequest } from "./useApi";
 
-async function postEvent(
-    data:Partial<Event>
-) {
-
+async function postEvent(ongId: string, data: Partial<Event>, files: File[]) {
   try {
     const formData = new FormData();
-    console.log("formdata, data")
+
+    const formatSlug = `${data.title}-${data.date}`;
+    formatSlug.replace(" ", "-").trim();
+
+    formData.append("ongId", ongId);
+    formData.append("slug", formatSlug);
+    formData.append("files", files[0]);
 
     Object.keys(data).forEach((key) => {
       formData.append(key, (data as never)[key]);
     });
-  
-    const res = await apiRequest(
-      `/events/create`,
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+
+    // const res = await api.post<Response>("/events/create", formData, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    const res = await apiRequest("/events/create", {
+      method: "POST",
+      body: formData,
+    });
 
     if (res.status === 201) {
       toast.success("Evento criado com sucesso!");
-    } else if (res.status === 409) {
-      toast.error("Email já em uso.");
-      throw new Error("Email já em uso.");
     } else {
       toast.error(`Erro inesperado: ${res.status}`);
       throw new Error(`Erro inesperado: ${res.status}`);
     }
 
-    const responseData = await res.json();
-    // toast.success("Pets carregados.");
-    return responseData;
+    // const responseData = await res.json();
+    // return responseData;
   } catch (err) {
     toast.error("Houve um problema na requisição.");
     console.error(err);

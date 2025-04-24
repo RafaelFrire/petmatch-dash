@@ -12,6 +12,7 @@ type Column = {
 type Props = {
   columns: Column[];
   data: any[];
+  handleDelete?: () => void;
 };
 
 export const DynamicTable = ({ columns, data }: Props) => {

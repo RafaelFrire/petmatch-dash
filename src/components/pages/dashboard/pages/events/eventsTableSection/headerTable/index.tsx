@@ -2,9 +2,10 @@ import { Search, Trash2, Filter, Download, Plus } from "lucide-react";
 
 type eventsHeaderProps = {
   register?: () => void;
+  handleDelete?: () => void;
 }
 
-export const EventsHeader:React.FC<eventsHeaderProps> = ({register}) => {
+export const EventsHeader:React.FC<eventsHeaderProps> = ({register, handleDelete}) => {
 
 
   return (
@@ -23,7 +24,7 @@ export const EventsHeader:React.FC<eventsHeaderProps> = ({register}) => {
 
       {/* Botões de ação */}
       <div className="flex flex-wrap justify-end gap-2">
-        <button className="flex items-center gap-2 px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition" onClick={handleDelete}>
           <Trash2 className="w-4 h-4" />
           Excluir
         </button>

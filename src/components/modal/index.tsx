@@ -22,7 +22,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
           <X height={25} width={25}  />
         </button>
 
-        {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
+        {title && <h2 className="text-2xl text-primary100 font-medium mb-4">{title}</h2>}
 
         <div>{children}</div>
       </div>

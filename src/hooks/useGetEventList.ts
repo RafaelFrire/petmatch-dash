@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { toast } from "react-toastify";
 import { apiRequest } from "./useApi";
 import { useQuery } from "@tanstack/react-query";
-import { Article } from "@/interfaces/article";
-import { eventCardProps } from "@/components/pages/event/eventCard";
+import { Event } from "@/interfaces/event";
 
 async function getEventList(
   page: number,
   categorie?: string,
   limit?: number
-): Promise<{ articles: Article[]; page: number; limit: number } | null> {
+): Promise<{ event: Event[]; page: number; limit: number } | null> {
   try {
     const res = await apiRequest(
       `/events?page=${page}&limit=${limit || 15}${
@@ -34,21 +34,31 @@ async function getEventList(
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mapEventListResponse = (response: any): eventCardProps[] => {
+export const mapEventListResponse = (response: any): Event[] => {
   if (!Array.isArray(response)) {
     return []; // Retorna um array vazio para evitar erros
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return response.map((article: any) => ({
-    id: article?.id,
-    title: article?.title,
-    categorie: article?.categorie,
-    imageUrl: article?.imageUrl,
-    // thumbnail: article?.thumbnail,
-    date: article?.createdAt,
-    slug: article?.slug,
-  }));
+  return response.map(
+    (event: any): Event => ({
+      id: event?.id,
+      title: event?.title,
+      slug: event?.slug,
+      categorie: event?.categorie,
+      time: event?.time,
+      location: event?.location,
+      address: event?.address,
+      city: event?.city,
+      state: event?.state,
+      description: event?.description,
+      additionalInfo: event?.additionalInfo,
+      imageUrl: event?.imageUrl,
+      date: new Date(event?.date),
+      createdAt: new Date(event?.createdAt),
+      updatedAt: new Date(event?.updatedAt),
+      status: true,
+      ongId: event?.ongId,
+    })
+  );
 };
 
 export function useGetEventList(

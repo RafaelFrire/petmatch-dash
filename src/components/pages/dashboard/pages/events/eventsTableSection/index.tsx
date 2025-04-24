@@ -6,24 +6,31 @@ import { EventsHeader } from "./headerTable";
 import Modal from "@/components/modal";
 import { useState } from "react";
 import { FormRegisterEvent } from "../formRegisterEvent";
+import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
+import { DeleteModal } from "@/components/deleteModal";
 
 export const EventsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [openDeleteModal, setDeleteModal] = useState(false);
+  const { data, error, isLoading } = useGetEventList(1, 12);
 
+
+  const eventMap = mapEventListResponse(data)
 
   const columns = [
     { id: "number", label: "#Número" },
-    { id: "campaign", label: "Campanha" },
-    { id: "description", label: "Descrição" },
-    { id: "startDate", label: "Início" },
-    { id: "endDate", label: "Término" },
+    { id: "title", label: "Campanha" },
+    { id: "categorie", label: "Categoria" },
+    { id: "city", label: "Cidade" },
+    { id: "state", label: "Estado" },
+    { id: "time", label: "Horário" },
     {
       id: "status",
       label: "Status",
       render: (item: any) => (
         <span
           className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-            item.status === "Ativo"
+            item.status === true
               ? "bg-green-100 text-green-700"
               : "bg-gray-200 text-gray-600"
           }`}
@@ -49,42 +56,37 @@ export const EventsTableSection = () => {
     },
   ];
 
-  const tableData = [
-    {
-      id: 1,
-      number: "#555555",
-      campaign: "Vacina para Todos",
-      description: "Campanha de vacinação",
-      startDate: "10/10/2024",
-      endDate: "20/10/2024",
-      status: "Ativo",
-      location: "São Paulo, SP",
-    },
-    {
-      id: 2,
-      number: "#666666",
-      campaign: "Adote um Amigo",
-      description: "Feira de adoção",
-      startDate: "15/10/2024",
-      endDate: "25/10/2024",
-      status: "Inativo",
-      location: "Campinas, SP",
-    },
-  ];
 
   const handleRegisterEvent = () =>{
     setModalOpen(true)
   }
+
+  const handleDeleteEvent = () =>{
+    setDeleteModal(true)
+  }
+
+  if (error || isLoading) {
+  }
+
+
   return (
     <section className="p-4 w-full">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Campanhas</h2>
 
-      <EventsHeader register={handleRegisterEvent} />
-      <DynamicTable columns={columns} data={tableData} />
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(!isModalOpen)}>
-        <FormRegisterEvent 
-        handleCloseModal={() => setModalOpen(false)}
-        />
+      <EventsHeader
+        register={handleRegisterEvent}
+        handleDelete={handleDeleteEvent}
+      />
+      <DynamicTable columns={columns} data={eventMap} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(!isModalOpen)}
+        title="Cadastrar evento"
+      >
+        <FormRegisterEvent handleCloseModal={() => setModalOpen(false)} />
+      </Modal>
+      <Modal isOpen={openDeleteModal} onClose={() => setModalOpen(false)}>
+          <DeleteModal />
       </Modal>
     </section>
   );

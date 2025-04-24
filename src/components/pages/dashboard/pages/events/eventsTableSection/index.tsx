@@ -8,11 +8,22 @@ import { useState } from "react";
 import { FormRegisterEvent } from "../formRegisterEvent";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import { DeleteModal } from "@/components/deleteModal";
+import useDeleteData from "@/hooks/useDeleteData";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const EventsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const { data, error, isLoading } = useGetEventList(1, 12);
+  const { deleteData } = useDeleteData("/events");
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteData(id),
+    onSuccess: () => toast.success("Evento deletado com sucesso!"),
+    onError: ()=> toast.error("Houve um problema.")
+  })
+
 
 
   const eventMap = mapEventListResponse(data)
@@ -56,13 +67,13 @@ export const EventsTableSection = () => {
     },
   ];
 
-
   const handleRegisterEvent = () =>{
     setModalOpen(true)
   }
 
   const handleDeleteEvent = () =>{
     setDeleteModal(true)
+    mutation.mutate("1")
   }
 
   if (error || isLoading) {
@@ -85,9 +96,10 @@ export const EventsTableSection = () => {
       >
         <FormRegisterEvent handleCloseModal={() => setModalOpen(false)} />
       </Modal>
-      <Modal isOpen={openDeleteModal} onClose={() => setModalOpen(false)}>
-          <DeleteModal />
-      </Modal>
+       <DeleteModal
+       isOpenModal={openDeleteModal}
+       setOpenModal={setDeleteModal}
+       />
     </section>
   );
 };

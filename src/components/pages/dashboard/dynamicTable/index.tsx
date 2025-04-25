@@ -12,12 +12,13 @@ type Column = {
 type Props = {
   columns: Column[];
   data: any[];
+  selected: string[];
   handleDelete?: () => void;
+  setSelected: (selected: string[]) => void;
 };
 
-export const DynamicTable = ({ columns, data }: Props) => {
+export const DynamicTable = ({ columns, data, setSelected, selected }: Props) => {
   const [selectAll, setSelectAll] = useState(false);
-  const [selected, setSelected] = useState<number[]>([]);
 
   const toggleSelectAll = () => {
     if (selectAll) {
@@ -28,10 +29,13 @@ export const DynamicTable = ({ columns, data }: Props) => {
     setSelectAll(!selectAll);
   };
 
-  const toggleSelect = (id: number) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+  const handleToggle = (id: string) => {
+    if (selected.includes(id)) {
+      setSelected(selected.filter((item) => item !== id));
+    } else {
+      setSelected([...selected, id]);
+    }
+    console.log(selected)
   };
 
   return (
@@ -67,7 +71,7 @@ export const DynamicTable = ({ columns, data }: Props) => {
                   <input
                     type="checkbox"
                     checked={selected.includes(item.id)}
-                    onChange={() => toggleSelect(item.id)}
+                    onChange={() => handleToggle(item.id)}
                     className="accent-primary100 w-4 h-4"
                   />
                 </td>

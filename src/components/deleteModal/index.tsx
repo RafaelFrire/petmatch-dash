@@ -3,10 +3,10 @@
 type DeleteModalProps = {
   setOpenModal: (status:boolean) => void;
   isOpenModal: boolean;
-  delete?: () => void;
+  onDelete: () => void;
 };
 
-export const DeleteModal: React.FC<DeleteModalProps> = ({ delete: onDelete, setOpenModal, isOpenModal }) => {
+export const DeleteModal: React.FC<DeleteModalProps> = ({ onDelete, setOpenModal, isOpenModal }) => {
 
   return (
     <>

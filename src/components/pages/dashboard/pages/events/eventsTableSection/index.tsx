@@ -16,12 +16,13 @@ export const EventsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const { data, error, isLoading } = useGetEventList(1, 12);
-  const { deleteData } = useDeleteData("/events");
+  const { deleteData } = useDeleteData("events");
+  const [selected, setSelected] = useState<string[]>([]);
 
   const mutation = useMutation({
     mutationFn: (id: string) => deleteData(id),
     onSuccess: () => toast.success("Evento deletado com sucesso!"),
-    onError: ()=> toast.error("Houve um problema.")
+    onError: ()=> toast.error("Houve um problema."),
   })
 
 
@@ -66,14 +67,19 @@ export const EventsTableSection = () => {
       ),
     },
   ];
-
   const handleRegisterEvent = () =>{
     setModalOpen(true)
   }
 
-  const handleDeleteEvent = () =>{
-    setDeleteModal(true)
-    mutation.mutate("1")
+  const handleDeleteEvent = () => {
+    setDeleteModal(true);
+  };
+
+  function onDelete(){
+    if(selected.length === 1){
+      console.log("selected", selected)
+      mutation.mutate(selected[0]);
+    }
   }
 
   if (error || isLoading) {
@@ -88,7 +94,12 @@ export const EventsTableSection = () => {
         register={handleRegisterEvent}
         handleDelete={handleDeleteEvent}
       />
-      <DynamicTable columns={columns} data={eventMap} />
+      <DynamicTable
+        columns={columns}
+        data={eventMap}
+        setSelected={setSelected}
+        selected={selected}
+      />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(!isModalOpen)}
@@ -96,10 +107,11 @@ export const EventsTableSection = () => {
       >
         <FormRegisterEvent handleCloseModal={() => setModalOpen(false)} />
       </Modal>
-       <DeleteModal
-       isOpenModal={openDeleteModal}
-       setOpenModal={setDeleteModal}
-       />
+      <DeleteModal
+        isOpenModal={openDeleteModal}
+        setOpenModal={setDeleteModal}
+        onDelete={onDelete}
+      />
     </section>
   );
 };

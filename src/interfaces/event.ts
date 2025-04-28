@@ -12,6 +12,7 @@ export interface Event {
   additionalInfo: string;
   imageUrl: string;
   status: boolean;
+  organizer?: string;
   date: Date;
   createdAt: Date;
   updatedAt: Date;

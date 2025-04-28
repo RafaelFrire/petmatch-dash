@@ -2,10 +2,12 @@ import InputCustom from "@/components/form/inputCustom";
 import InputFiles from "@/components/form/inputFiles";
 import SpinLoader from "@/components/spinLoader";
 import { apiRequest } from "@/hooks/useApi";
+import { Event } from "@/interfaces/event";
 import eventSchema from "@/schemas/eventSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -25,9 +27,11 @@ export type FormValues = {
 
 type formRegisterEventProps = {
   handleCloseModal?: () => void;
-}
+  isEdit?: boolean;
+  eventToEdit?: Partial<Event>;
+};
 
-export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseModal}) => {
+export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseModal, eventToEdit}) => {
   const { data: session } = useSession()
 
   const {
@@ -38,6 +42,19 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(eventSchema),
+    defaultValues: {
+      title: "",
+      categorie: "",
+      date: "",
+      time: "",
+      location: "",
+      address: "",
+      city: "",
+      state: "",
+      description: "",
+      additionalInfo: "",
+      files: undefined,
+    }, // Define o valor padrão como undefined para o campo files
   });
 
 
@@ -74,6 +91,18 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
   };
 
 
+  useEffect(() => {
+    if (eventToEdit) {
+      reset({
+        ...eventToEdit,
+        date: eventToEdit.date ? new Date(eventToEdit.date).toISOString().split('T')[0] : "", // formato yyyy-MM-dd para input type="date"
+        files: undefined, // não traz arquivos antigos
+      });
+    } else {
+      reset(); // se não tiver nada para editar, reseta para vazio
+    }
+  }, [eventToEdit, reset]);
+
   if (isPending) {
     return (
       <div className="py-10">
@@ -97,6 +126,8 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
       </div>
     );
   }
+
+
 
   return (
     <form
@@ -189,7 +220,8 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
           className="bg-primary100 text-white rounded-md px-4 py-2 hover:bg-primary200 transition duration-300"
           type="submit"
         >
-          Cadastrar
+          {eventToEdit ? "Salvar Alterações" : "Cadastrar"}
+
         </button>
       </div>
     </form>

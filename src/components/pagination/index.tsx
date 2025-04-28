@@ -89,7 +89,11 @@ export const Pagination: React.FC<PaginationProps> = ({
           key={index}
           onClick={() => typeof page === "number" && handlePageChange(page)}
           disabled={typeof page !== "number"}
-          className={currentPage === page ? "text-primary100" : "border border-zinc-400 px-2 rounded-md"}
+          className={
+            currentPage === page
+              ? "text-primary100"
+              : "border border-zinc-400 px-2 rounded-md"
+          }
         >
           {page}
         </button>

@@ -1,7 +1,6 @@
 
 
 "use client";
-import { Pagination } from "@/components/pagination";
 import React from "react";
 import { eventCardProps, EventCard } from "../eventCard";
 
@@ -12,7 +11,6 @@ export type ListArticleCardProps = {
 export const ListEventCard: React.FC<ListArticleCardProps> = ({
   events,
 }) => {
-  const [currentPage, setCurrentPage] = React.useState(1);
 
   return (
     <div className="mx-auto">
@@ -27,17 +25,6 @@ export const ListEventCard: React.FC<ListArticleCardProps> = ({
           </div>
         )}
       </div>
-      {events.length > 0 ? (
-        <div className="w-full flex justify-end py-4 px-4">
-          <Pagination
-            totalPages={5}
-            pageSize={15}
-            currentPage={currentPage}
-            onPageChange={(page) => setCurrentPage(page)}
-            baseurl="events"
-          />
-        </div>
-      ) : null}
     </div>
   );
 };

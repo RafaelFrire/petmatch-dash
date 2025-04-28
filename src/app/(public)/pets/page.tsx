@@ -13,12 +13,9 @@ function PetsContent() {
   const filters = getFiltersFromParams();
   const currentPage = Number(searchParams.get("page"));
 
-  const queryString = new URLSearchParams(filters).toString();
-
   const { data, isLoading, error, refetch } = useGetPetList(
     currentPage,
-    12,
-    queryString
+    12
   );
 
   const petsList = useMemo(() => {

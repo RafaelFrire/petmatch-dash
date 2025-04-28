@@ -3,9 +3,11 @@ import { Search, Trash2, Filter, Download, Plus } from "lucide-react";
 type eventsHeaderProps = {
   register?: () => void;
   handleDelete?: () => void;
+  handleEdit?: () => void;
+  isEdit?: boolean;
 }
 
-export const EventsHeader:React.FC<eventsHeaderProps> = ({register, handleDelete}) => {
+export const EventsHeader:React.FC<eventsHeaderProps> = ({register, handleDelete, isEdit, handleEdit}) => {
 
 
   return (
@@ -40,10 +42,10 @@ export const EventsHeader:React.FC<eventsHeaderProps> = ({register, handleDelete
         </button>
 
         <button className="flex items-center gap-2 px-4 py-2 bg-primary80 text-white rounded-md text-sm hover:bg-primary-600 transition"
-        onClick={register}
+        onClick={isEdit ? handleEdit : register}
         >
           <Plus className="w-4 h-4" />
-          Cadastrar
+          {isEdit ? "Editar" : "Cadastrar"}
         </button>
       </div>
     </div>

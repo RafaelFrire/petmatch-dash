@@ -4,7 +4,7 @@ import { MoreVertical } from "lucide-react";
 import { DynamicTable } from "../../../dynamicTable";
 import { EventsHeader } from "./headerTable";
 import Modal from "@/components/modal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormRegisterEvent } from "../formRegisterEvent";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import { DeleteModal } from "@/components/deleteModal";
@@ -16,7 +16,7 @@ import { mapEventResponse, useGetEventById } from "@/hooks/useGetEventById";
 import { useFilters } from "@/hooks/useFilter";
 import { Event } from "@/interfaces/event";
 import useDebounce from "@/hooks/useDebounce";
-
+import SpinLoader from "@/components/spinLoader";
 
 const columns = [
   { id: "id", label: "#Número" },
@@ -62,16 +62,15 @@ export const EventsTableSection = () => {
   const { deleteData } = useDeleteData("events");
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
-  const { data:event } = useGetEventById(selectedEventEdit);
-  const { searchParams, getFiltersFromParams } = useFilters();
-  const filters = getFiltersFromParams();
+  const { data: event } = useGetEventById(selectedEventEdit);
+  const { searchParams } = useFilters();
   const currentPage = Number(searchParams.get("page"));
-  const { data, error, isLoading, refetch } = useGetEventList(currentPage, 12);
-
+  const { data, error, isLoading } = useGetEventList(currentPage, 12);
   const [filtersData, setFiltersData] = useState<Event[]>([]);
-  const [searchText, setSearchText] = useState('');
+  const [originalEvents, setOriginalEvents] = useState<Event[]>([]);
+  const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
-  
+
   const mutation = useMutation({
     mutationFn: (id: string) => deleteData(id),
     onSuccess: () => {
@@ -82,11 +81,15 @@ export const EventsTableSection = () => {
     onError: () => toast.error("Houve um problema."),
   });
 
-  const originalEvents = mapEventListResponse(data);
-  const eventMap = mapEventListResponse(data);
   const eventData = mapEventResponse(event);
 
- 
+  const eventMap = useMemo(() => {
+    return mapEventListResponse(data || []).map((event) => ({
+      ...event,
+      date: event.date.toISOString(), // Convert Date to string
+    }));
+  }, [data]);
+
   const handleRegisterEvent = () => {
     setModalOpen(true);
   };
@@ -108,20 +111,14 @@ export const EventsTableSection = () => {
     }
   }
 
-
   function handleSearchInputChange(text: string) {
     setSearchText(text); // apenas atualiza o texto digitado
   }
-  if (error || isLoading) {
-  }
-
-  
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
       setFiltersData(originalEvents);
       return;
     }
-    console.log("filtro", debouncedSearchText);
 
     const lowerSearch = debouncedSearchText.toLowerCase();
 
@@ -135,13 +132,37 @@ export const EventsTableSection = () => {
       );
     });
 
-    setFiltersData(filteredEvents);
+    if (filteredEvents.length === 0) {
+      toast.error("Nenhum evento encontrado");
+    }
+
+    setFiltersData(
+      filteredEvents.map((event) => ({
+        ...event,
+        date: new Date(event.date), // Convert date string back to Date object
+      }))
+    );
   }, [debouncedSearchText]);
 
   useEffect(() => {
-    refetch();
-  }, [filters, refetch]);
+    if (data) {
+      const mappedEvents = mapEventListResponse(data);
+      setOriginalEvents(mappedEvents);
+      setFiltersData(mappedEvents);
+    }
+  }, [data]);
 
+  if (isLoading) {
+    return (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading event</div>;
+  }
   return (
     <section className="p-4 w-full">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Campanhas</h2>
@@ -188,4 +209,3 @@ export const EventsTableSection = () => {
     </section>
   );
 };
-

@@ -4,6 +4,8 @@ import { apiRequest } from "./useApi";
 import { useQuery } from "@tanstack/react-query";
 import { Event } from "@/interfaces/event";
 
+let successMessageShown = false;
+
 async function getEventList(
   page: number,
   categorie?: string,
@@ -25,7 +27,12 @@ async function getEventList(
     }
 
     const data = await res.json();
-    toast.success("Eventos carregados.");
+
+    if (!successMessageShown) {
+      toast.success("Eventos carregados.");
+      successMessageShown = true;
+    }
+
     return data.events;
   } catch (err) {
     toast.error("Houve um problema na requisição.");
@@ -69,5 +76,6 @@ export function useGetEventList(
   return useQuery({
     queryKey: ["fetchEvents", page],
     queryFn: () => getEventList(page, categorie, limit),
+  
   });
 }

@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { EventHeroProps } from "@/components/pages/event/eventHero";
 import { Event } from "@/interfaces/event";
 
+let successMessageShown = false;
+
 async function getEventById(id: string): Promise<EventHeroProps | null> {
   try {
     const res = await apiRequest(`/event/${id}/id`, {
@@ -16,7 +18,11 @@ async function getEventById(id: string): Promise<EventHeroProps | null> {
     }
 
     const data = await res.json();
-    toast.success("Evento encontrado!");
+
+    if (!successMessageShown) {
+      toast.success("Evento encontrado!");
+      successMessageShown = true;
+    }
     return data;
   } catch (err) {
     toast.error("Houve um problema na requisição.");

@@ -4,7 +4,7 @@ import { MoreVertical } from "lucide-react";
 import { DynamicTable } from "../../../dynamicTable";
 import { EventsHeader } from "./headerTable";
 import Modal from "@/components/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormRegisterEvent } from "../formRegisterEvent";
 import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
 import { DeleteModal } from "@/components/deleteModal";
@@ -13,6 +13,9 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Pagination } from "@/components/pagination";
 import { mapEventResponse, useGetEventById } from "@/hooks/useGetEventById";
+import { useFilters } from "@/hooks/useFilter";
+import { Event } from "@/interfaces/event";
+import useDebounce from "@/hooks/useDebounce";
 
 
 const columns = [
@@ -56,21 +59,30 @@ const columns = [
 export const EventsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
-  const { data, error, isLoading } = useGetEventList(1, 12);
   const { deleteData } = useDeleteData("events");
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
-
-
   const { data:event } = useGetEventById(selectedEventEdit);
+  const { searchParams, getFiltersFromParams } = useFilters();
+  const filters = getFiltersFromParams();
+  const currentPage = Number(searchParams.get("page"));
+  const { data, error, isLoading, refetch } = useGetEventList(currentPage, 12);
 
-
+  const [filtersData, setFiltersData] = useState<Event[]>([]);
+  const [searchText, setSearchText] = useState('');
+  const debouncedSearchText = useDebounce(searchText, 500);
+  
   const mutation = useMutation({
     mutationFn: (id: string) => deleteData(id),
-    onSuccess: () => toast.success("Evento deletado com sucesso!"),
+    onSuccess: () => {
+      if (!mutation.isSuccess) {
+        toast.success("Evento deletado com sucesso!");
+      }
+    },
     onError: () => toast.error("Houve um problema."),
   });
 
+  const originalEvents = mapEventListResponse(data);
   const eventMap = mapEventListResponse(data);
   const eventData = mapEventResponse(event);
 
@@ -96,8 +108,39 @@ export const EventsTableSection = () => {
     }
   }
 
+
+  function handleSearchInputChange(text: string) {
+    setSearchText(text); // apenas atualiza o texto digitado
+  }
   if (error || isLoading) {
   }
+
+  
+  useEffect(() => {
+    if (debouncedSearchText.length === 0) {
+      setFiltersData(originalEvents);
+      return;
+    }
+    console.log("filtro", debouncedSearchText);
+
+    const lowerSearch = debouncedSearchText.toLowerCase();
+
+    const filteredEvents = eventMap.filter((event) => {
+      return (
+        event.title?.toLowerCase().includes(lowerSearch) ||
+        event.categorie?.toLowerCase().includes(lowerSearch) ||
+        event.city?.toLowerCase().includes(lowerSearch) ||
+        event.state?.toLowerCase().includes(lowerSearch) ||
+        String(event.id).includes(lowerSearch) // id é número -> converte pra string
+      );
+    });
+
+    setFiltersData(filteredEvents);
+  }, [debouncedSearchText]);
+
+  useEffect(() => {
+    refetch();
+  }, [filters, refetch]);
 
   return (
     <section className="p-4 w-full">
@@ -108,11 +151,12 @@ export const EventsTableSection = () => {
         handleDelete={handleDeleteEvent}
         handleEdit={editEvent}
         isEdit={selected.length === 1 ? true : false}
+        handleSerachEvent={handleSearchInputChange}
       />
 
       <DynamicTable
         columns={columns}
-        data={eventMap}
+        data={filtersData.length > 0 ? filtersData : eventMap}
         setSelected={setSelected}
         selected={selected}
       />
@@ -134,10 +178,10 @@ export const EventsTableSection = () => {
 
       <div className="flex justify-end py-4">
         <Pagination
-          baseurl={"/dashboard/"}
+          baseurl={"dashboard/events"}
           totalPages={2}
           pageSize={0}
-          currentPage={0}
+          currentPage={currentPage}
           onPageChange={() => {}}
         />
       </div>

@@ -8,6 +8,9 @@ let successMessageShown = false;
 
 async function getEventById(id: string): Promise<EventHeroProps | null> {
   try {
+    if(!id) {
+      return null;
+    }
     const res = await apiRequest(`/event/${id}/id`, {
       method: "GET",
     });

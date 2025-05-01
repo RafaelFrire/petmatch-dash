@@ -54,7 +54,7 @@ export default function EventPage() {
       <div className="h-8"></div>
       <div className="flex flex-wrap-reverse lg:flex-wrap max-w-[80%] mx-auto">
         <div className="mx-auto w-[65%]">
-          <ListEventCard events={events} />
+          <ListEventCard events={events.map(event => ({ ...event, date: event.date.toISOString() }))} />
         </div>
         <div className="w-[30%]">
           <EventFilter categories={filterCategories} />

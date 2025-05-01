@@ -62,13 +62,14 @@ export const EventsTableSection = () => {
   const { deleteData } = useDeleteData("events");
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
-  const { data: event } = useGetEventById(selectedEventEdit);
   const { searchParams } = useFilters();
   const currentPage = Number(searchParams.get("page"));
   const { data, error, isLoading } = useGetEventList(currentPage, 12);
   const [filtersData, setFiltersData] = useState<Event[]>([]);
   const [originalEvents, setOriginalEvents] = useState<Event[]>([]);
   const [searchText, setSearchText] = useState("");
+  const { data: event } = useGetEventById(selectedEventEdit);
+
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const mutation = useMutation({
@@ -151,6 +152,7 @@ export const EventsTableSection = () => {
       setFiltersData(mappedEvents);
     }
   }, [data]);
+
 
   if (isLoading) {
     return (

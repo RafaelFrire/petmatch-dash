@@ -27,10 +27,7 @@ export default function EventPage() {
   const filters = getFiltersFromParams();
   const currentPage = Number(searchParams.get("page"));
 
-  const { data, error, isLoading, refetch } = useGetEventList(
-    currentPage,
-    12,
-  );
+  const { data, error, isLoading, refetch } = useGetEventList(currentPage, 12);
   const events = mapEventListResponse(data);
 
 

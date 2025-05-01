@@ -5,26 +5,27 @@ import { DynamicTable } from "../../../dynamicTable";
 import { TableHeader } from "../../../headerTable";
 import Modal from "@/components/modal";
 import { useEffect, useMemo, useState } from "react";
-import { FormRegisterEvent } from "../formRegisterEvent";
-import { mapEventListResponse, useGetEventList } from "@/hooks/useGetEventList";
+// import { FormRegisterEvent } from "../formRegisterEvent";
 import { DeleteModal } from "@/components/deleteModal";
 import useDeleteData from "@/hooks/useDeleteData";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Pagination } from "@/components/pagination";
-import { mapEventResponse, useGetEventById } from "@/hooks/useGetEventById";
 import { useFilters } from "@/hooks/useFilter";
-import { Event } from "@/interfaces/event";
 import useDebounce from "@/hooks/useDebounce";
 import SpinLoader from "@/components/spinLoader";
+import { mapPetByOngResponse, useGetPetByOngId } from "@/hooks/useGetPetsByOngId";
+import { Pet } from "@/interfaces/pet";
 
 const columns = [
   { id: "id", label: "#Número" },
-  { id: "title", label: "Campanha" },
-  { id: "categorie", label: "Categoria" },
-  { id: "city", label: "Cidade" },
-  { id: "state", label: "Estado" },
-  { id: "time", label: "Horário" },
+  { id: "name", label: "Nome" },
+  { id: "species", label: "Espécie" },
+  { id: "breed", label: "Raça" },
+  { id: "size", label: "Tamanho" },
+  { id: "health", label: "Saúde" },
+  { id: "color", label: "Cor" },
+  { id: "slug", label: "slug" },
   {
     id: "status",
     label: "Status",
@@ -45,7 +46,6 @@ const columns = [
       </span>
     ),
   },
-  { id: "location", label: "Local" },
   {
     id: "actions",
     label: "",
@@ -56,7 +56,7 @@ const columns = [
     ),
   },
 ];
-export const EventsTableSection = () => {
+export const AnimalsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const { deleteData } = useDeleteData("events");
@@ -64,11 +64,15 @@ export const EventsTableSection = () => {
   const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
   const { searchParams } = useFilters();
   const currentPage = Number(searchParams.get("page"));
-  const { data, error, isLoading } = useGetEventList(currentPage, 12);
-  const [filtersData, setFiltersData] = useState<Event[]>([]);
-  const [originalEvents, setOriginalEvents] = useState<Event[]>([]);
+
+  const { data, error, isLoading } = useGetPetByOngId(
+    "0086a4c4-1a0c-40ec-8970-8d4c99f91b38",
+    currentPage,
+    12
+  );
+  const [filtersData, setFiltersData] = useState<Pet[]>([]);
+  const [originalEvents, setOriginalEvents] = useState<Pet[]>([]);
   const [searchText, setSearchText] = useState("");
-  const { data: event } = useGetEventById(selectedEventEdit);
 
   const debouncedSearchText = useDebounce(searchText, 500);
 
@@ -82,14 +86,30 @@ export const EventsTableSection = () => {
     onError: () => toast.error("Houve um problema."),
   });
 
-  const eventData = mapEventResponse(event);
+  const AnimalsMap = useMemo(() => {
+    const mappedPets = mapPetByOngResponse(data || []);
+    const pets: Pet[] = [];
+    mappedPets.pets.forEach((item: any) => {
+      pets.push({
+        id: item?.pet?.id,
+        name: item?.pet?.name,
+        species: item?.pet?.species,
+        breed: item?.pet?.breed,
+        color: item?.pet?.size,
+        size: item?.pet?.size,
+        health: item?.pet?.health,
+        temperament: item?.pet?.temperament,
+        history: item?.pet?.history,
+        ongId: item?.pet?.ongId,
+        slug: item?.pet?.slug,
+        status: item?.pet?.status, // Added the missing 'status' property
+        birthdate: new Date(item.pet.birthdate),
+      });
+    });
 
-  const eventMap = useMemo(() => {
-    return mapEventListResponse(data || []).map((event) => ({
-      ...event,
-      date: event.date.toISOString(), // Convert Date to string
-    }));
+    return pets;
   }, [data]);
+
 
   const handleRegisterEvent = () => {
     setModalOpen(true);
@@ -123,12 +143,14 @@ export const EventsTableSection = () => {
 
     const lowerSearch = debouncedSearchText.toLowerCase();
 
-    const filteredEvents = eventMap.filter((event) => {
+    const filteredEvents = AnimalsMap.filter((event) => {
       return (
-        event.title?.toLowerCase().includes(lowerSearch) ||
-        event.categorie?.toLowerCase().includes(lowerSearch) ||
-        event.city?.toLowerCase().includes(lowerSearch) ||
-        event.state?.toLowerCase().includes(lowerSearch) ||
+        event.name?.toLowerCase().includes(lowerSearch) ||
+        event.id?.toLowerCase().includes(lowerSearch) ||
+        event.breed?.toLowerCase().includes(lowerSearch) ||
+        event.size?.toLowerCase().includes(lowerSearch) ||
+        event.health?.toLowerCase().includes(lowerSearch) ||
+        event.species?.toLowerCase().includes(lowerSearch) ||
         String(event.id).includes(lowerSearch) // id é número -> converte pra string
       );
     });
@@ -145,13 +167,13 @@ export const EventsTableSection = () => {
     );
   }, [debouncedSearchText]);
 
-  useEffect(() => {
-    if (data) {
-      const mappedEvents = mapEventListResponse(data);
-      setOriginalEvents(mappedEvents);
-      setFiltersData(mappedEvents);
-    }
-  }, [data]);
+//   useEffect(() => {
+//     if (data) {
+//       const mappedEvents = mapPetByOngResponse(data);
+//       setOriginalEvents(mappedEvents);
+//       setFiltersData(mappedEvents);
+//     }
+//   }, [data]);
 
 
   if (isLoading) {
@@ -167,7 +189,7 @@ export const EventsTableSection = () => {
   }
   return (
     <section className="p-4 w-full">
-      <h2 className="text-3xl text-primary80 font-semibold mb-4">Campanhas</h2>
+      <h2 className="text-3xl text-primary80 font-semibold mb-4">Animais</h2>
 
       <TableHeader
         register={handleRegisterEvent}
@@ -179,19 +201,20 @@ export const EventsTableSection = () => {
 
       <DynamicTable
         columns={columns}
-        data={filtersData.length > 0 ? filtersData : eventMap}
+        data={filtersData.length > 0 ? filtersData : AnimalsMap}
         setSelected={setSelected}
         selected={selected}
       />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(!isModalOpen)}
-        title={selected.length === 1 ? "Editar evento" : "Cadastrar evento"}
+        title={selected.length === 1 ? "Editar Animal" : "Cadastrar Animal"}
       >
-        <FormRegisterEvent
+        {/* <FormRegisterEvent
           handleCloseModal={() => setModalOpen(false)}
           eventToEdit={eventData}
-        />
+        /> */}
+        <div> cadastro</div>
       </Modal>
       <DeleteModal
         isOpenModal={openDeleteModal}
@@ -201,7 +224,7 @@ export const EventsTableSection = () => {
 
       <div className="flex justify-end py-4">
         <Pagination
-          baseurl={"dashboard/events"}
+          baseurl={"dashboard/animals"}
           totalPages={2}
           pageSize={0}
           currentPage={currentPage}

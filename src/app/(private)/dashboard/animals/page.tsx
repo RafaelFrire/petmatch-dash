@@ -1,8 +1,9 @@
+import { AnimalsTableSection } from "@/components/pages/dashboard/pages/animals/AnimalsTableSection";
 
 export default function AnimalsPage(){
     return(
         <div>
-            <h1>ok</h1>
+            <AnimalsTableSection />
         </div>
     )
 }

@@ -8,9 +8,7 @@ type eventsHeaderProps = {
   isEdit?: boolean;
 }
 
-export const EventsHeader:React.FC<eventsHeaderProps> = ({register, handleDelete, isEdit, handleEdit, handleSerachEvent}) => {
-
-
+export const TableHeader:React.FC<eventsHeaderProps> = ({register, handleDelete, isEdit, handleEdit, handleSerachEvent}) => {
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 border-b border-[#eaecf0] bg-white">
       {/* Input de pesquisa */}

@@ -6,12 +6,16 @@ import { Pet } from "@/interfaces/pet";
 type PetResponse = {
     pet: Pet;
     images: { url: string }[];
-
 }
 
-async function getPetBySlug(slug: string): Promise<PetResponse | null> {
+async function getPetById(id: string): Promise<PetResponse | null> {
   try {
-    const res = await apiRequest(`/pets/${slug}/slug`, {
+    if(!id){
+        console.error("ID não fornecido.");
+        return null;
+    }
+
+    const res = await apiRequest(`/pets/${id}/id`, {
       method: "GET",
     });
 
@@ -52,9 +56,9 @@ export const mapPetResponse = (response: any): PetResponse => {
   };
 };
 
-export function useGetPetBySlug(slug: string) {
+export function useGetPetById(slug: string) {
   return useQuery({
-    queryKey: ["fetchPet", slug],
-    queryFn: () => getPetBySlug(slug),
+    queryKey: ["fetchPetId", slug],
+    queryFn: () => getPetById(slug),
   });
 }

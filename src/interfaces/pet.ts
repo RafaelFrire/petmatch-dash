@@ -1,4 +1,5 @@
 export interface Pet {
+  date: string | number | Date;
   id: string;
   name: string;
   species: string;

@@ -14,8 +14,13 @@ import { Pagination } from "@/components/pagination";
 import { useFilters } from "@/hooks/useFilter";
 import useDebounce from "@/hooks/useDebounce";
 import SpinLoader from "@/components/spinLoader";
-import { mapPetByOngResponse, useGetPetByOngId } from "@/hooks/useGetPetsByOngId";
+import {
+  mapPetByOngResponse,
+  useGetPetByOngId,
+} from "@/hooks/useGetPetsByOngId";
 import { Pet } from "@/interfaces/pet";
+import { FormRegisterPet } from "../formRegisterPet";
+import { useGetPetById } from "@/hooks/useGetPetById";
 
 const columns = [
   { id: "id", label: "#Número" },
@@ -61,7 +66,7 @@ export const AnimalsTableSection = () => {
   const [openDeleteModal, setDeleteModal] = useState(false);
   const { deleteData } = useDeleteData("events");
   const [selected, setSelected] = useState<string[]>([]);
-  const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
+  const [selectedPet, setSelectedPetEdit] = useState<string>("");
   const { searchParams } = useFilters();
   const currentPage = Number(searchParams.get("page"));
 
@@ -71,9 +76,10 @@ export const AnimalsTableSection = () => {
     12
   );
   const [filtersData, setFiltersData] = useState<Pet[]>([]);
-  const [originalEvents, setOriginalEvents] = useState<Pet[]>([]);
+  const [originalPetsList, setOriginalPetsList] = useState<Pet[]>([]);
   const [searchText, setSearchText] = useState("");
 
+  const { data: petData } = useGetPetById(selectedPet);
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const mutation = useMutation({
@@ -104,12 +110,12 @@ export const AnimalsTableSection = () => {
         slug: item?.pet?.slug,
         status: item?.pet?.status, // Added the missing 'status' property
         birthdate: new Date(item.pet.birthdate),
+        date: new Date(item.pet.createdAt),
       });
     });
 
     return pets;
   }, [data]);
-
 
   const handleRegisterEvent = () => {
     setModalOpen(true);
@@ -127,7 +133,7 @@ export const AnimalsTableSection = () => {
 
   function editEvent() {
     if (selected.length === 1) {
-      setSelectedEventEdit(selected[0]);
+      setSelectedPetEdit(selected[0]);
       setModalOpen(true);
     }
   }
@@ -137,7 +143,7 @@ export const AnimalsTableSection = () => {
   }
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
-      setFiltersData(originalEvents);
+      setFiltersData(originalPetsList);
       return;
     }
 
@@ -167,14 +173,13 @@ export const AnimalsTableSection = () => {
     );
   }, [debouncedSearchText]);
 
-//   useEffect(() => {
-//     if (data) {
-//       const mappedEvents = mapPetByOngResponse(data);
-//       setOriginalEvents(mappedEvents);
-//       setFiltersData(mappedEvents);
-//     }
-//   }, [data]);
-
+  //   useEffect(() => {
+  //     if (data) {
+  //       const mappedEvents = mapPetByOngResponse(data);
+  //       setOriginalEvents(mappedEvents);
+  //       setFiltersData(mappedEvents);
+  //     }
+  //   }, [data]);
 
   if (isLoading) {
     return (
@@ -210,11 +215,10 @@ export const AnimalsTableSection = () => {
         onClose={() => setModalOpen(!isModalOpen)}
         title={selected.length === 1 ? "Editar Animal" : "Cadastrar Animal"}
       >
-        {/* <FormRegisterEvent
+        <FormRegisterPet
           handleCloseModal={() => setModalOpen(false)}
-          eventToEdit={eventData}
-        /> */}
-        <div> cadastro</div>
+          eventToEdit={petData?.pet}
+        />
       </Modal>
       <DeleteModal
         isOpenModal={openDeleteModal}

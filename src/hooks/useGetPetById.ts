@@ -34,7 +34,6 @@ async function getPetById(id: string): Promise<PetResponse | null> {
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapPetResponse = (response: any): Pet => {
-  console.log("response", response);
   return {
     id: response?.id,
     name: response?.name,

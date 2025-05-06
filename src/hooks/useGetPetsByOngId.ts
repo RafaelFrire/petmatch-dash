@@ -69,7 +69,8 @@ export function useGetPetByOngId(
   limit?: number,
 ) {
   return useQuery({
-    queryKey: ["petsByOngId", id],
+    queryKey: ['pets', page],
     queryFn: () => getPetsByOngId(id, page, limit),
+
   });
 }

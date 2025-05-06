@@ -73,7 +73,7 @@ export const AnimalsTableSection = () => {
   const { data, error, isLoading } = useGetPetByOngId(
     "0086a4c4-1a0c-40ec-8970-8d4c99f91b38",
     currentPage,
-    12
+    4
   );
   const [filtersData, setFiltersData] = useState<Pet[]>([]);
   const [originalPetsList, setOriginalPetsList] = useState<Pet[]>([]);
@@ -118,7 +118,7 @@ export const AnimalsTableSection = () => {
     });
 
     return pets;
-  }, [data]);
+  }, [data, currentPage]);
 
   const handleRegisterEvent = () => {
     setModalOpen(true);
@@ -152,58 +152,59 @@ export const AnimalsTableSection = () => {
 
     const lowerSearch = debouncedSearchText.toLowerCase();
 
-    const filteredEvents = AnimalsMap.filter((event) => {
+    const filteredPets = AnimalsMap.filter((event) => {
       return (
-        event.name?.toLowerCase().includes(lowerSearch) ||
-        event.id?.toLowerCase().includes(lowerSearch) ||
-        event.breed?.toLowerCase().includes(lowerSearch) ||
-        event.size?.toLowerCase().includes(lowerSearch) ||
-        event.health?.toLowerCase().includes(lowerSearch) ||
-        event.species?.toLowerCase().includes(lowerSearch) ||
+        event.name?.toLowerCase().trim().includes(lowerSearch) ||
+        event.id?.toLowerCase().trim().includes(lowerSearch) ||
+        event.breed?.toLowerCase().trim().includes(lowerSearch) ||
+        event.size?.toLowerCase().trim().includes(lowerSearch) ||
+        event.health?.toLowerCase().trim().includes(lowerSearch) ||
+        event.species?.toLowerCase().trim().includes(lowerSearch) ||
         String(event.id).includes(lowerSearch) // id é número -> converte pra string
       );
     });
 
-    if (filteredEvents.length === 0) {
+    if (filteredPets.length === 0) {
       toast.error("Nenhum evento encontrado");
     }
 
     setFiltersData(
-      filteredEvents.map((event) => ({
-        ...event,
-        date: new Date(event.date), // Convert date string back to Date object
+      filteredPets.map((pet) => ({
+        ...pet,
+        date: new Date(pet.date), // Convert date string back to Date object
       }))
     );
   }, [debouncedSearchText]);
 
-    useEffect(() => {
-      if (data) {
-        const mappedPets = mapPetByOngResponse(data);
-        const extractPets: Pet[] = [];
+  useEffect(() => {
+    if (data) {
+      const mappedPets = mapPetByOngResponse(data);
+      const extractPets: Pet[] = [];
 
-        mappedPets.pets.forEach((item) => {
-          extractPets.push({
-            id: item?.pet?.id,
-            name: item?.pet?.name,
-            species: item?.pet?.species,
-            breed: item?.pet?.breed,
-            color: item?.pet?.size,
-            size: item?.pet?.size,
-            health: item?.pet?.health,
-            temperament: item?.pet?.temperament,
-            history: item?.pet?.history,
-            ongId: item?.pet?.ongId,
-            slug: item?.pet?.slug,
-            status: item?.pet?.status, // Added the missing 'status' property
-            birthdate: new Date(item.pet.birthdate),
-            date: new Date(item.pet.birthdate),
-          });
+      console.log(mappedPets, "mappedPets");
+
+      mappedPets.pets.forEach((item) => {
+        extractPets.push({
+          id: item?.pet?.id,
+          name: item?.pet?.name,
+          species: item?.pet?.species,
+          breed: item?.pet?.breed,
+          color: item?.pet?.size,
+          size: item?.pet?.size,
+          health: item?.pet?.health,
+          temperament: item?.pet?.temperament,
+          history: item?.pet?.history,
+          ongId: item?.pet?.ongId,
+          slug: item?.pet?.slug,
+          status: item?.pet?.status, // Added the missing 'status' property
+          birthdate: new Date(item.pet.birthdate),
+          date: new Date(item.pet.birthdate),
         });
-
-        setOriginalPetsList(extractPets);
-        setFiltersData(extractPets);
-      }
-    }, [data]);
+      });
+      setOriginalPetsList(extractPets);
+      setFiltersData(extractPets);
+    }
+  }, [data]);
 
   if (isLoading) {
     return (

@@ -64,6 +64,7 @@ export const EventsTableSection = () => {
   const [selectedEventEdit, setSelectedEventEdit] = useState<string>("");
   const { searchParams } = useFilters();
   const currentPage = Number(searchParams.get("page"));
+  // eventos dessa ONG.
   const { data, error, isLoading } = useGetEventList(currentPage, 12);
   const [filtersData, setFiltersData] = useState<Event[]>([]);
   const [originalEvents, setOriginalEvents] = useState<Event[]>([]);

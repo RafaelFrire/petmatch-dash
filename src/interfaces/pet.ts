@@ -1,5 +1,4 @@
 export interface Pet {
-  date: string | number | Date;
   id: string;
   name: string;
   species: string;
@@ -13,4 +12,5 @@ export interface Pet {
   history: string;
   slug: string;
   ongId: string;
+  date: string | number | Date;
 }

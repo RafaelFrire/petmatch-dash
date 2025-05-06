@@ -35,7 +35,6 @@ export const DynamicTable = ({ columns, data, setSelected, selected }: Props) =>
     } else {
       setSelected([...selected, id]);
     }
-    console.log(selected)
   };
 
   return (

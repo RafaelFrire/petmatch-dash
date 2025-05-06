@@ -67,6 +67,8 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     },
   });
 
+  console.log("petToEdit", petToEdit);
+
   const { mutate, isPending, isError, isSuccess } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/pets/create", {

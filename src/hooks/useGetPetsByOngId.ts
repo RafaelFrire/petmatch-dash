@@ -14,10 +14,10 @@ async function getPetsByOngId(
   limit?: number
 ): Promise<PetResponse | null> {
   try {
-    // const res = await apiRequest(`/pets/${id}/ongId`, {
-    //   method: "GET",
-    // });
-
+    if (!id) {
+      toast.error("ID inválido.");
+      return null;
+    }
     const res = await apiRequest(
       `/pets/${id}/ongId?page=${page}&limit=${limit || 15}`,
       {

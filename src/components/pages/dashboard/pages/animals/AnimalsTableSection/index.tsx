@@ -20,7 +20,7 @@ import {
 } from "@/hooks/useGetPetsByOngId";
 import { Pet } from "@/interfaces/pet";
 import { FormRegisterPet } from "../formRegisterPet";
-import { useGetPetById } from "@/hooks/useGetPetById";
+import { mapPetResponse, useGetPetById } from "@/hooks/useGetPetById";
 
 const columns = [
   { id: "id", label: "#Número" },
@@ -80,6 +80,9 @@ export const AnimalsTableSection = () => {
   const [searchText, setSearchText] = useState("");
 
   const { data: petData } = useGetPetById(selectedPet);
+
+  const editPet = mapPetResponse(petData);
+
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const mutation = useMutation({
@@ -139,7 +142,7 @@ export const AnimalsTableSection = () => {
   }
 
   function handleSearchInputChange(text: string) {
-    setSearchText(text); // apenas atualiza o texto digitado
+    setSearchText(text);
   }
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
@@ -173,13 +176,34 @@ export const AnimalsTableSection = () => {
     );
   }, [debouncedSearchText]);
 
-  //   useEffect(() => {
-  //     if (data) {
-  //       const mappedEvents = mapPetByOngResponse(data);
-  //       setOriginalEvents(mappedEvents);
-  //       setFiltersData(mappedEvents);
-  //     }
-  //   }, [data]);
+    useEffect(() => {
+      if (data) {
+        const mappedPets = mapPetByOngResponse(data);
+        const extractPets: Pet[] = [];
+
+        mappedPets.pets.forEach((item) => {
+          extractPets.push({
+            id: item?.pet?.id,
+            name: item?.pet?.name,
+            species: item?.pet?.species,
+            breed: item?.pet?.breed,
+            color: item?.pet?.size,
+            size: item?.pet?.size,
+            health: item?.pet?.health,
+            temperament: item?.pet?.temperament,
+            history: item?.pet?.history,
+            ongId: item?.pet?.ongId,
+            slug: item?.pet?.slug,
+            status: item?.pet?.status, // Added the missing 'status' property
+            birthdate: new Date(item.pet.birthdate),
+            date: new Date(item.pet.birthdate),
+          });
+        });
+
+        setOriginalPetsList(extractPets);
+        setFiltersData(extractPets);
+      }
+    }, [data]);
 
   if (isLoading) {
     return (
@@ -193,7 +217,7 @@ export const AnimalsTableSection = () => {
     return <div>Error loading event</div>;
   }
   return (
-    <section className="p-4 w-full">
+    <section className="p-4 w-full min-w-1/2">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Animais</h2>
 
       <TableHeader
@@ -217,7 +241,7 @@ export const AnimalsTableSection = () => {
       >
         <FormRegisterPet
           handleCloseModal={() => setModalOpen(false)}
-          eventToEdit={petData?.pet}
+          petToEdit={editPet}
         />
       </Modal>
       <DeleteModal

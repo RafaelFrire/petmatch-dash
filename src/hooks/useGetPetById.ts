@@ -5,14 +5,13 @@ import { Pet } from "@/interfaces/pet";
 
 type PetResponse = {
     pet: Pet;
-    images: { url: string }[];
 }
 
 async function getPetById(id: string): Promise<PetResponse | null> {
   try {
-    if(!id){
-        console.error("ID não fornecido.");
-        return null;
+    if (!id) {
+      console.error("ID não fornecido.");
+      return null;
     }
 
     const res = await apiRequest(`/pets/${id}/id`, {
@@ -34,25 +33,23 @@ async function getPetById(id: string): Promise<PetResponse | null> {
   }
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mapPetResponse = (response: any): PetResponse => {
+export const mapPetResponse = (response: any): Pet => {
+  console.log("response", response);
   return {
-    pet: {
-      id: response?.pet?.id,
-      name: response?.pet?.name,
-      species: response?.pet?.species,
-      slug: response?.pet?.slug,
-      breed: response?.pet?.breed,
-      color: response?.pet?.color,
-      size: response?.pet?.size,
-      health: response?.pet?.health,
-      temperament: response?.pet?.temperament,
-      birthdate: response?.pet?.birthdate,
-      status: response?.pet?.status,
-      history: response?.pet?.history,
-      ongId: response?.pet?.ongId,
-      date: response?.pet?.date,
-    },
-    images: response?.images?.map((image: string) => ({ url: image })) || [],
+    id: response?.id,
+    name: response?.name,
+    species: response?.species,
+    slug: response?.slug,
+    breed: response?.breed,
+    color: response?.color,
+    size: response?.size,
+    health: response?.health,
+    temperament: response?.temperament,
+    birthdate: response?.birthdate,
+    status: response?.status,
+    history: response?.history,
+    ongId: response?.ongId,
+    date: response?.date,
   };
 };
 

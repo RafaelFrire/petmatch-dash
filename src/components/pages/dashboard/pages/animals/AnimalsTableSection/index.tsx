@@ -73,7 +73,7 @@ export const AnimalsTableSection = () => {
   const { data, error, isLoading } = useGetPetByOngId(
     "0086a4c4-1a0c-40ec-8970-8d4c99f91b38",
     currentPage,
-    4
+    12
   );
   const [filtersData, setFiltersData] = useState<Pet[]>([]);
   const [originalPetsList, setOriginalPetsList] = useState<Pet[]>([]);
@@ -180,8 +180,6 @@ export const AnimalsTableSection = () => {
     if (data) {
       const mappedPets = mapPetByOngResponse(data);
       const extractPets: Pet[] = [];
-
-      console.log(mappedPets, "mappedPets");
 
       mappedPets.pets.forEach((item) => {
         extractPets.push({

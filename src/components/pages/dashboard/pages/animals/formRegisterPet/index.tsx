@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export type FormValues = {
-  id: string;
   name: string;
   species: string;
   breed: string;
@@ -20,12 +19,8 @@ export type FormValues = {
   size: string;
   health: string;
   temperament: string;
-  ongId: string;
-  date: string | number | Date;
   birthdate: Date;
-  status: boolean;
   history: string;
-  slug: string;
   files: File;
 };
 
@@ -50,7 +45,6 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
   } = useForm<FormValues>({
     resolver: yupResolver(PetSchema),
     defaultValues: {
-      id: "",
       name: "",
       species: "",
       breed: "",
@@ -58,16 +52,10 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
       size: "",
       health: "",
       temperament: "",
-      ongId: "",
-      date: "",
       birthdate: new Date(),
-      status: false,
       history: "",
-      slug: "",
     },
   });
-
-  console.log("petToEdit", petToEdit);
 
   const { mutate, isPending, isError, isSuccess } = useMutation({
     mutationFn: (formData: FormData) =>
@@ -75,17 +63,21 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
         method: "POST",
         body: formData,
       }),
-    onSuccess: () => toast.success("Evento criado com sucesso!"),
-    onError: () => toast.error("Erro ao criar evento."),
+    onSuccess: () => toast.success("Pet cadastrado com sucesso!"),
+    onError: () => toast.error("Erro ao cadastrar pet."),
   });
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
 
-    const slug = `${data.name}-${data.date}`.replace(/\s+/g, "-").toLowerCase();
+    const slug = `${data.name}-${data.birthdate}`
+      .replace(/\s+/g, "-")
+      .toLowerCase();
 
     formData.append("ongId", session?.user.id || "");
     formData.append("slug", slug);
+
+    formData.append("status", "true");
 
     // Todos os campos exceto o arquivo
     Object.entries(data).forEach(([key, value]) => {
@@ -110,9 +102,6 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     if (petToEdit) {
       reset({
         ...petToEdit,
-        date: petToEdit.date
-          ? new Date(petToEdit.date).toISOString().split("T")[0]
-          : "", // formato yyyy-MM-dd para input type="date"
         files: undefined, // não traz arquivos antigos
       });
     } else {

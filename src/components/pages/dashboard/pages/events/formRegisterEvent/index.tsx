@@ -33,7 +33,6 @@ type formRegisterEventProps = {
 
 export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseModal, eventToEdit}) => {
   const { data: session } = useSession()
-
   const {
     register,
     handleSubmit,
@@ -58,7 +57,7 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
   });
 
 
-  const { mutate, isPending, isError, isSuccess } = useMutation({
+  const { mutate: createEvent, isPending, isError, isSuccess } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/events/create", {
         method: "POST",
@@ -68,26 +67,43 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     onError: () => toast.error("Erro ao criar evento."),
   });
 
+  const { mutate: updateEvent, isPending: isUpdating, isError: isUpdateError, isSuccess: isUpdateSuccess } = useMutation({
+    mutationFn: (formData: FormData) =>
+      apiRequest(`/event/${eventToEdit?.id}/id`, {
+        method: "PATCH",
+        body: formData,
+      }),
+    onSuccess: () => toast.success("Evento atualizado com sucesso!"),
+    onError: () => toast.error("Erro ao atualizar evento."),
+  });
+
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
 
-    const slug = `${data.title}-${data.date}`.replace(/\s+/g, "-").toLowerCase();
+    const slug = `${data.title}-${data.date}`
+      .replace(/\s+/g, "-")
+      .toLowerCase();
 
     formData.append("ongId", session?.user.id || "");
     formData.append("slug", slug);
 
     // Todos os campos exceto o arquivo
     Object.entries(data).forEach(([key, value]) => {
-      if (key !== "files") {
+      if (!["files", "ongId", "slug"].includes(key)) {
         formData.append(key, value);
       }
     });
 
     // Adiciona o arquivo
     if (data.files) {
-      formData.append("files", data.files); 
+      formData.append("files", data.files);
     }
-    mutate(formData);
+
+    if (eventToEdit) {
+      updateEvent(formData);
+    } else {
+      createEvent(formData);
+    }
   };
 
 
@@ -103,7 +119,7 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     }
   }, [eventToEdit, reset]);
 
-  if (isPending) {
+  if (isPending || isUpdating) {
     return (
       <div className="py-10">
         <SpinLoader />
@@ -111,15 +127,14 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     );
   }
 
-  if(isSuccess){
-    reset()
+  if (isSuccess || isUpdateSuccess) {
+    reset();
     if (handleCloseModal) {
       handleCloseModal();
     }
   }
 
-  
-  if (isError) {
+  if (isError || isUpdateError) {
     return (
       <div className="py-10 text-center text-primary100 text-3xl">
         <h1>Houve um problema.</h1>

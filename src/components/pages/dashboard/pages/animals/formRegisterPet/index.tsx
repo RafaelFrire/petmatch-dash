@@ -74,14 +74,14 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
       .replace(/\s+/g, "-")
       .toLowerCase();
 
-    formData.append("ongId", session?.user.id || "");
-    formData.append("slug", slug);
+    formData.append("ongId", String(session?.user?.id) || "");
+    formData.append("slug", String(slug) || "");
 
-    formData.append("status", "true");
+    formData.append("status", String(true) || "");
 
     // Todos os campos exceto o arquivo
     Object.entries(data).forEach(([key, value]) => {
-      if (key !== "files") {
+      if (!["files", "ongId", "slug", "status", "date"].includes(key)) {
         formData.append(
           key,
           typeof value === "object" && value instanceof Date
@@ -91,7 +91,6 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
       }
     });
 
-    // Adiciona o arquivo
     if (data.files) {
       formData.append("files", data.files);
     }

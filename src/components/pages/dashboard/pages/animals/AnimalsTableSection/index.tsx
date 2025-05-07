@@ -64,7 +64,7 @@ const columns = [
 export const AnimalsTableSection = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
-  const { deleteData } = useDeleteData("events");
+  const { deleteData } = useDeleteData("pets");
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedPet, setSelectedPetEdit] = useState<string>("");
   const { searchParams } = useFilters();
@@ -89,7 +89,7 @@ export const AnimalsTableSection = () => {
     mutationFn: (id: string) => deleteData(id),
     onSuccess: () => {
       if (!mutation.isSuccess) {
-        toast.success("Evento deletado com sucesso!");
+        toast.success("animal deletado com sucesso!");
       }
     },
     onError: () => toast.error("Houve um problema."),

@@ -57,7 +57,7 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     },
   });
 
-  const { mutate, isPending, isError, isSuccess } = useMutation({
+  const { mutate: createPet, isPending, isError, isSuccess } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/pets/create", {
         method: "POST",
@@ -65,6 +65,21 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
       }),
     onSuccess: () => toast.success("Pet cadastrado com sucesso!"),
     onError: () => toast.error("Erro ao cadastrar pet."),
+  });
+
+  const {
+    mutate: updatePet,
+    isPending: isUpdating,
+    isError: isUpdateError,
+    isSuccess: isUpdateSuccess,
+  } = useMutation({
+    mutationFn: (formData: FormData) =>
+      apiRequest(`/pets/${petToEdit?.id}/id`, {
+        method: "PATCH",
+        body: formData,
+      }),
+    onSuccess: () => toast.success("pet atualizado com sucesso!"),
+    onError: () => toast.error("Erro ao atualizar pet."),
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -94,7 +109,11 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     if (data.files) {
       formData.append("files", data.files);
     }
-    mutate(formData);
+    if (petToEdit) {
+      updatePet(formData);
+    } else {
+      createPet(formData);
+    }
   };
 
   useEffect(() => {
@@ -103,12 +122,12 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
         ...petToEdit,
         files: undefined, // não traz arquivos antigos
       });
-    } else {
-      reset(); // se não tiver nada para editar, reseta para vazio
+      return;
     }
+    reset(); // se não tiver nada para editar, reseta para vazio
   }, [petToEdit, reset]);
 
-  if (isPending) {
+  if (isPending || isUpdating) {
     return (
       <div className="py-10">
         <SpinLoader />
@@ -116,14 +135,15 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     );
   }
 
-  if (isSuccess) {
+  if (isSuccess || isUpdateSuccess) {
+    toast.success("Pet cadastrado com sucesso!");
     reset();
     if (handleCloseModal) {
       handleCloseModal();
     }
   }
 
-  if (isError) {
+  if (isError || isUpdateError) {
     return (
       <div className="py-10 text-center text-primary100 text-3xl">
         <h1>Houve um problema.</h1>

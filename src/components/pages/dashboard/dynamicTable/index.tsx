@@ -52,7 +52,7 @@ export const DynamicTable = ({ columns, data, setSelected, selected }: Props) =>
                 />
               </th>
               {columns.map((col) => (
-                <th key={col.id} className="px-4 py-3 font-medium">
+                <th key={col.id} className="px-4 py-3 font-medium ">
                   <div className="flex items-center gap-1">
                     {col.label}
                     {col.id !== "actions" && (

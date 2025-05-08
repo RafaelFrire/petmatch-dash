@@ -10,7 +10,7 @@ type PetResponse = {
 async function getPetById(id: string): Promise<PetResponse | null> {
   try {
     if (!id) {
-      console.error("ID não fornecido.");
+      console.log("ID não fornecido.");
       return null;
     }
 

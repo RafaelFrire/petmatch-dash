@@ -10,6 +10,7 @@ import Input from "@/components/form/input";
 import AcceptTerms from "@/components/form/acceptTerms";
 import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
 import { signup } from "@/hooks/useAuth";
+import SelectInput from "@/components/form/inputSelect";
 
 export type AdoptionInputs = {
     name: string;
@@ -131,7 +132,7 @@ export const FormAdocao = () => {
           {...register("document")}
           name="document"
           error={errors?.document?.message}
-          className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
+          className="col-span-2 h-16 text-sm font-medium"
           onChange={(e) => {
             const mask = rgMask(e.target.value);
             setValue("document", mask);
@@ -139,42 +140,42 @@ export const FormAdocao = () => {
           maxLength={12}
         />
         <div className="col-span-2 md:col-span-1">
-          <label className="block text-sm font-medium mb-2">
-            Estado Civil*
-          </label>
-          <select
+          <SelectInput
+            label="Estado Civil*"
+            options={[
+              { value: "", label: "Selecione" },
+              { value: "SINGLE", label: "Solteiro(a)" },
+              { value: "MARRIED", label: "Casado(a)" },
+              { value: "DIVORCED", label: "Divorciado(a)" },
+              { value: "WIDOWED", label: "Viúvo(a)" },
+            ]}
             {...register("maritalStatus")}
-            className="w-full h-16 text-sm font-medium border rounded"
-          >
-            <option value="SINGLE">Solteiro(a)</option>
-            <option value="MARRIED">Casado(a)</option>
-            <option value="DIVORCED">Divorciado(a)</option>
-            <option value="WIDOWED">Viúvo(a)</option>
-          </select>
-          {errors.maritalStatus && (
-            <p className="text-red-500 text-sm">
-              {errors.maritalStatus.message}
-            </p>
-          )}
+            error={errors.maritalStatus?.message}
+            className="h-16 text-sm font-medium"
+          />
         </div>
         <div className="col-span-2 md:col-span-1">
-          <label className="block text-sm font-medium mb-2">
-            Tipo de Residência*
-          </label>
-          <select
+          <SelectInput
+            label="Tipo de Residência*"
+            options={[
+              { value: "", label: "Selecione" },
+              { value: "HOUSE", label: "Casa" },
+              { value: "APARTMENT", label: "Apartamento" },
+              { value: "OTHER", label: "Outro" },
+            ]}
             {...register("residenceType")}
-            className="w-full h-16 text-sm font-medium border rounded"
-          >
-            <option value="HOUSE">Casa</option>
-            <option value="APARTMENT">Apartamento</option>
-            <option value="OTHER">Outro</option>
-          </select>
-          {errors.residenceType && (
-            <p className="text-red-500 text-sm">
-              {errors.residenceType.message}
-            </p>
-          )}
+            error={errors.residenceType?.message}
+            className="h-16 text-sm font-medium"
+          />
         </div>
+        <Input
+          label="Motivo para adoção*"
+          {...register("reasonForAdoption")}
+          name="reasonForAdoption"
+          className="col-span-2 h-16 text-sm font-medium"
+          error={errors?.reasonForAdoption?.message}
+        />
+        <div className="col-span-2 md:col-span-1"></div>
         <div className="col-span-2">
           <label className="block text-sm font-medium mb-2">
             Possui outros pets?*
@@ -190,13 +191,7 @@ export const FormAdocao = () => {
             </p>
           )}
         </div>
-        <Input
-          label="Motivo para adoção*"
-          {...register("reasonForAdoption")}
-          name="reasonForAdoption"
-          className="col-span-2 h-16 text-sm font-medium"
-          error={errors?.reasonForAdoption?.message}
-        />
+
         <InputFiles
           register={register}
           setValue={setValue}

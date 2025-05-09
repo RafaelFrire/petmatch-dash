@@ -1,6 +1,8 @@
+import { useRouter } from "next/navigation";
 import Button from "../buttonPet";
 import { Card } from "../petCard";
 import PetCarrousel from "../petCarrousel";
+
 
 export type petHeroProps = {
   pet: {
@@ -22,6 +24,7 @@ export type petHeroProps = {
 };
 
 const PetHero: React.FC<petHeroProps> = ({ pet, images }) => {
+  const router = useRouter()
   function calcAge(date: Date): string {
     const today = new Date();
     const birthdate = new Date(date);
@@ -72,7 +75,9 @@ const PetHero: React.FC<petHeroProps> = ({ pet, images }) => {
             <p>{pet.temperament}</p>
           </div>
           <div className="flex space-x-4 mt-6">
-            <Button className="bg-red-500 text-white flex-1">
+            <Button className="bg-red-500 text-white flex-1"
+            onClick={() => router.push(`/adocao/${pet.id}`)}>
+              
               Quero Adotar!
             </Button>
             <Button className="border border-red-500 text-red-500 flex-1">

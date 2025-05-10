@@ -31,6 +31,11 @@ export type AdoptionInputs = {
     termsAdopter: boolean;
 };
 
+
+type formAdocaoProps = {
+  
+}
+
 export const FormAdocao = () => {
     const {
       register,

@@ -8,6 +8,8 @@ export interface User {
   status: "ACTIVE" | "INACTIVE";
 };
 
+
+
 export interface RegisterUser {
     name: string;
     lastname: string;

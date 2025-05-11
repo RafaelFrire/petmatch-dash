@@ -24,20 +24,26 @@ export default function FormLogin() {
       toast.error("Você deve aceitar os termos antes de continuar.");
       return;
     }
-  
+
     setError(null); // Remove erro caso tenha sido resolvido
   };
 
+  const formAdocaoPetId = sessionStorage.getItem("formAdocaoPetId");
 
   useEffect(() => {
-    if (state === null) return; 
+    if (state === null) return;
     if (!state?.success) {
       toast.error(state?.message);
+      return;
+    } else if (formAdocaoPetId && formAdocaoPetId !== "") {
+      router.push(`/adocao/${formAdocaoPetId}`);
+      return;
     } else if (state?.success) {
-      router.push("/event")
+      router.push("/");
       toast.success(state?.message);
+      return;
     }
-  }, [state]);
+  }, [state, formAdocaoPetId]);
 
   return (
     <>
@@ -55,12 +61,12 @@ export default function FormLogin() {
         />
         <div className="h-3"></div>
         <div className="flex flex-wrap text md:text-base items-center justify-between px-2 md:px-0">
-            <AcceptTerms
-              text="Aceito a Política de Privacidade"
-              value={acceptTerms}
-              onChange={() => setAcceptTerms(!acceptTerms)}
-              error={error || ""} 
-            />
+          <AcceptTerms
+            text="Aceito a Política de Privacidade"
+            value={acceptTerms}
+            onChange={() => setAcceptTerms(!acceptTerms)}
+            error={error || ""}
+          />
 
           <div className="h-3"></div>
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Account } from "./../interfaces/account";
 import { apiRequest } from "./useApi";
 import { toast } from "react-toastify";
@@ -33,7 +34,6 @@ async function getAccountById(id: string): Promise<UserResponse | null> {
     return null;
   }
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapUserResponse = (response: any): UserResponse => {
   return {
     user: {

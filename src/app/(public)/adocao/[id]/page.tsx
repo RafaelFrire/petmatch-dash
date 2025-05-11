@@ -1,21 +1,37 @@
-'use client';
+"use client";
 import { FormAdocao } from "@/components/adocao/form";
 import { TitleWithPaw } from "@/components/TitleWithPaw";
 import { useGetAccountById, mapUserResponse } from "@/hooks/useGetAccountById";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useParams, useRouter } from "next/navigation";
+
+let sendMenssage = false;
 
 export default function CadastroPetPage() {
-  const { data: session } = useSession();
+  const params = useParams();
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-  if (!session?.user?.id) {
-    redirect("/login");
-  }
+  const petId = params?.id as string;
+
   const { data } = useGetAccountById(session?.user.id as string);
 
   const userData = mapUserResponse(data);
 
   console.log("userData", userData.user);
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    if (!session?.user?.id && sendMenssage) {
+      sessionStorage.setItem("formAdocaoPetId", petId);
+      toast.error("Você precisa estar logado para acessar esta página.");
+      router.push("/login");
+      sendMenssage = true;
+    }
+  }, [status, session, petId, router]);
 
   return (
     <div className="p-4 max-w-3xl mx-auto">

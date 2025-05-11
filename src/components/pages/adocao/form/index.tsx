@@ -9,10 +9,12 @@ import { useMutation } from "@tanstack/react-query";
 import Input from "@/components/form/input";
 import AcceptTerms from "@/components/form/acceptTerms";
 import { cepMask, phoneMask, rgMask } from "@/utils/MaskStrings";
-import { signup } from "@/hooks/useAuth";
 import SelectInput from "@/components/form/inputSelect";
 import { Account } from "@/interfaces/account";
 import { useEffect } from "react";
+import { apiRequest } from "@/hooks/useApi";
+import { toast } from "react-toastify";
+import SpinLoader from "@/components/spinLoader";
 
 export type AdoptionInputs = {
   name: string;
@@ -34,10 +36,11 @@ export type AdoptionInputs = {
 };
 
 type formAdocaoProps = {
+  petId: string;
   userData: Account;
 };
 
-export const FormAdocao: React.FC<formAdocaoProps> = ({ userData }) => {
+export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
   const {
     register,
     handleSubmit,
@@ -68,36 +71,68 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ userData }) => {
   });
   const router = useRouter();
 
-  const mutation = useMutation({
-    mutationFn: (data: AdoptionInputs) =>
-      signup({ ...data, password: "", confirmPassword: "" }),
+  const {mutate, isSuccess, isPending, isError} = useMutation({
+    mutationFn: (formData: FormData) =>
+      apiRequest(`/adoption/${petId}/${userData.adopter?.id}`, {
+        method: "POST",
+        body: formData,
+      }),
     onSuccess() {
       router.push("/login");
     },
   });
 
   const onSubmit: SubmitHandler<AdoptionInputs> = (data) => {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (!["files", "ongId", "slug", "status", "date"].includes(key)) {
+        formData.append(
+          key,
+          typeof value === "object" && value instanceof Date
+            ? value.toISOString()
+            : String(value)
+        );
+      }
+    });
+
     if (data.files) {
-      mutation.mutate(data);
+      formData.append("files", data.files);
     }
+    mutate(formData);
   };
 
-    useEffect(() => {
-      if (userData) {
-        reset({
-          ...userData,
-          phone: userData.adopter?.phone,
-          zipcode: userData.adopter?.zipcode,
-          state: userData.adopter?.state,
-          city: userData.adopter?.city,
-          document: userData.adopter?.document,
-          address: userData.adopter?.address,
-          files: undefined, // não traz arquivos antigos
-        });
-        return;
-      }
-      reset(); // se não tiver nada para editar, reseta para vazio
-    }, [userData, reset]);
+  useEffect(() => {
+    if (userData) {
+      reset({
+        ...userData,
+        phone: userData.adopter?.phone,
+        zipcode: userData.adopter?.zipcode,
+        state: userData.adopter?.state,
+        city: userData.adopter?.city,
+        document: userData.adopter?.document,
+        address: userData.adopter?.address,
+        files: undefined, // não traz arquivos antigos
+      });
+      return;
+    }
+    reset(); // se não tiver nada para editar, reseta para vazio
+  }, [userData, reset]);
+
+
+  if(isSuccess){
+    toast.success("Formulário cadastrado com sucesso!")
+  }
+  if(isError){
+    toast.success("Ops, houve um problema!")
+  }
+
+  if(isPending){
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <SpinLoader />
+    </div>;
+  }
+
 
   return (
     <form
@@ -238,34 +273,36 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ userData }) => {
         classname="col-span-2 md:col-span-1"
       />
       <div className="h-4"></div>
-      <Controller
-        name="termsPrivacity"
-        control={control}
-        render={({ field }) => (
-          <AcceptTerms
-            text="Li e Aceito a Política de Privacidade"
-            classname="col-span-2"
-            value={field.value}
-            onChange={field.onChange}
-            error={errors.termsPrivacity?.message}
-          />
-        )}
-        rules={{ required: "Você deve aceitar os termos para continuar" }}
-      />
-      <Controller
-        name="termsAdopter"
-        control={control}
-        render={({ field }) => (
-          <AcceptTerms
-            text="Li e Aceito os Termos de Responsabilidade de Adoção"
-            classname="col-span-2"
-            value={field.value}
-            onChange={field.onChange}
-            error={errors.termsAdopter?.message}
-          />
-        )}
-        rules={{ required: "Você deve aceitar os termos para continuar" }}
-      />
+      <div className="flex flex-col gap-5">
+        <Controller
+          name="termsPrivacity"
+          control={control}
+          render={({ field }) => (
+            <AcceptTerms
+              text="Li e Aceito a Política de Privacidade"
+              value={field.value}
+              onChange={field.onChange}
+              classname="max-w-xs"
+              error={errors.termsPrivacity?.message}
+            />
+          )}
+          rules={{ required: "Você deve aceitar os termos para continuar" }}
+        />
+        <Controller
+          name="termsAdopter"
+          control={control}
+          render={({ field }) => (
+            <AcceptTerms
+              text="Li e Aceito os Termos de Responsabilidade de Adoção"
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.termsAdopter?.message}
+              classname="max-w-xs"
+            />
+          )}
+          rules={{ required: "Você deve aceitar os termos para continuar" }}
+        />
+      </div>
       <div className="h-4"></div>
       <Button text="Cadastrar" classname="col-span-2" />
       <div className="h-8"></div>

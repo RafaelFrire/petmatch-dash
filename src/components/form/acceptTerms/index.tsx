@@ -9,7 +9,7 @@ type TermsProps = {
   onChange: (value: boolean) => void;
 };
 
-const AcceptTerms: React.FC<TermsProps> = ({
+  const AcceptTerms: React.FC<TermsProps> = ({
   text,
   classname,
   error,

@@ -35,9 +35,6 @@ export default function FormLogin() {
     if (!state?.success) {
       toast.error(state?.message);
       return;
-    } else if (formAdocaoPetId && formAdocaoPetId !== "") {
-      router.push(`/adocao/${formAdocaoPetId}`);
-      return;
     } else if (state?.success) {
       router.push("/");
       toast.success(state?.message);
@@ -45,6 +42,16 @@ export default function FormLogin() {
     }
   }, [state, formAdocaoPetId]);
 
+
+  useEffect(() => {
+  if (state?.success) {
+    if (formAdocaoPetId) {
+      window.location.href = `/adocao/${formAdocaoPetId}`;
+    } else {
+      window.location.href = "/";
+    }
+  }
+}, [state, formAdocaoPetId]);
   return (
     <>
       <Form

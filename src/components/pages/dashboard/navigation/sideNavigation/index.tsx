@@ -4,6 +4,7 @@ import {
     MessageCircleMore,
     SettingsIcon,
     SquarePenIcon,
+    UserPlus,
   } from "lucide-react";
 import NavItem from "../navItem";
 import Logo from "../logo";
@@ -25,6 +26,11 @@ import LogoutButton from "../loginButton";
         icon: <ImageIcon className="w-7 h-7 " />,
         label: "Campanhas",
         route: "/dashboard/events",
+      },
+      {
+        icon: <UserPlus className="w-7 h-7 " />,
+        label: "Pedidos de adoção",
+        route: "/dashboard/adoption",
       },
       {
         icon: <MessageCircleMore className="w-7 h-7" />,

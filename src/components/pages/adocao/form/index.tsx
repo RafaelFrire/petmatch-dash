@@ -3,7 +3,6 @@ import Button from "@/components/form/Button";
 import InputFiles from "@/components/form/inputFiles";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import AdoptionSchema from "@/schemas/adoptionSchema";
 import { useMutation } from "@tanstack/react-query";
 import Input from "@/components/form/input";
@@ -69,7 +68,6 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
       termsAdopter: false,
     },
   });
-  const router = useRouter();
 
   const {mutate, isSuccess, isPending, isError} = useMutation({
     mutationFn: (formData: FormData) =>
@@ -78,7 +76,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         body: formData,
       }),
     onSuccess() {
-      router.push("/login");
+      toast.success("Formulário enviado com sucesso!");
     },
   });
 
@@ -116,7 +114,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
       });
       return;
     }
-    reset(); // se não tiver nada para editar, reseta para vazio
+    reset(); 
   }, [userData, reset]);
 
 

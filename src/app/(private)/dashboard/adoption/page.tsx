@@ -116,6 +116,7 @@ export default function AdoptionRequestPage() {
           data={data}
           setSelected={setSelected}
           selected={selected}
+          selectDisabled={true}
         />
         
       </div>

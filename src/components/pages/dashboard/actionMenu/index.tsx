@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Edit, MoreVertical, Trash } from 'lucide-react';
+import { useState } from "react";
+import { Edit, MoreVertical, Trash } from "lucide-react";
 
 export function ActionsMenu() {
   const [open, setOpen] = useState(false);
 
   return (
     <div
-      className="relative z-10 flex items-center justify-center p-2 rounded hover:bg-gray-100 cursor-pointer"
-      onMouseEnter={() => setOpen(true)}
+      className="relative z-10 flex items-center justify-left p-2 rounded hover:bg-gray-100 cursor-pointer w-24 pr-12"
       onMouseLeave={() => setOpen(false)}
     >
       <div className="flex gap-2 items-center">
@@ -19,8 +18,11 @@ export function ActionsMenu() {
         <button>
           <Trash className="w-4 h-4" />
         </button>
-        <button className="rounded hover:bg-gray-100 p-1">
-          <MoreVertical className="w-4 h-4" />
+        <button className="rounded hover:bg-gray-100 p-1 ">
+          <MoreVertical
+            className="w-4 h-4"
+            onMouseEnter={() => setOpen(true)}
+          />
         </button>
       </div>
 

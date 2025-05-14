@@ -5,6 +5,12 @@ import { DynamicTable } from "@/components/pages/dashboard/dynamicTable";
 import StatCardGrid from "@/components/pages/dashboard/statCardGrid";
 import { ActionsMenu } from "@/components/pages/dashboard/actionMenu";
 import HeaderInputSearch from "@/components/pages/dashboard/pages/adoption/headerInputSearch";
+import {
+  mapAdoptionByOngIdResponse,
+  useGetAdoptonRequestByOngId,
+} from "@/hooks/useGetAdoptionRequestsByOngId";
+import { useSession } from "next-auth/react";
+import SpinLoader from "@/components/spinLoader";
 
 type Status = "PENDING" | "APPROVED" | "REJECTED";
 
@@ -63,7 +69,7 @@ const columns = [
   },
 ];
 
-const data = [
+const dataMock = [
   {
     id: "1234",
     name: "João da Silva",
@@ -97,7 +103,31 @@ const data = [
 ];
 
 export default function AdoptionRequestPage() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const [selected, setSelected] = useState<string[]>([]);
+
+  const { data, isError, isLoading } = useGetAdoptonRequestByOngId(
+    userId!,
+    1,
+    10
+  );
+
+  const { adoptions } = mapAdoptionByOngIdResponse(data);
+
+  console.log("adoptions", adoptions);
+
+  if (isLoading) {
+    return (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading event</div>;
+  }
 
   return (
     <div className="w-full h-full">
@@ -107,18 +137,17 @@ export default function AdoptionRequestPage() {
           Pedidos de Adoção
         </h2>
         <div className="">
-          <StatCardGrid requests={data} />
+          <StatCardGrid requests={dataMock} />
           <HeaderInputSearch />
           <div className="h-8"></div>
         </div>
         <DynamicTable
           columns={columns}
-          data={data}
+          data={dataMock}
           setSelected={setSelected}
           selected={selected}
           selectDisabled={true}
         />
-        
       </div>
     </div>
   );

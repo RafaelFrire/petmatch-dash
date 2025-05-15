@@ -1,4 +1,5 @@
 import { LogOutIcon } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 const LogoutButton = () => {
   return (
@@ -8,7 +9,10 @@ const LogoutButton = () => {
           <LogOutIcon className="w-7 h-7 text-white" />
         </div>
         <div className="p-2">
-          <span className="text-sm font-semibold text-white tracking-wide">
+          <span
+            className="text-sm font-semibold text-white tracking-wide"
+            onClick={() => signOut()}
+          >
             Sair
           </span>
         </div>

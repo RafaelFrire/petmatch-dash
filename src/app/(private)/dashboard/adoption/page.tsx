@@ -17,10 +17,29 @@ type Status = "PENDING" | "APPROVED" | "REJECTED";
 const columns = [
   { id: "id", label: "#Número" },
   { id: "name", label: "Solicitante" },
-  { id: "type", label: "Tipo" },
-  { id: "phone", label: "Telefone" },
+  { id: "species", label: "Tipo", render: (item: any) => item.pet.species },
+  {
+    id: "phone",
+    label: "Telefone",
+    render: (item: any) => item.phone || "Não informado",
+  },
   { id: "email", label: "Email" },
-  { id: "data", label: "Data" },
+  {
+    id: "createdAt",
+    label: "Data",
+    render: (item: any) => {
+      const date = new Date(item.createdAt);
+      return (
+        <span>
+          {date.toLocaleDateString("pt-BR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })}
+        </span>
+      );
+    },
+  },
   {
     id: "status",
     label: "Status",
@@ -143,7 +162,7 @@ export default function AdoptionRequestPage() {
         </div>
         <DynamicTable
           columns={columns}
-          data={dataMock}
+          data={adoptions}
           setSelected={setSelected}
           selected={selected}
           selectDisabled={true}

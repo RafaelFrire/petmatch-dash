@@ -15,10 +15,13 @@ import { DeleteModal } from "@/components/deleteModal";
 import { Adoption } from "@/interfaces/adoption";
 import useDebounce from "@/hooks/useDebounce";
 import { toast } from "react-toastify";
+import { Pagination } from "@/components/pagination";
+import { useFilters } from "@/hooks/useFilter";
 
 type Status = "PENDING" | "APPROVED" | "REJECTED";
 
 export default function AdoptionRequestPage() {
+  const { searchParams } = useFilters();
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [selected, setSelected] = useState<string[]>([]);
@@ -26,12 +29,14 @@ export default function AdoptionRequestPage() {
   const [originalData, setOriginalData] = useState<Adoption[]>([]);
   const [filterData, setFilterData] = useState<Adoption[]>([]);
 
+  const currentPage = Number(searchParams.get("page"));
+
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const { data, isError, isLoading } = useGetAdoptonRequestByOngId(
     userId!,
-    1,
+    currentPage,
     10
   );
 
@@ -107,13 +112,15 @@ export default function AdoptionRequestPage() {
     {
       id: "actions",
       label: "Ações",
-      render: () => <ActionsMenu onDelete={handleDelete} />,
+      render: (item: any) => (
+        <ActionsMenu
+          onDelete={() => handleDelete(item.id)}
+          onApprove={() => handleApprove(item.id)}
+          onReject={() => handleReject(item.id)}
+        />
+      ),
     },
   ];
-
-  function handleSearchInputChange(text: string) {
-    setSearchText(text);
-  }
 
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
@@ -154,8 +161,20 @@ export default function AdoptionRequestPage() {
     }
   }, [data]);
 
-  const handleDelete = () => {
+  const handleDelete = (id: string) => {
+    console.log("delete", id);
     setOpenDeleteModal(true);
+  };
+
+  function handleSearchInputChange(text: string) {
+    setSearchText(text);
+  }
+
+  const handleApprove = (id: string) => {
+    console.log("Aprovar", id);
+  };
+  const handleReject = (id: string) => {
+    console.log("Rejeitar", id);
   };
 
   if (isLoading) {
@@ -167,7 +186,7 @@ export default function AdoptionRequestPage() {
   }
 
   if (isError) {
-    return <div>Error loading event</div>;
+    return <div>Error loading requests</div>;
   }
   return (
     <div className="w-full h-full">
@@ -194,6 +213,17 @@ export default function AdoptionRequestPage() {
         isOpenModal={openDeleteModal}
         onDelete={() => {}}
       />
+
+      <div className="h-6"></div>
+      <Pagination
+        totalPages={2}
+        pageSize={10}
+        currentPage={1}
+        onPageChange={() => {}}
+        baseurl="dashboard/adoption"
+      />
+      <div className="h-6"></div>
+
     </div>
   );
 }

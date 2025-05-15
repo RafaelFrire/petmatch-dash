@@ -37,7 +37,7 @@ export default function AdoptionRequestPage() {
   const { data, isError, isLoading } = useGetAdoptonRequestByOngId(
     userId!,
     currentPage,
-    10
+    8
   );
 
   const columns = [
@@ -216,7 +216,7 @@ export default function AdoptionRequestPage() {
 
       <div className="h-6"></div>
       <Pagination
-        totalPages={2}
+        totalPages={data?.totalPages || 1}
         pageSize={10}
         currentPage={1}
         onPageChange={() => {}}

@@ -6,6 +6,11 @@ import { Adoption } from "@/interfaces/adoption";
 
 export type AdoptionResponse = {
   adoptions: Adoption[];
+  totalItems: number;
+  totalPages: number;
+  totalAprovado: number;
+  totalReprovado: number;
+  totalPendente: number;
 };
 
 async function getAdoptionRequestsByOngId(
@@ -88,6 +93,11 @@ export const mapAdoptionByOngIdResponse = (response: any): AdoptionResponse => {
           },
         })
       ) || [],
+    totalItems: response?.totalItems || 0,
+    totalPages: response?.totalPages || 0,
+    totalAprovado: response?.totalAprovado || 0,
+    totalReprovado: response?.totalReprovado || 0,
+    totalPendente: response?.totalPendente || 0,
   };
 };
 

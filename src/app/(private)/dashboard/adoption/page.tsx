@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DynamicTable } from "@/components/pages/dashboard/dynamicTable";
 import StatCardGrid from "@/components/pages/dashboard/statCardGrid";
 import { ActionsMenu } from "@/components/pages/dashboard/actionMenu";
@@ -11,120 +11,23 @@ import {
 } from "@/hooks/useGetAdoptionRequestsByOngId";
 import { useSession } from "next-auth/react";
 import SpinLoader from "@/components/spinLoader";
+import { DeleteModal } from "@/components/deleteModal";
+import { Adoption } from "@/interfaces/adoption";
+import useDebounce from "@/hooks/useDebounce";
+import { toast } from "react-toastify";
 
 type Status = "PENDING" | "APPROVED" | "REJECTED";
-
-const columns = [
-  { id: "id", label: "#Número" },
-  { id: "name", label: "Solicitante" },
-  { id: "species", label: "Tipo", render: (item: any) => item.pet.species },
-  {
-    id: "phone",
-    label: "Telefone",
-    render: (item: any) => item.phone || "Não informado",
-  },
-  { id: "email", label: "Email" },
-  {
-    id: "createdAt",
-    label: "Data",
-    render: (item: any) => {
-      const date = new Date(item.createdAt);
-      return (
-        <span>
-          {date.toLocaleDateString("pt-BR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })}
-        </span>
-      );
-    },
-  },
-  {
-    id: "status",
-    label: "Status",
-    render: (item: { status: Status }) => {
-      const statusColors: Record<
-        Status,
-        { bg: string; dot: string; label: string }
-      > = {
-        PENDING: {
-          bg: "bg-yellow-100 text-yellow-700",
-          dot: "bg-yellow-500",
-          label: "Pendente",
-        },
-        APPROVED: {
-          bg: "bg-green-100 text-green-700",
-          dot: "bg-green-500",
-          label: "Aprovado",
-        },
-        REJECTED: {
-          bg: "bg-red-100 text-red-700",
-          dot: "bg-red-500",
-          label: "Rejeitado",
-        },
-      };
-
-      const currentStatus = statusColors[item.status] || {
-        bg: "bg-gray-200 text-gray-600",
-        dot: "bg-gray-500",
-        label: item.status,
-      };
-
-      return (
-        <span
-          className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${currentStatus.bg}`}
-        >
-          <span className={`w-2 h-2 rounded-full mr-2 ${currentStatus.dot}`} />
-          {currentStatus.label}
-        </span>
-      );
-    },
-  },
-  {
-    id: "actions",
-    label: "Ações",
-    render: () => <ActionsMenu />,
-  },
-];
-
-const dataMock = [
-  {
-    id: "1234",
-    name: "João da Silva",
-    phone: "(11) 98765-4321",
-    type: "Cachorro",
-    email: "joao@email.com",
-    tipoResidencia: "Apartamento",
-    data: "10/05/2025",
-    status: "PENDING" as Status,
-  },
-  {
-    id: "1235",
-    name: "Maria Souza",
-    phone: "(21) 91234-5678",
-    type: "Cachorro",
-    email: "maria@email.com",
-    tipoResidencia: "Casa",
-    data: "10/05/2025",
-    status: "APPROVED" as Status,
-  },
-  {
-    id: "1236",
-    name: "Maria Souza",
-    phone: "(21) 91234-5678",
-    type: "Cachorro",
-    email: "maria@email.com",
-    tipoResidencia: "Casa",
-    data: "10/05/2025",
-    status: "REJECTED" as Status,
-  },
-];
 
 export default function AdoptionRequestPage() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [selected, setSelected] = useState<string[]>([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [originalData, setOriginalData] = useState<Adoption[]>([]);
+  const [filterData, setFilterData] = useState<Adoption[]>([]);
+
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 500);
 
   const { data, isError, isLoading } = useGetAdoptonRequestByOngId(
     userId!,
@@ -132,9 +35,128 @@ export default function AdoptionRequestPage() {
     10
   );
 
-  const { adoptions } = mapAdoptionByOngIdResponse(data);
+  const columns = [
+    { id: "id", label: "#Número" },
+    { id: "name", label: "Solicitante" },
+    { id: "species", label: "Tipo", render: (item: any) => item.pet.species },
+    {
+      id: "phone",
+      label: "Telefone",
+      render: (item: any) => item.phone || "Não informado",
+    },
+    { id: "email", label: "Email" },
+    {
+      id: "createdAt",
+      label: "Data",
+      render: (item: any) => {
+        const date = new Date(item.createdAt);
+        return (
+          <span>
+            {date.toLocaleDateString("pt-BR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })}
+          </span>
+        );
+      },
+    },
+    {
+      id: "status",
+      label: "Status",
+      render: (item: { status: Status }) => {
+        const statusColors: Record<
+          Status,
+          { bg: string; dot: string; label: string }
+        > = {
+          PENDING: {
+            bg: "bg-yellow-100 text-yellow-700",
+            dot: "bg-yellow-500",
+            label: "Pendente",
+          },
+          APPROVED: {
+            bg: "bg-green-100 text-green-700",
+            dot: "bg-green-500",
+            label: "Aprovado",
+          },
+          REJECTED: {
+            bg: "bg-red-100 text-red-700",
+            dot: "bg-red-500",
+            label: "Rejeitado",
+          },
+        };
 
-  console.log("adoptions", adoptions);
+        const currentStatus = statusColors[item.status] || {
+          bg: "bg-gray-200 text-gray-600",
+          dot: "bg-gray-500",
+          label: item.status,
+        };
+
+        return (
+          <span
+            className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${currentStatus.bg}`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full mr-2 ${currentStatus.dot}`}
+            />
+            {currentStatus.label}
+          </span>
+        );
+      },
+    },
+    {
+      id: "actions",
+      label: "Ações",
+      render: () => <ActionsMenu onDelete={handleDelete} />,
+    },
+  ];
+
+  function handleSearchInputChange(text: string) {
+    setSearchText(text);
+  }
+
+  useEffect(() => {
+    if (debouncedSearchText.length === 0) {
+      setFilterData(originalData);
+      return;
+    }
+
+    const lowerSearch = debouncedSearchText.toLowerCase();
+
+    const filteredRequests = originalData.filter((data) => {
+      return (
+        data.name?.toLowerCase().trim().includes(lowerSearch) ||
+        data.id?.toLowerCase().trim().includes(lowerSearch) ||
+        data.pet.species?.toLowerCase().trim().includes(lowerSearch) ||
+        data.status?.toLowerCase().trim().includes(lowerSearch) ||
+        data.email?.toLowerCase().trim().includes(lowerSearch) ||
+        data.phone?.toLowerCase().trim().includes(lowerSearch)
+      );
+    });
+
+    if (filteredRequests.length === 0) {
+      toast.error("Nenhum evento encontrado");
+    }
+
+    setFilterData(
+      filteredRequests.map((data) => ({
+        ...data,
+        date: new Date(data.createdAt), // Convert date string back to Date object
+      }))
+    );
+  }, [debouncedSearchText]);
+
+  useEffect(() => {
+    if (data) {
+      const { adoptions } = mapAdoptionByOngIdResponse(data);
+      setOriginalData(adoptions);
+      setFilterData(adoptions);
+    }
+  }, [data]);
+
+  const handleDelete = () => {
+    setOpenDeleteModal(true);
+  };
 
   if (isLoading) {
     return (
@@ -147,7 +169,6 @@ export default function AdoptionRequestPage() {
   if (isError) {
     return <div>Error loading event</div>;
   }
-
   return (
     <div className="w-full h-full">
       <div className="h-14"></div>
@@ -156,18 +177,23 @@ export default function AdoptionRequestPage() {
           Pedidos de Adoção
         </h2>
         <div className="">
-          <StatCardGrid requests={dataMock} />
-          <HeaderInputSearch />
+          <StatCardGrid requests={filterData} />
+          <HeaderInputSearch handleSerachEvent={handleSearchInputChange} />
           <div className="h-8"></div>
         </div>
         <DynamicTable
           columns={columns}
-          data={adoptions}
+          data={filterData}
           setSelected={setSelected}
           selected={selected}
           selectDisabled={true}
         />
       </div>
+      <DeleteModal
+        setOpenModal={setOpenDeleteModal}
+        isOpenModal={openDeleteModal}
+        onDelete={() => {}}
+      />
     </div>
   );
 }

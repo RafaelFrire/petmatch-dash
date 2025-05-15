@@ -6,9 +6,9 @@ import { StatCard } from '../statCard';
 
 export default function StatCardGrid({ requests }: { requests: any[] }) {
   const total = requests.length;
-  const pendentes = requests.filter((r) => r.status === 'Pendente').length;
-  const aprovados = requests.filter((r) => r.status === 'Aprovado').length;
-  const rejeitados = requests.filter((r) => r.status === 'Rejeitado').length;
+  const pendentes = requests.filter((r) => r.status === 'PENDING').length;
+  const aprovados = requests.filter((r) => r.status === 'APPROVED').length;
+  const rejeitados = requests.filter((r) => r.status === 'REJECTED').length;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 w-full">

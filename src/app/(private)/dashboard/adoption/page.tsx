@@ -17,17 +17,25 @@ import useDebounce from "@/hooks/useDebounce";
 import { toast } from "react-toastify";
 import { Pagination } from "@/components/pagination";
 import { useFilters } from "@/hooks/useFilter";
+import { ConfirmModal } from "@/components/confirmModal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/hooks/useApi";
 
-type Status = "PENDING" | "APPROVED" | "REJECTED";
+export type Status = "PENDING" | "APPROVED" | "REJECTED";
 
 export default function AdoptionRequestPage() {
+  const queryCliente = useQueryClient()
   const { searchParams } = useFilters();
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [selected, setSelected] = useState<string[]>([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [originalData, setOriginalData] = useState<Adoption[]>([]);
   const [filterData, setFilterData] = useState<Adoption[]>([]);
+  const [typeAction, setTypeAction] = useState<Status>("PENDING");
+  const [pendingApprovalId, setPendingApprovalId] = useState<string>("");
+  const [deleteId, setDeleteId] = useState<string>("");
 
   const currentPage = Number(searchParams.get("page"));
 
@@ -122,6 +130,33 @@ export default function AdoptionRequestPage() {
     },
   ];
 
+
+  const { mutate: adoptionStatus } = useMutation({
+    mutationFn: () =>
+      apiRequest(
+        `/adoptions/setAdoptionStatus/${pendingApprovalId}?status=${typeAction}`,
+        {
+          method: "POST",
+        }
+      ),
+    onSuccess: () => {
+      toast.success("Atualizado com sucesso!");
+      queryCliente.invalidateQueries({ queryKey: ["fetchAdoption"] });
+    },
+    onError: () => {
+      toast.error("Houve um problema.");
+    },
+  });
+
+
+  const updateStatus = () =>{
+    if(!typeAction || !pendingApprovalId){
+      toast.error("houve um problema ao tentar atualizar status.")
+      return;
+    }
+    adoptionStatus()
+  }
+
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
       setFilterData(originalData);
@@ -161,20 +196,24 @@ export default function AdoptionRequestPage() {
     }
   }, [data]);
 
-  const handleDelete = (id: string) => {
-    console.log("delete", id);
-    setOpenDeleteModal(true);
-  };
+
 
   function handleSearchInputChange(text: string) {
     setSearchText(text);
   }
-
+  const handleDelete = (id: string) => {
+    setDeleteId(id);
+    setOpenDeleteModal(true);
+  };
   const handleApprove = (id: string) => {
-    console.log("Aprovar", id);
+    setPendingApprovalId(id);
+    setTypeAction("APPROVED");
+    setOpenConfirmModal(true);
   };
   const handleReject = (id: string) => {
-    console.log("Rejeitar", id);
+    setPendingApprovalId(id);
+    setTypeAction("REJECTED");
+    setOpenConfirmModal(true);
   };
 
   if (isLoading) {
@@ -196,7 +235,12 @@ export default function AdoptionRequestPage() {
           Pedidos de Adoção
         </h2>
         <div className="">
-          <StatCardGrid requests={filterData} />
+          <StatCardGrid
+            total={data?.totalItems || 0}
+            pendentes={data?.totalPendente || 0}
+            aprovados={data?.totalAprovado || 0}
+            rejeitados={data?.totalReprovado || 0 }
+          />
           <HeaderInputSearch handleSerachEvent={handleSearchInputChange} />
           <div className="h-8"></div>
         </div>
@@ -214,6 +258,13 @@ export default function AdoptionRequestPage() {
         onDelete={() => {}}
       />
 
+      <ConfirmModal
+        setOpenModal={setOpenConfirmModal}
+        isOpenModal={openConfirmModal}
+        onAction={updateStatus}
+        typeAction={typeAction}
+      />
+
       <div className="h-6"></div>
       <Pagination
         totalPages={data?.totalPages || 1}
@@ -223,7 +274,6 @@ export default function AdoptionRequestPage() {
         baseurl="dashboard/adoption"
       />
       <div className="h-6"></div>
-
     </div>
   );
 }

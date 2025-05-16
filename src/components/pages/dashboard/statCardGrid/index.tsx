@@ -4,12 +4,14 @@
 import { Users, PawPrint } from 'lucide-react';
 import { StatCard } from '../statCard';
 
-export default function StatCardGrid({ requests }: { requests: any[] }) {
-  const total = requests.length;
-  const pendentes = requests.filter((r) => r.status === 'PENDING').length;
-  const aprovados = requests.filter((r) => r.status === 'APPROVED').length;
-  const rejeitados = requests.filter((r) => r.status === 'REJECTED').length;
+type startCardProps = {
+  total: number;
+  pendentes: number;
+  aprovados: number;
+  rejeitados: number;
+}
 
+export default function StatCardGrid({total, pendentes, aprovados, rejeitados}:startCardProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 w-full">
       <StatCard

@@ -20,6 +20,7 @@ import { useFilters } from "@/hooks/useFilter";
 import { ConfirmModal } from "@/components/confirmModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/hooks/useApi";
+import useDeleteData from "@/hooks/useDeleteData";
 
 export type Status = "PENDING" | "APPROVED" | "REJECTED";
 
@@ -36,6 +37,7 @@ export default function AdoptionRequestPage() {
   const [typeAction, setTypeAction] = useState<Status>("PENDING");
   const [pendingApprovalId, setPendingApprovalId] = useState<string>("");
   const [deleteId, setDeleteId] = useState<string>("");
+  const { deleteData } = useDeleteData("adoptions");
 
   const currentPage = Number(searchParams.get("page"));
 
@@ -148,6 +150,17 @@ export default function AdoptionRequestPage() {
     },
   });
 
+    const {mutate: deleteAdoptation, isSuccess: adoptationSucess} = useMutation({
+      mutationFn: (id: string) => deleteData(id),
+      onSuccess: () => {
+        if (!adoptationSucess) {
+          toast.success("animal deletado com sucesso!");
+        }
+        queryCliente.invalidateQueries({ queryKey: ["fetchAdoption"] });
+      },
+      onError: () => toast.error("Houve um problema."),
+    });
+
 
   const updateStatus = () =>{
     if(!typeAction || !pendingApprovalId){
@@ -155,6 +168,14 @@ export default function AdoptionRequestPage() {
       return;
     }
     adoptionStatus()
+  }
+
+  const deleteAdoption = () => {
+    if(!deleteId){
+      toast.error("houve um problema ao tentar deletar.")
+      return;
+    }
+    deleteAdoptation(deleteId)
   }
 
   useEffect(() => {
@@ -202,6 +223,7 @@ export default function AdoptionRequestPage() {
     setSearchText(text);
   }
   const handleDelete = (id: string) => {
+    console.log(deleteId)
     setDeleteId(id);
     setOpenDeleteModal(true);
   };
@@ -239,7 +261,7 @@ export default function AdoptionRequestPage() {
             total={data?.totalItems || 0}
             pendentes={data?.totalPendente || 0}
             aprovados={data?.totalAprovado || 0}
-            rejeitados={data?.totalReprovado || 0 }
+            rejeitados={data?.totalReprovado || 0}
           />
           <HeaderInputSearch handleSerachEvent={handleSearchInputChange} />
           <div className="h-8"></div>
@@ -255,7 +277,7 @@ export default function AdoptionRequestPage() {
       <DeleteModal
         setOpenModal={setOpenDeleteModal}
         isOpenModal={openDeleteModal}
-        onDelete={() => {}}
+        onDelete={deleteAdoption}
       />
 
       <ConfirmModal

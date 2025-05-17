@@ -71,6 +71,6 @@ export function useGetPetByOngId(
   return useQuery({
     queryKey: ['pets', page],
     queryFn: () => getPetsByOngId(id, page, limit),
-
+    enabled: !!id,
   });
 }

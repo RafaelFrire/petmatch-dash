@@ -21,6 +21,7 @@ import {
 import { Pet } from "@/interfaces/pet";
 import { FormRegisterPet } from "../formRegisterPet";
 import { mapPetResponse, useGetPetById } from "@/hooks/useGetPetById";
+import { useSession } from "next-auth/react";
 
 const columns = [
   { id: "id", label: "#Número" },
@@ -62,6 +63,9 @@ const columns = [
   },
 ];
 export const AnimalsTableSection = () => {
+  const {data: sessionData} = useSession();
+  const userId = sessionData?.user?.id;
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [openDeleteModal, setDeleteModal] = useState(false);
   const { deleteData } = useDeleteData("pets");
@@ -71,7 +75,7 @@ export const AnimalsTableSection = () => {
   const currentPage = Number(searchParams.get("page"));
 
   const { data, error, isLoading } = useGetPetByOngId(
-    "0086a4c4-1a0c-40ec-8970-8d4c99f91b38",
+    userId!,
     currentPage,
     12
   );

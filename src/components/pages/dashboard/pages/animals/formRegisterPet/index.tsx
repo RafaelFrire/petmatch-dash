@@ -33,6 +33,7 @@ type formRegisterPetProps = {
 export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
   handleCloseModal,
   petToEdit,
+  isEdit,
 }) => {
   const { data: session } = useSession();
 
@@ -57,7 +58,12 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     },
   });
 
-  const { mutate: createPet, isPending, isError, isSuccess } = useMutation({
+  const {
+    mutate: createPet,
+    isPending,
+    isError,
+    isSuccess,
+  } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/pets/create", {
         method: "POST",
@@ -109,7 +115,7 @@ export const FormRegisterPet: React.FC<formRegisterPetProps> = ({
     if (data.files) {
       formData.append("files", data.files);
     }
-    if (petToEdit) {
+    if (isEdit && petToEdit) {
       updatePet(formData);
     } else {
       createPet(formData);

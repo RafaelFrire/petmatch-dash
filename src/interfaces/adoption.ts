@@ -6,6 +6,7 @@ export interface Adoption {
   adopterId: string;
   status: AdoptionStatus;
   name: string;
+  lastname: string;
   email: string;
   phone: string;
   cpf: string;

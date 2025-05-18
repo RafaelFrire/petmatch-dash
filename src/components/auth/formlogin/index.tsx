@@ -35,23 +35,31 @@ export default function FormLogin() {
     if (!state?.success) {
       toast.error(state?.message);
       return;
-    } else if (state?.success) {
+    } else if (
+      (state?.success && state.data.user, state.data?.user?.role === "ONG")
+    ) {
+      router.push("/dashboard");
+      toast.success(state?.message);
+      return;
+    } else if (
+      (state?.success && state.data.user, state.data?.user?.role === "ADOPTER")
+    ) {
       router.push("/");
       toast.success(state?.message);
       return;
     }
+    
   }, [state, formAdocaoPetId]);
 
-
   useEffect(() => {
-  if (state?.success) {
-    if (formAdocaoPetId) {
-      window.location.href = `/adocao/${formAdocaoPetId}`;
-    } else {
-      window.location.href = "/";
+    if (state?.success) {
+      if (formAdocaoPetId) {
+        window.location.href = `/adocao/${formAdocaoPetId}`;
+      } else {
+        window.location.href = "/";
+      }
     }
-  }
-}, [state, formAdocaoPetId]);
+  }, [state, formAdocaoPetId]);
   return (
     <>
       <Form

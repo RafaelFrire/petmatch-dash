@@ -9,11 +9,15 @@ export default async function loginAction(_prevState: unknown, formData: FormDat
       password: formData.get("password"),
     });
     
-
+    
      if (result?.error) {
       return { success: false, message: "Dados de login incorretos" };
     }
-    return { success: true, message: "Login realizado com sucesso!" };
+    return {
+      success: true,
+      message: "Login realizado com sucesso!",
+      data: result,
+    };
   } catch (e) {
     console.error(e);
     if ((e as Error & { type?: string }).type === "CredentialsSignin") {

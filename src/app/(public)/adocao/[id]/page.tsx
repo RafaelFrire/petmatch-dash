@@ -62,7 +62,11 @@ export default function CadastroPetPage() {
           </div>
 
           <div className="bg-white min-h-[70vh] w-full md:max-w-[75%] p-8 mx-auto flex flex-col justify-center rounded-2xl border border-primary40 shadow-2xl">
-            <FormAdocao petId={petId} userData={userData.user} />
+            <FormAdocao
+              petId={petId}
+              userData={userData.user}
+              readOnly={false}
+            />
           </div>
 
           <div className="h-12"></div>

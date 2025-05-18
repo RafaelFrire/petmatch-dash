@@ -21,23 +21,31 @@ import { ConfirmModal } from "@/components/confirmModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/hooks/useApi";
 import useDeleteData from "@/hooks/useDeleteData";
+import Modal from "@/components/modal";
+import { FormAdocao } from "@/components/pages/adocao/form";
+import { mapAdoptionByIdResponse, useGetAdoptionRequestById } from "@/hooks/useGetAdoptionById";
 
 export type Status = "PENDING" | "APPROVED" | "REJECTED";
 
 export default function AdoptionRequestPage() {
-  const queryCliente = useQueryClient()
+  const queryCliente = useQueryClient();
   const { searchParams } = useFilters();
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [selected, setSelected] = useState<string[]>([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [openAdoptionForm, setOpenAdoptionForm] = useState(false);
   const [originalData, setOriginalData] = useState<Adoption[]>([]);
   const [filterData, setFilterData] = useState<Adoption[]>([]);
   const [typeAction, setTypeAction] = useState<Status>("PENDING");
   const [pendingApprovalId, setPendingApprovalId] = useState<string>("");
   const [deleteId, setDeleteId] = useState<string>("");
   const { deleteData } = useDeleteData("adoptions");
+  const [adoptationFormData, setAdoptationFormData] = useState<Adoption | null>(
+    null
+  );
+  const [openAdoptionFormId, setOpenAdoptionFormId] = useState<string>("");
 
   const currentPage = Number(searchParams.get("page"));
 
@@ -50,16 +58,24 @@ export default function AdoptionRequestPage() {
     8
   );
 
+  const {data: adoptionData} = useGetAdoptionRequestById(openAdoptionFormId);
+
+
   const columns = [
     { id: "id", label: "#Número" },
     { id: "name", label: "Solicitante" },
     { id: "species", label: "Tipo", render: (item: any) => item.pet.species },
     {
+      id: "petName",
+      label: "Animal",
+      render: (item: any) => item.pet.name || "Não informado",
+    },
+    {
       id: "phone",
       label: "Telefone",
       render: (item: any) => item.phone || "Não informado",
     },
-    { id: "email", label: "Email" },
+
     {
       id: "createdAt",
       label: "Data",
@@ -127,11 +143,11 @@ export default function AdoptionRequestPage() {
           onDelete={() => handleDelete(item.id)}
           onApprove={() => handleApprove(item.id)}
           onReject={() => handleReject(item.id)}
+          onEdit={() => handleAdoptionForm(item.id)}
         />
       ),
     },
   ];
-
 
   const { mutate: adoptionStatus } = useMutation({
     mutationFn: () =>
@@ -150,7 +166,8 @@ export default function AdoptionRequestPage() {
     },
   });
 
-    const {mutate: deleteAdoptation, isSuccess: adoptationSucess} = useMutation({
+  const { mutate: deleteAdoptation, isSuccess: adoptationSucess } = useMutation(
+    {
       mutationFn: (id: string) => deleteData(id),
       onSuccess: () => {
         if (!adoptationSucess) {
@@ -159,24 +176,24 @@ export default function AdoptionRequestPage() {
         queryCliente.invalidateQueries({ queryKey: ["fetchAdoption"] });
       },
       onError: () => toast.error("Houve um problema."),
-    });
+    }
+  );
 
-
-  const updateStatus = () =>{
-    if(!typeAction || !pendingApprovalId){
-      toast.error("houve um problema ao tentar atualizar status.")
+  const updateStatus = () => {
+    if (!typeAction || !pendingApprovalId) {
+      toast.error("houve um problema ao tentar atualizar status.");
       return;
     }
-    adoptionStatus()
-  }
+    adoptionStatus();
+  };
 
   const deleteAdoption = () => {
-    if(!deleteId){
-      toast.error("houve um problema ao tentar deletar.")
+    if (!deleteId) {
+      toast.error("houve um problema ao tentar deletar.");
       return;
     }
-    deleteAdoptation(deleteId)
-  }
+    deleteAdoptation(deleteId);
+  };
 
   useEffect(() => {
     if (debouncedSearchText.length === 0) {
@@ -217,13 +234,18 @@ export default function AdoptionRequestPage() {
     }
   }, [data]);
 
-
+  useEffect(() => {
+    if (adoptionData) {
+      const adoption = mapAdoptionByIdResponse(adoptionData);
+      setAdoptationFormData(adoption);
+    }
+  }, [adoptionData]);
 
   function handleSearchInputChange(text: string) {
     setSearchText(text);
   }
   const handleDelete = (id: string) => {
-    console.log(deleteId)
+    console.log(deleteId);
     setDeleteId(id);
     setOpenDeleteModal(true);
   };
@@ -236,6 +258,12 @@ export default function AdoptionRequestPage() {
     setPendingApprovalId(id);
     setTypeAction("REJECTED");
     setOpenConfirmModal(true);
+  };
+
+  const handleAdoptionForm = (id: string) => {
+    console.log("id", id);
+    setOpenAdoptionFormId(id);
+    setOpenAdoptionForm(true);
   };
 
   if (isLoading) {
@@ -287,6 +315,20 @@ export default function AdoptionRequestPage() {
         typeAction={typeAction}
       />
 
+      <Modal
+        isOpen={openAdoptionForm}
+        onClose={() => setOpenAdoptionForm(!openAdoptionForm)}
+      >
+        <div className="overflow-y-auto max-h-[90vh]">
+          {adoptationFormData && (
+            <FormAdocao
+              petId={adoptationFormData.petId}
+              userData={adoptationFormData}
+              readOnly={true}
+            />
+          )}
+        </div>
+      </Modal>
       <div className="h-6"></div>
       <Pagination
         totalPages={data?.totalPages || 1}

@@ -246,6 +246,7 @@ export const AnimalsTableSection = () => {
         <FormRegisterPet
           handleCloseModal={() => setModalOpen(false)}
           petToEdit={editPet}
+          isEdit={selected.length === 1 ? true : false}
         />
       </Modal>
       <DeleteModal

@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import { apiRequest } from "@/hooks/useApi";
 import { toast } from "react-toastify";
 import SpinLoader from "@/components/spinLoader";
+import DropdownInput from "@/components/form/dropdownInput";
+import { Adoption } from "@/interfaces/adoption";
 
 export type AdoptionInputs = {
   name: string;
@@ -36,10 +38,15 @@ export type AdoptionInputs = {
 
 type formAdocaoProps = {
   petId: string;
-  userData: Account;
+  userData: Account | Adoption;
+  readOnly?: boolean;
 };
 
-export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
+export const FormAdocao: React.FC<formAdocaoProps> = ({
+  petId,
+  userData,
+  readOnly,
+}) => {
   const {
     register,
     handleSubmit,
@@ -69,12 +76,18 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
     },
   });
 
-  const {mutate, isSuccess, isPending, isError} = useMutation({
-    mutationFn: (formData: FormData) =>
-      apiRequest(`/adoption/${petId}/${userData.adopter?.id}`, {
+  // Type guard to check if userData is Account
+  const isAccount = (data: Account | Adoption): data is Account =>
+    (data as Account).adopter !== undefined;
+
+  const { mutate, isSuccess, isPending, isError } = useMutation({
+    mutationFn: (formData: FormData) => {
+      const adopterId = isAccount(userData) ? userData.adopter?.id : "";
+      return apiRequest(`/adoption/${petId}/${adopterId}`, {
         method: "POST",
         body: formData,
-      }),
+      });
+    },
     onSuccess() {
       toast.success("Formulário enviado com sucesso!");
     },
@@ -102,35 +115,48 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
 
   useEffect(() => {
     if (userData) {
+      // Type guards to distinguish Account from Adoption
+      const isAccount = (data: Account | Adoption): data is Account =>
+        (data as Account).adopter !== undefined;
       reset({
         ...userData,
-        phone: userData.adopter?.phone,
-        zipcode: userData.adopter?.zipcode,
-        state: userData.adopter?.state,
-        city: userData.adopter?.city,
-        document: userData.adopter?.document,
-        address: userData.adopter?.address,
+        phone: isAccount(userData)
+          ? userData.adopter?.phone
+          : (userData as Adoption).phone,
+        zipcode: isAccount(userData)
+          ? userData.adopter?.zipcode
+          : (userData as Adoption).zipCode,
+        state: isAccount(userData)
+          ? userData.adopter?.state
+          : (userData as Adoption).state,
+        city: isAccount(userData)
+          ? userData.adopter?.city
+          : (userData as Adoption).city,
+        document: isAccount(userData)
+          ? userData.adopter?.document
+          : (userData as Adoption).cpf,
+        address: isAccount(userData)
+          ? userData.adopter?.address
+          : (userData as Adoption).address,
         files: undefined, // não traz arquivos antigos
       });
       return;
     }
-    reset(); 
+    reset();
   }, [userData, reset]);
 
-
-  if(isSuccess){
-    toast.success("Formulário cadastrado com sucesso!")
+  if (isSuccess) {
+    toast.success("Formulário cadastrado com sucesso!");
   }
-  if(isError){
-    toast.success("Ops, houve um problema!")
+  if (isError) {
+    toast.success("Ops, houve um problema!");
   }
 
-  if(isPending){
+  if (isPending) {
     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <SpinLoader />
     </div>;
   }
-
 
   return (
     <form
@@ -138,6 +164,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Input
+        disabled={readOnly}
         label="Digite seu primeiro nome*"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         {...register("name")}
@@ -145,6 +172,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         error={errors?.name?.message}
       />
       <Input
+        disabled={readOnly}
         label="Digite seu sobrenome*"
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
         {...register("lastname")}
@@ -152,6 +180,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         error={errors?.lastname?.message}
       />
       <Input
+        disabled={readOnly}
         label="Email*"
         className="col-span-2 h-16 text-sm font-medium"
         {...register("email")}
@@ -159,6 +188,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         error={errors?.email?.message}
       />
       <Input
+        disabled={readOnly}
         label="Telefone*"
         {...register("phone")}
         name="phone"
@@ -171,6 +201,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         maxLength={15}
       />
       <Input
+        disabled={readOnly}
         label="CEP*"
         {...register("zipcode")}
         name="zipcode"
@@ -183,6 +214,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         maxLength={9}
       />
       <Input
+        disabled={readOnly}
         label="Endereço*"
         {...register("address")}
         name="address"
@@ -190,6 +222,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         error={errors?.address?.message}
       />
       <Input
+        disabled={readOnly}
         label="Estado*"
         {...register("state")}
         name="state"
@@ -197,6 +230,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         error={errors?.state?.message}
       />
       <Input
+        disabled={readOnly}
         {...register("city")}
         label="Cidade*"
         name="city"
@@ -204,6 +238,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         className="col-span-2 md:col-span-1 h-16 text-sm font-medium"
       />
       <Input
+        disabled={readOnly}
         label="Documento de identificação*"
         {...register("document")}
         name="document"
@@ -245,6 +280,7 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
         />
       </div>
       <Input
+        disabled={readOnly}
         label="Motivo para adoção*"
         {...register("reasonForAdoption")}
         name="reasonForAdoption"
@@ -253,56 +289,64 @@ export const FormAdocao: React.FC<formAdocaoProps> = ({ petId, userData }) => {
       />
       <div className="col-span-2 md:col-span-1"></div>
       <div className="col-span-2">
-        <label className="block text-sm font-medium mb-2">
-          Possui outros pets?*
-        </label>
-        <input type="checkbox" {...register("hasOtherPets")} className="mr-2" />
-        {errors.hasOtherPets && (
-          <p className="text-red-500 text-sm">{errors.hasOtherPets.message}</p>
-        )}
+        <DropdownInput
+          label="Possui outros pets?*"
+          {...register("hasOtherPets")}
+          options={[
+            { label: "Sim", value: true },
+            { label: "Não", value: false },
+          ]}
+          error={errors.hasOtherPets?.message}
+          disabled={readOnly}
+        />
       </div>
 
-      <InputFiles
-        register={register}
-        setValue={setValue}
-        name="files"
-        label="Anexar*"
-        error={errors?.files?.message}
-        classname="col-span-2 md:col-span-1"
-      />
-      <div className="h-4"></div>
-      <div className="flex flex-col gap-5">
-        <Controller
-          name="termsPrivacity"
-          control={control}
-          render={({ field }) => (
-            <AcceptTerms
-              text="Li e Aceito a Política de Privacidade"
-              value={field.value}
-              onChange={field.onChange}
-              classname="max-w-xs"
-              error={errors.termsPrivacity?.message}
+      {!readOnly && (
+        <>
+          <InputFiles
+            register={register}
+            setValue={setValue}
+            name="files"
+            label="Anexar*"
+            error={errors?.files?.message}
+            classname="col-span-2 md:col-span-1"
+          />
+          <div className="h-4"></div>
+          <div className="flex flex-col gap-5">
+            <Controller
+              name="termsPrivacity"
+              control={control}
+              render={({ field }) => (
+                <AcceptTerms
+                  text="Li e Aceito a Política de Privacidade"
+                  value={field.value}
+                  onChange={field.onChange}
+                  classname="max-w-xs"
+                  error={errors.termsPrivacity?.message}
+                />
+              )}
+              rules={{ required: "Você deve aceitar os termos para continuar" }}
             />
-          )}
-          rules={{ required: "Você deve aceitar os termos para continuar" }}
-        />
-        <Controller
-          name="termsAdopter"
-          control={control}
-          render={({ field }) => (
-            <AcceptTerms
-              text="Li e Aceito os Termos de Responsabilidade de Adoção"
-              value={field.value}
-              onChange={field.onChange}
-              error={errors.termsAdopter?.message}
-              classname="max-w-xs"
+            <Controller
+              name="termsAdopter"
+              control={control}
+              render={({ field }) => (
+                <AcceptTerms
+                  text="Li e Aceito os Termos de Responsabilidade de Adoção"
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.termsAdopter?.message}
+                  classname="max-w-xs"
+                />
+              )}
+              rules={{ required: "Você deve aceitar os termos para continuar" }}
             />
-          )}
-          rules={{ required: "Você deve aceitar os termos para continuar" }}
-        />
-      </div>
-      <div className="h-4"></div>
-      <Button text="Cadastrar" classname="col-span-2" />
+          </div>
+          <div className="h-4"></div>
+          <Button text="Cadastrar" classname="col-span-2" />
+        </>
+      )}
+
       <div className="h-8"></div>
     </form>
   );

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
 import { apiRequest } from "./useApi";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";

@@ -39,7 +39,7 @@ export interface Ong {
   user: Account;
 }
 
-enum RoleEnum {
+export enum RoleEnum {
   ADOPTER = "ADOPTER",
   ONG = "ONG",
   ADMIN = "ADMIN",

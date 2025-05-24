@@ -1,12 +1,13 @@
 'use client';
 import { useEffect } from 'react';
 import useSocketIo from '@/hooks/useSocketIo';
+import ChatSection from '@/components/pages/dashboard/pages/chat/chatSection';
 
 export default function ChatPage(){
     const { joinRoom, sendMessage, on } = useSocketIo();
 
-    const userId = "e038c7da-8552-4ec2-a36a-8bd9f1e1be90"; // substitua pelo userId real
-    const receiverId = "d5d17ca4-c61f-424f-be96-dc638176d6a1";
+    const userId = "3b97c77c-731b-4102-99c0-28d310e196a3"; // substitua pelo userId real
+    const receiverId = "484fe8db-0563-4022-91b2-80a3ddd5a599";
  
   useEffect(() => {
     // Entra na "sala" do usuário logado
@@ -26,21 +27,21 @@ export default function ChatPage(){
     });
   }, []);
 
-    const enviarMensagemTeste = () => {
+    const handleSendMessage = (text: string) => {
+      if(text.trim() === "") return; // Não envia mensagens vazias
     sendMessage({
       senderId: userId,
       receiverId,
-      subject: "Testando Socket",
-      message: "Olá! Esta é uma mensagem de teste via socket.",
+      subject: "Mensagem via Chat",
+      message: text,
     });
   };
 
    return (
-     <div>
-       <h1>Chat</h1>
-       <button onClick={enviarMensagemTeste} className="bg-primary100">
-         Enviar Mensagem de Teste
-       </button>
+     <div className='w-full h-full flex flex-col'>
+      <ChatSection
+      onSendMessage={handleSendMessage}
+      />
      </div>
    );
 }

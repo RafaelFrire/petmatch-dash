@@ -1,33 +1,30 @@
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
 interface NavItemProps {
   icon: React.ReactNode;
   label: string;
   path: string;
+  toggle?: boolean; // true = sidebar fechado
 }
 
-const NavItem = ({ icon, label, path }: NavItemProps) => {
+const NavItem = ({ icon, label, path, toggle = false }: NavItemProps) => {
   const pathname = usePathname();
   const [isActive, setActive] = useState(false);
 
-  useEffect(() =>{
-    if(pathname === path){
-      setActive(true)
-    }
-    else{
-      setActive(false)
-    }
-  }, [pathname])
+  useEffect(() => {
+    setActive(pathname === path);
+  }, [pathname, path]);
+
   return (
     <a href={path || "/"}>
-    <div
-      className={`w-[253px] flex items-center px-2 rounded-md cursor-pointer hover:bg-gray-500 ${
-        isActive ? "bg-gray-200 text-primary100" : "bg-white"
-      }`}
-    >
-      <div className="flex items-center">
-        <div className="p-2">{icon}</div>
-        <div className="p-2">
+      <div
+        className={`flex items-center gap-2 px-2 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-100 ${
+          isActive ? "bg-gray-200 text-primary100" : "bg-white"
+        } ${toggle ? "justify-center w-[50px]" : "w-[253px]"}`}
+      >
+        <div className="p-1">{icon}</div>
+        {!toggle && (
           <span
             className={`text-sm tracking-wide ${
               isActive ? "font-semibold text-primary100" : "font-normal text-gray-700"
@@ -35,11 +32,9 @@ const NavItem = ({ icon, label, path }: NavItemProps) => {
           >
             {label}
           </span>
-        </div>
+        )}
       </div>
-    </div>
     </a>
-
   );
 };
 

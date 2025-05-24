@@ -1,22 +1,24 @@
 import { LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 
-const LogoutButton = () => {
+type LogoutButtonProps = {
+  toggle?: boolean; // true = sidebar fechado
+};
+
+const LogoutButton: React.FC<LogoutButtonProps> = ({ toggle = false }) => {
   return (
-    <button className="w-[253px] h-[44px] bg-primary100 rounded-md flex items-center px-2 hover:bg-primary-100/90">
-      <div className="flex items-center">
-        <div className="p-2">
-          <LogOutIcon className="w-7 h-7 text-white" />
-        </div>
-        <div className="p-2">
-          <span
-            className="text-sm font-semibold text-white tracking-wide"
-            onClick={() => signOut()}
-          >
-            Sair
-          </span>
-        </div>
+    <button
+      onClick={() => signOut()}
+      className={`flex items-center px-2 py-2 rounded-md transition-all duration-300 bg-primary100 hover:bg-primary100/90 text-white ${
+        toggle ? "justify-center w-[50px]" : "w-[253px]"
+      }`}
+    >
+      <div className="p-1">
+        <LogOutIcon className="w-6 h-6" />
       </div>
+      {!toggle && (
+        <span className="text-sm font-semibold tracking-wide ml-2">Sair</span>
+      )}
     </button>
   );
 };

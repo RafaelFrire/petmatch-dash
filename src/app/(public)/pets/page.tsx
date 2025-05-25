@@ -42,29 +42,32 @@ function PetsContent() {
       <div className="h-6"></div>
       <TitleWithPaw title="Pets" />
       <div className="h-10"></div>
-      <div className="flex justify-end w-[90%] md:w-[75%] mx-auto">
-        <Pagination
-          totalPages={5}
-          pageSize={15}
-          currentPage={currentPage}
-          onPageChange={() => {}}
-          baseurl="pets"
-        />
-      </div>
-      <div className="h-10"></div>
-      {petsList.length == 0 ? (
+
+      {petsList.length === 0 ? (
         <div className="text-center text-3xl text-primary100">
           Nenhum Pet disponivel
         </div>
-      ) : null}
-      <div className="flex flex-wrap flex-row md:flex-nowrap md:justify-center md:gap-1 md:w-[75%] mx-auto">
-        <div className="w-[95%] md:w-[25%]  mx-auto">
-          <FilterSidebar />
-        </div>
-        <div className="w-[95%] md:w-full mx-auto">
-          <PetsGallerySection petsList={petsList} />
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex justify-end w-[90%] md:w-[75%] mx-auto">
+            <Pagination
+              totalPages={5}
+              pageSize={15}
+              currentPage={currentPage}
+              onPageChange={() => {}}
+              baseurl="pets"
+            />
+          </div>
+          <div className="flex flex-wrap flex-row md:flex-nowrap md:justify-center md:gap-1 md:w-[75%] mx-auto">
+            <div className="w-[95%] md:w-[25%]  mx-auto">
+              <FilterSidebar />
+            </div>
+            <div className="w-[95%] md:w-full mx-auto">
+              <PetsGallerySection petsList={petsList} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

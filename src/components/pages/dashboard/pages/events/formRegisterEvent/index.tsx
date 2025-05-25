@@ -31,8 +31,12 @@ type formRegisterEventProps = {
   eventToEdit?: Partial<Event>;
 };
 
-export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseModal, eventToEdit}) => {
-  const { data: session } = useSession()
+export const FormRegisterEvent: React.FC<formRegisterEventProps> = ({
+  handleCloseModal,
+  eventToEdit,
+  isEdit,
+}) => {
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
@@ -56,8 +60,12 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     }, // Define o valor padrão como undefined para o campo files
   });
 
-
-  const { mutate: createEvent, isPending, isError, isSuccess } = useMutation({
+  const {
+    mutate: createEvent,
+    isPending,
+    isError,
+    isSuccess,
+  } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest("/events/create", {
         method: "POST",
@@ -67,7 +75,12 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
     onError: () => toast.error("Erro ao criar evento."),
   });
 
-  const { mutate: updateEvent, isPending: isUpdating, isError: isUpdateError, isSuccess: isUpdateSuccess } = useMutation({
+  const {
+    mutate: updateEvent,
+    isPending: isUpdating,
+    isError: isUpdateError,
+    isSuccess: isUpdateSuccess,
+  } = useMutation({
     mutationFn: (formData: FormData) =>
       apiRequest(`/event/${eventToEdit?.id}/id`, {
         method: "PATCH",
@@ -99,19 +112,20 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
       formData.append("files", data.files);
     }
 
-    if (eventToEdit) {
+    if (eventToEdit && isEdit) {
       updateEvent(formData);
     } else {
       createEvent(formData);
     }
   };
 
-
   useEffect(() => {
     if (eventToEdit) {
       reset({
         ...eventToEdit,
-        date: eventToEdit.date ? new Date(eventToEdit.date).toISOString().split('T')[0] : "", // formato yyyy-MM-dd para input type="date"
+        date: eventToEdit.date
+          ? new Date(eventToEdit.date).toISOString().split("T")[0]
+          : "", // formato yyyy-MM-dd para input type="date"
         files: undefined, // não traz arquivos antigos
       });
     } else {
@@ -141,8 +155,6 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
       </div>
     );
   }
-
-
 
   return (
     <form
@@ -236,7 +248,6 @@ export const FormRegisterEvent:React.FC<formRegisterEventProps> = ({handleCloseM
           type="submit"
         >
           {eventToEdit ? "Salvar Alterações" : "Cadastrar"}
-
         </button>
       </div>
     </form>

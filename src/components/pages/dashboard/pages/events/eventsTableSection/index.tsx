@@ -192,6 +192,7 @@ export const EventsTableSection = () => {
         <FormRegisterEvent
           handleCloseModal={() => setModalOpen(false)}
           eventToEdit={eventData}
+          isEdit={selected.length === 1 ? true : false}
         />
       </Modal>
       <DeleteModal

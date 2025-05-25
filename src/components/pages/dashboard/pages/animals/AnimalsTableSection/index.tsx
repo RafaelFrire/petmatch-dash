@@ -220,7 +220,7 @@ export const AnimalsTableSection = () => {
     return <div>Error loading event</div>;
   }
   return (
-    <section className="p-4 min-w-1/2 w-[90%] overflow-x-hidden">
+    <section className="p-4 min-w-1/2 w-full overflow-x-hidden">
       <h2 className="text-3xl text-primary80 font-semibold mb-4">Animais</h2>
 
       <TableHeader

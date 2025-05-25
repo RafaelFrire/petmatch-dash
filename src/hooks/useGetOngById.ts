@@ -16,7 +16,7 @@ async function getOngById(id: string): Promise<OngResponse | null> {
     });
 
     if (!res.ok) {
-      console.error("Falha ao carregar ONG");
+      // console.error("Falha ao carregar ONG");
       return null;
     }
 

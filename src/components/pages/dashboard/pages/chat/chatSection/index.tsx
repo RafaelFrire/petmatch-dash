@@ -3,55 +3,9 @@ import React, { useState } from "react";
 import { ConversationItem } from "../conversationItem";
 import { MessageItem } from "../messageItem";
 import { on } from "events";
+import { Conversation } from "@/interfaces/conversation";
 
-const conversations = [
-  {
-    id: 1,
-    name: "Peter Jordan",
-    initial: "R",
-    message:
-      "Perfeito! Vou organizar minha agenda e já entro em contato para marcar visita. Obrigado!",
-    color: "#b80000",
-  },
-  {
-    id: 2,
-    name: "Peter Jordan",
-    initial: "R",
-    message:
-      "Perfeito! Vou organizar minha agenda e já entro em contato para marcar visita. Obrigado!",
-    color: "#b80000",
-  },
-  {
-    id: 3,
-    name: "Renato Cardoso",
-    initial: "R",
-    message:
-      "Perfeito! Vou organizar minha agenda e já entro em contato para marcar visita. Obrigado!",
-    color: "#b80000",
-  },
-  {
-    id: 4,
-    name: "Bruna Melo",
-    initial: "B",
-    message: "Entendi! E vocês também acompanham a adaptação depois da adoção?",
-    color: "#b80000",
-  },
-  {
-    id: 5,
-    name: "Cesar Keppler",
-    initial: "C",
-    message:
-      " o Thor é um labrador de apenas 3 anos, super brincalhão e dócil.",
-    color: "#b80000",
-  },
-  {
-    id: 6,
-    name: "Bianca Pinho",
-    initial: "B",
-    message: "Que gracinha! Ele se adapta bem a apartamentos?",
-    color: "#b80000",
-  },
-];
+
 const messages = [
   {
     id: 1,
@@ -107,17 +61,22 @@ const messages = [
 
 type ChatSectionProps = {
   onSendMessage: (text: string) => void;
+  conversationsList:Conversation[]; 
 }
 
-const ChatSection: React.FC<ChatSectionProps> = ({ onSendMessage }) => {
-    const [input, setInput] = useState("");
+const ChatSection: React.FC<ChatSectionProps> = ({
+  onSendMessage,
+  conversationsList,
+}) => {
+  const [input, setInput] = useState("");
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && input.trim()) {
-        onSendMessage(input);
-        setInput("");
+      onSendMessage(input);
+      setInput("");
     }
-    };
+  };
+
   return (
     <div className="flex w-full h-full min-h-100vh">
       {/* Sidebar */}
@@ -130,8 +89,20 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onSendMessage }) => {
         </div>
 
         <div className="flex flex-col divide-y divide-[#ebebeb]">
-          {conversations.map((c) => (
-            <ConversationItem key={c.id} {...c} />
+          {conversationsList.map((c) => (
+            <ConversationItem
+              key={c.id}
+              name={c.adopterName || ""}
+              initial={
+                c.adopterName
+                  ? c.adopterName[0].toUpperCase()
+                  : c.ongName
+                  ? c.ongName[0]
+                  : ""
+              }
+              color="#b80000"
+              message={c.lastMessage?.body || ""}
+            />
           ))}
         </div>
       </div>
@@ -173,7 +144,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onSendMessage }) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-
             />
             <button
               type="button"

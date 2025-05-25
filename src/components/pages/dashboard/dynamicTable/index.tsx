@@ -62,7 +62,7 @@ export const DynamicTable = ({
               )}
               {columns.map((col) => (
                 <th key={col.id} className="px-4 py-3 font-medium  ">
-                  <div className="flex items-center justify-center  gap-1">
+                  <div className="flex items-center justify-center gap-1 max-w-64">
                     {col.label}
                     {col.id !== "actions" && (
                       <ChevronDown className="w-3 h-3 text-gray-400" />
@@ -76,8 +76,11 @@ export const DynamicTable = ({
             {data.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50">
                 {!selectDisabled && (
-                  <td className={`text-center px-4 py-2 ${!selectDisabled ? "text-center": "text-start"}`}>
-                    
+                  <td
+                    className={`text-center px-4 py-2 ${
+                      !selectDisabled ? "text-center" : "text-start"
+                    } `}
+                  >
                     <input
                       type="checkbox"
                       checked={selected.includes(item.id)}
@@ -90,9 +93,9 @@ export const DynamicTable = ({
                 {columns.map((col) => (
                   <td
                     key={col.id}
-                    className={`px-4 py-2 whitespace-nowrap ${selectDisabled ? "text-center": null} ${
-                      col.label === "#Número" ? "text-sencondary100" : ""
-                    }`}
+                    className={`px-4 py-2 whitespace-nowrap max-w-92 ${
+                      selectDisabled ? "text-center" : null
+                    } ${col.label === "#Número" ? "text-sencondary100" : ""}`}
                   >
                     {col.render ? col.render(item) : item[col.id]}
                   </td>

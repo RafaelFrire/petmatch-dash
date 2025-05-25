@@ -1,63 +1,12 @@
 'use client';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConversationItem } from "../conversationItem";
 import { MessageItem } from "../messageItem";
 import { on } from "events";
 import { Conversation } from "@/interfaces/conversation";
+import { mapChatResponse, useGetMessagesByChatId } from "@/hooks/useGetMessages";
 
 
-const messages = [
-  {
-    id: 1,
-    sender: "Renato",
-    time: "10:54 PM",
-    avatar: "R",
-    avatarColor: "#222222",
-    message:
-      'Olá! Eu vi no site de vocês um gatinho chamado "Biscoito" para adoção e me interessei muito. Ele ainda está disponível?',
-    isUser: true,
-  },
-  {
-    id: 2,
-    sender: "PetLovers",
-    time: "10:54 PM",
-    avatar: "P",
-    avatarColor: "#b80000",
-    message:
-      "Olá! Sim, o Biscoito ainda está disponível para adoção! 😊 Fico feliz que tenha se interessado nele! Posso te ajudar com mais informações sobre ele?",
-    isUser: false,
-  },
-  {
-    id: 3,
-    sender: "Renato",
-    time: "10:54 PM",
-    avatar: "R",
-    avatarColor: "#222222",
-    message:
-      "Claro! Gostaria de saber um pouco mais sobre ele. Ele é tranquilo? Se dá bem com outros animais?",
-    isUser: true,
-  },
-  {
-    id: 4,
-    sender: "PetLovers",
-    time: "10:54 PM",
-    avatar: "P",
-    avatarColor: "#b80000",
-    message:
-      "Com certeza! O Biscoito é super carinhoso e adora brincar, especialmente com bolinhas e brinquedos de gato! Ele é um pouco tímido no começo, mas rapidamente se acostuma com pessoas. Ele se dá bem com outros gatos e está acostumado a conviver com cachorros também, então é bem sociável.",
-    isUser: false,
-  },
-  {
-    id: 5,
-    sender: "Renato",
-    time: "10:54 PM",
-    avatar: "R",
-    avatarColor: "#222222",
-    message:
-      "Que ótimo! Eu tenho um cachorro em casa, então é bom saber que ele já está acostumado. E sobre a saúde dele, ele está com todas as vacinas em dia?",
-    isUser: true,
-  },
-];
 
 type ChatSectionProps = {
   onSendMessage: (text: string) => void;
@@ -69,6 +18,11 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   conversationsList,
 }) => {
   const [input, setInput] = useState("");
+  const [currentChatId, setCurrentChatId] = useState("");
+
+  const {data: fetchMessages} = useGetMessagesByChatId(currentChatId!);
+
+  const mapMessages = mapChatResponse(fetchMessages);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && input.trim()) {
@@ -77,6 +31,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({
     }
   };
 
+  useEffect(() =>{
+    console.log("currentChatId", currentChatId);
+  }, [currentChatId])
   return (
     <div className="flex w-full h-full min-h-100vh">
       {/* Sidebar */}
@@ -88,7 +45,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col divide-y divide-[#ebebeb]">
+        <div className="flex flex-col divide-y gap-10 divide-[#ebebeb]">
           {conversationsList.map((c) => (
             <ConversationItem
               key={c.id}
@@ -102,6 +59,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
               }
               color="#b80000"
               message={c.lastMessage?.body || ""}
+              onClick={() => setCurrentChatId(c.id)}
+              isSelected={currentChatId === c.id}
             />
           ))}
         </div>
@@ -131,8 +90,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({
               06 Novembro, 2024
             </span>
           </div>
-          {messages.map((m) => (
-            <MessageItem key={m.id} {...m} />
+          {mapMessages?.map((m) => (
+            <MessageItem
+              key={m.id}
+              sender={m.senderId}
+              avatar={m.senderId[0].toUpperCase()}
+              avatarColor={"#a00000"}
+              message={m.body}
+              time={"10h"}
+              isUser={m.senderId === currentChatId}
+            />
           ))}
         </div>
 

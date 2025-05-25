@@ -12,7 +12,6 @@ export default function ChatPage(){
 
     const conversationsList = useGetConversationsByUserId(userId);
 
-
     const mapConversations = mapConversationResponse(conversationsList.data);
 
  
@@ -37,8 +36,8 @@ export default function ChatPage(){
     const handleSendMessage = (text: string) => {
       if(text.trim() === "") return; // Não envia mensagens vazias
     sendMessage({
-      senderId: userId,
-      receiverId,
+      senderId: receiverId,
+      receiverId: userId,
       subject: "Mensagem via Chat",
       message: text,
     });

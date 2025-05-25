@@ -1,23 +1,23 @@
 import { apiRequest } from "./useApi";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import { Conversation } from "@/interfaces/conversation";
 
 let successMessageShown = false;
 
-export interface Chat {
-    id: string;
-    users: string[];
-    messages?: string[];
-    updatedAt?: string;
-    // Add other fields as needed
+interface GetMessagesResponse extends Conversation {
+    senderId: string;
+    receiverId: string;
+    body: string;
 }
 
-async function getMessages(userId: string): Promise<Chat[] | null> {
+
+async function getMessages(chatId: string): Promise<GetMessagesResponse[] | null> {
     try {
-        if (!userId) {
-            return null;
+        if (!chatId) {
+          return null;
         }
-        const res = await apiRequest(`/chats/user/${userId}`, {
+        const res = await apiRequest(`/messages/${chatId}`, {
             method: "GET",
         });
 
@@ -41,19 +41,17 @@ async function getMessages(userId: string): Promise<Chat[] | null> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mapChatResponse = (response: any): Partial<Chat> => {
-    return {
-        id: response?.id,
-        users: response?.users,
-        messages: response?.messages,
-        updatedAt: response?.updatedAt,
-        // Add other fields as needed
-    };
+export const mapChatResponse = (response: any): GetMessagesResponse[] => {
+    return response?.map((item: GetMessagesResponse) =>{
+        return item as GetMessagesResponse;
+    });
 };
 
-export function useGetMessagesByChatId(userId: string) {
+export function useGetMessagesByChatId(chatId: string) {
     return useQuery({
-        queryKey: ["fetchChats", userId],
-        queryFn: () => getMessages(userId),
+        queryKey: ["fetchChats", chatId],
+        queryFn: () => getMessages(chatId),
+        enabled: !!chatId,
+        refetchOnWindowFocus: false,
     });
 }

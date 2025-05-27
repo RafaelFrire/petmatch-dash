@@ -1,26 +1,32 @@
-'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import React, { useEffect, useState } from "react";
 import { ConversationItem } from "../conversationItem";
 import { MessageItem } from "../messageItem";
-import { on } from "events";
 import { Conversation } from "@/interfaces/conversation";
-import { mapChatResponse, useGetMessagesByChatId } from "@/hooks/useGetMessages";
-
-
+import {
+  mapChatResponse,
+  useGetMessagesByChatId,
+} from "@/hooks/useGetMessages";
 
 type ChatSectionProps = {
   onSendMessage: (text: string) => void;
-  conversationsList:Conversation[]; 
-}
+  conversationsList: Conversation[];
+  incomingMessage: any;
+};
 
 const ChatSection: React.FC<ChatSectionProps> = ({
   onSendMessage,
   conversationsList,
+  incomingMessage,
 }) => {
   const [input, setInput] = useState("");
-  const [currentChatId, setCurrentChatId] = useState("");
+  const [currentChatId, setCurrentChatId] = useState(
+    sessionStorage.getItem("currentChatId") || null
+  );
+  const [messages, setMessages] = useState<any[]>([]);
 
-  const {data: fetchMessages} = useGetMessagesByChatId(currentChatId!);
+  const { data: fetchMessages } = useGetMessagesByChatId(currentChatId!);
 
   const mapMessages = mapChatResponse(fetchMessages);
 
@@ -31,9 +37,49 @@ const ChatSection: React.FC<ChatSectionProps> = ({
     }
   };
 
-  useEffect(() =>{
-    console.log("currentChatId", currentChatId);
-  }, [currentChatId])
+  function getAvatarInitial(
+    senderId: string,
+    adopterId: string | null,
+    adopterName: string | null,
+    ongName: string | null
+  ): string {
+    if (senderId === adopterId && adopterName) {
+      return adopterName[0].toUpperCase();
+    }
+
+    if (ongName) {
+      return ongName[0].toUpperCase();
+    }
+
+    return "";
+  }
+
+  useEffect(() => {
+    if (fetchMessages) {
+      setMessages(mapChatResponse(fetchMessages));
+    }
+  }, [fetchMessages]);
+
+  useEffect(() => {
+    if (incomingMessage && incomingMessage.chatId === currentChatId) {
+      const conv = conversationsList.find((c) => c.id === currentChatId);
+
+      const enrichedMessage = {
+        ...incomingMessage,
+        adopterName: conv?.adopterName || null,
+        ongName: conv?.ongName || null,
+      };
+
+      setMessages((prev) => [...prev, enrichedMessage]);
+    }
+  }, [incomingMessage, currentChatId, conversationsList]);
+
+  useEffect(() => {
+    if (currentChatId && currentChatId) {
+      sessionStorage.setItem("currentChatId", currentChatId);
+      setMessages(mapMessages || []);
+    }
+  }, [currentChatId, mapMessages]);
   return (
     <div className="flex w-full h-full min-h-100vh">
       {/* Sidebar */}
@@ -45,7 +91,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col divide-y gap-10 divide-[#ebebeb]">
+        <div className="flex flex-col divide-y gap-10 max-h-[calc(100vh-150px)] divide-[#ebebeb] overflow-y-auto">
           {conversationsList.map((c) => (
             <ConversationItem
               key={c.id}
@@ -70,7 +116,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       <div className="flex-1 flex flex-col">
         <div className="h-[72px] border-b border-[#ebebeb] flex items-center justify-between px-6">
           <h2 className="font-extrabold text-lg text-[#222222]">
-            Renato Cardoso
+            {mapMessages?.length > 0 && mapMessages[0].adopterName}
           </h2>
           <div className="flex items-center gap-2">
             <div className="rounded-lg">
@@ -84,23 +130,28 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           </div>
         </div>
 
-        <div className="flex-1 bg-white overflow-y-auto p-5">
+        <div className="flex-1 bg-white overflow-y-auto p-5 max-h-[calc(100vh-150px)]">
           <div className="text-center mb-6">
             <span className="text-[11px] font-extrabold text-[#717171]">
               06 Novembro, 2024
             </span>
           </div>
-          {mapMessages?.map((m) => (
+            {messages?.map((m) => (
             <MessageItem
               key={m.id}
               sender={m.senderId}
-              avatar={m.senderId[0].toUpperCase()}
-              avatarColor={"#a00000"}
+              avatar={getAvatarInitial(
+              m.senderId,
+              m.adopterId,
+              m.adopterName,
+              m.ongName
+              )}
+              avatarColor="#a00000"
               message={m.body}
-              time={"10h"}
-              isUser={m.senderId === currentChatId}
+              time={new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              isUser={m.senderId === m.ongId}
             />
-          ))}
+            ))}
         </div>
 
         <div className="p-4 border-t border-[#ebebeb]">
@@ -115,7 +166,11 @@ const ChatSection: React.FC<ChatSectionProps> = ({
             <button
               type="button"
               className="bg-[#b80000] text-white font-bold px-4 py-2 rounded-[20px] ml-2 hover:bg-[#a00000] transition-colors"
-              onClick={() => on}
+              onClick={() => {
+                onSendMessage(input);
+                setInput("");
+              }}
+              disabled={!input.trim()}
             >
               Enviar
             </button>

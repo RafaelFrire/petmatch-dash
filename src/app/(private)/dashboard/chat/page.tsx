@@ -7,17 +7,20 @@ import {
   useGetConversationsByUserId,
 } from "@/hooks/useGetConversations";
 import { Conversation } from "@/interfaces/conversation";
+import { useSession } from "next-auth/react";
+import SpinLoader from "@/components/spinLoader";
 
 export default function ChatPage() {
+  const {data: sessionData} = useSession();
+
   const [receiverId, setReceiverId] = useState("");
   const { joinRoom, sendMessage, on } = useSocketIo();
 
-  const senderId = "484fe8db-0563-4022-91b2-80a3ddd5a599";
-  // const receiverId = "ce812dd9-ae19-49d6-8f5c-d585007cca03";
+  const senderId = sessionData?.user.id;
 
-  const conversationsList = useGetConversationsByUserId(senderId);
+  const {data:conversationsList, isLoading, isError} = useGetConversationsByUserId(senderId!);
 
-  const initialMessages = mapConversationResponse(conversationsList.data);
+  const initialMessages = mapConversationResponse(conversationsList);
 
   const [incomingMessage, setIncomingMessage] = useState<Conversation | null>(
     null
@@ -27,8 +30,6 @@ export default function ChatPage() {
     joinRoom(receiverId);
 
     on("receive_message", (newMessage: Conversation) => {
-      console.log("Mensagem recebida:", newMessage);
-
       setIncomingMessage(newMessage);
     });
 
@@ -46,12 +47,27 @@ export default function ChatPage() {
   const handleSendMessage = (text: string) => {
     if (text.trim() === "") return; // Não envia mensagens vazias
     sendMessage({
-      senderId: senderId,
+      senderId: senderId!,
       receiverId: receiverId,
       subject: "Mensagem via Chat",
       message: text,
     });
   };
+
+  
+  if (isLoading) {
+    return (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <SpinLoader />
+      </div>
+    );
+  }
+
+  if(isError){
+    return(
+      <h1>is error...</h1>
+    )
+  }
 
   return (
     <div className="w-full h-full flex flex-col">

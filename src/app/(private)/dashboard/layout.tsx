@@ -1,26 +1,31 @@
-import { ReactNode } from "react";
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+"use client";
+
+import { ReactNode, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import ProviderDashboard from "@/utils/ProvidersDashboard";
 
 type PrivateLayoutProps = {
   children: ReactNode;
 };
 
-export default async function PrivateLayout({ children }: PrivateLayoutProps) {
-  const session = await auth();
+export default function PrivateLayout({ children }: PrivateLayoutProps) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  if (!session) {
-    redirect("/login");
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (session?.user?.role !== "ONG" && session?.user?.role !== "ADMIN") {
+        router.push("/");
+      }
+    } else if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, session, router]);
 
-  if (session?.user?.role !== "ONG" && session?.user?.role !== "ADMIN") {
-    redirect("/");
-  }
+  if (status === "loading") return null;
 
   return (
-    <div>
-        <ProviderDashboard>{children}</ProviderDashboard>
-    </div>
+    <ProviderDashboard>{children}</ProviderDashboard>
   );
 }

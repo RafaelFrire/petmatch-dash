@@ -13,12 +13,15 @@ type ChatSectionProps = {
   onSendMessage: (text: string) => void;
   conversationsList: Conversation[];
   incomingMessage: any;
+  receiverId: string;
+  setReceiverId: (receiverId: string) => void;
 };
 
 const ChatSection: React.FC<ChatSectionProps> = ({
   onSendMessage,
   conversationsList,
   incomingMessage,
+  setReceiverId,
 }) => {
   const [input, setInput] = useState("");
   const [currentChatId, setCurrentChatId] = useState(
@@ -54,14 +57,21 @@ const ChatSection: React.FC<ChatSectionProps> = ({
     return "";
   }
 
+  function getReiceberAndChatId(receiverId:string, chatId:string){
+    setReceiverId(receiverId);
+    setCurrentChatId(chatId);
+  }
+
   useEffect(() => {
     if (fetchMessages) {
       setMessages(mapChatResponse(fetchMessages));
     }
   }, [fetchMessages]);
-
   useEffect(() => {
     if (incomingMessage && incomingMessage.chatId === currentChatId) {
+      const alreadyExists = messages.some((m) => m.id === incomingMessage.id);
+      if (alreadyExists) return;
+
       const conv = conversationsList.find((c) => c.id === currentChatId);
 
       const enrichedMessage = {
@@ -72,14 +82,15 @@ const ChatSection: React.FC<ChatSectionProps> = ({
 
       setMessages((prev) => [...prev, enrichedMessage]);
     }
-  }, [incomingMessage, currentChatId, conversationsList]);
+  }, []);
 
   useEffect(() => {
-    if (currentChatId && currentChatId) {
+    if (currentChatId) {
       sessionStorage.setItem("currentChatId", currentChatId);
       setMessages(mapMessages || []);
     }
-  }, [currentChatId, mapMessages]);
+  }, [currentChatId]);
+
   return (
     <div className="flex w-full h-full min-h-100vh">
       {/* Sidebar */}
@@ -91,7 +102,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col divide-y gap-10 max-h-[calc(100vh-150px)] divide-[#ebebeb] overflow-y-auto">
+        <div className="flex flex-col divide-y min-h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] divide-[#ebebeb] overflow-y-auto">
           {conversationsList.map((c) => (
             <ConversationItem
               key={c.id}
@@ -105,7 +116,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({
               }
               color="#b80000"
               message={c.lastMessage?.body || ""}
-              onClick={() => setCurrentChatId(c.id)}
+              onClick={() =>
+                getReiceberAndChatId(c.adopterId || "", c.id || "")
+              }
               isSelected={currentChatId === c.id}
             />
           ))}
@@ -136,22 +149,25 @@ const ChatSection: React.FC<ChatSectionProps> = ({
               06 Novembro, 2024
             </span>
           </div>
-            {messages?.map((m) => (
+          {messages?.map((m) => (
             <MessageItem
               key={m.id}
               sender={m.senderId}
               avatar={getAvatarInitial(
-              m.senderId,
-              m.adopterId,
-              m.adopterName,
-              m.ongName
+                m.senderId,
+                m.adopterId,
+                m.adopterName,
+                m.ongName
               )}
               avatarColor="#a00000"
               message={m.body}
-              time={new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              time={new Date(m.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
               isUser={m.senderId === m.ongId}
             />
-            ))}
+          ))}
         </div>
 
         <div className="p-4 border-t border-[#ebebeb]">

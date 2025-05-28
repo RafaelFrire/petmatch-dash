@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import SideNavigation from "@/components/pages/dashboard/navigation/sideNavigation";

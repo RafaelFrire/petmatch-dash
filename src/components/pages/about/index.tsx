@@ -59,8 +59,8 @@ const QuoteBox = () => {
 
 const ContactSection = () => {
   return (
-    <section className="w-[80%] max-w-[1440px] mt-32 text-center">
-      <div className="flex items-center flex-wrap py-10">
+    <section className="w-[80%] max-w-[1200px] mt-32 text-center">
+      <div className="flex items-center flex-nowrap 3xl:flex-wrap py-10">
         <ContactCard />
         <div className="h-10"></div>
         <div>

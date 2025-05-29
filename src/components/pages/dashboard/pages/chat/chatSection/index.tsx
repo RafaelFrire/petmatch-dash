@@ -10,6 +10,7 @@
   } from "@/hooks/useGetMessages";
   import SpinLoader from "@/components/spinLoader";
   import { Box } from "lucide-react";
+import HeaderInputSearch from "../../adoption/headerInputSearch";
 
   type ChatSectionProps = {
     onSendMessage: (text: string) => void;
@@ -134,6 +135,10 @@ useEffect(() => {
           </div>
 
           <div className="flex flex-col divide-y min-h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] divide-[#ebebeb] overflow-y-auto">
+            <div className="w-[90%] mx-auto py-2">
+              <HeaderInputSearch 
+              />
+            </div>
             {conversationsList.map((c) => (
               <ConversationItem
                 key={c.id}

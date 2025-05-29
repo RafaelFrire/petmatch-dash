@@ -3,10 +3,10 @@ import { Search } from "lucide-react";
 
 type headerProps = {
   handleSerachEvent?: (value: string) => void;
-}
+};
 export default function HeaderInputSearch({handleSerachEvent}:headerProps){
     return (
-      <div className="w-full md:w-1/2">
+      <div className="w-full">
         <div className="relative max-w-md w-full">
           <input
             type="text"

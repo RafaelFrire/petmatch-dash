@@ -24,6 +24,7 @@ import useDeleteData from "@/hooks/useDeleteData";
 import Modal from "@/components/modal";
 import { FormAdocao } from "@/components/pages/adocao/form";
 import { mapAdoptionByIdResponse, useGetAdoptionRequestById } from "@/hooks/useGetAdoptionById";
+import { StartChatModal } from "@/components/pages/dashboard/pages/adoption/startChatModal";
 
 export type Status = "PENDING" | "APPROVED" | "REJECTED";
 
@@ -329,6 +330,14 @@ export default function AdoptionRequestPage() {
           )}
         </div>
       </Modal>
+
+       <StartChatModal
+        setOpen={setOpenConfirmModal}
+        isOpen={true}
+        onSend={updateStatus}
+        userName="fulano"
+        petName=""
+       />
       <div className="h-6"></div>
       <Pagination
         totalPages={data?.totalPages || 1}

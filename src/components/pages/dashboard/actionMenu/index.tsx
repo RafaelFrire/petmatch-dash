@@ -1,15 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Edit, MoreVertical, Trash } from "lucide-react";
+import { Edit, MessageCircle, MoreVertical, Trash } from "lucide-react";
 
 type actionsMenuProps = {
   onEdit?: () => void;
+  onChat?: () => void;
   onDelete?: () => void;
   onApprove?: () => void;
   onReject?: () => void;
 }
-export function ActionsMenu({onEdit, onDelete, onReject, onApprove}:actionsMenuProps) {
+export function ActionsMenu({
+  onEdit,
+  onDelete,
+  onReject,
+  onApprove,
+  onChat,
+}: actionsMenuProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -20,6 +27,9 @@ export function ActionsMenu({onEdit, onDelete, onReject, onApprove}:actionsMenuP
       <div className="flex gap-2 items-center">
         <button onClick={onEdit}>
           <Edit className="w-4 h-4" />
+        </button>
+        <button onClick={onChat}>
+          <MessageCircle className="w-4 h-4" />
         </button>
         <button onClick={onDelete}>
           <Trash className="w-4 h-4" />
@@ -34,13 +44,15 @@ export function ActionsMenu({onEdit, onDelete, onReject, onApprove}:actionsMenuP
 
       {open && (
         <div className="absolute flex flex-col right-0 mt-2 w-32 min-h-16 bg-white border border-gray-200 rounded shadow z-10">
-          <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-          onClick={onApprove}
+          <button
+            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+            onClick={onApprove}
           >
             Aprovar
           </button>
-          <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-          onClick={onReject}
+          <button
+            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+            onClick={onReject}
           >
             Rejeitar
           </button>

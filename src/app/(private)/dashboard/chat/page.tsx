@@ -77,6 +77,7 @@ export default function ChatPage() {
         incomingMessage={incomingMessage}
         setReceiverId={setReceiverId}
         receiverId={receiverId}
+        loggedUserId={senderId || ""}
       />
     </div>
   );

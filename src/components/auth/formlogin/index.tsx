@@ -35,14 +35,16 @@ export default function FormLogin() {
     if (!state?.success) {
       toast.error(state?.message);
       return;
-    } else if (
-      (state?.success && state.data.user, state.data?.user?.role === "ONG")
-    ) {
+    } else if ((state?.success && state.data.user &&state.data?.user?.role === "ONG")) {
       router.push("/dashboard");
       toast.success(state?.message);
       return;
     } else if (
-      (state?.success && state.data.user, state.data?.user?.role === "ADOPTER")
+      (state?.success && state.data.user && state.data?.user?.role === "ONG" && state.data?.user.status === "PENDING")) {
+      router.push("/pending");
+
+    } else if (
+      (state?.success && state.data.user && state.data?.user?.role === "ADOPTER")
     ) {
       router.push("/");
       toast.success(state?.message);

@@ -10,9 +10,11 @@ const Button: React.FC<ButtonProps> = ({
   backgroundNone,
   borderRounded,
   classname,
+  ...props
 }: ButtonProps) => {
   return (
     <button
+      {...props}
       className={`
             ${borderRounded ? "rounded-full" : "rounded-md"} 
             ${

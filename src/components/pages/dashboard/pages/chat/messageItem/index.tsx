@@ -7,7 +7,7 @@ interface MessageItemProps {
   sender: string;
   avatar: string;
   avatarColor: string;
-  isUser: boolean;
+  isUserLogged: boolean;
 }
 
 export const MessageItem: React.FC<MessageItemProps> = ({
@@ -15,11 +15,11 @@ export const MessageItem: React.FC<MessageItemProps> = ({
   time,
   avatar,
   avatarColor,
-  isUser,
+  isUserLogged,
 }) => {
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
-      {!isUser && (
+    <div className={`flex ${isUserLogged ? "justify-end" : "justify-start"} mb-4`}>
+      {!isUserLogged && (
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold mr-2"
           style={{ backgroundColor: avatarColor }}
@@ -30,7 +30,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
 
       <div
         className={`max-w-[70%] p-3 rounded-xl text-sm ${
-          isUser
+          isUserLogged
             ? "bg-[#f7f7f7] text-[#222] rounded-br-none"
             : "bg-primary100 text-white rounded-bl-none"
         }`}
@@ -39,7 +39,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
         <span className="text-[10px] block mt-1 opacity-70">{time}</span>
       </div>
 
-      {isUser && (
+      {isUserLogged && (
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ml-2"
           style={{ backgroundColor: avatarColor }}

@@ -8,6 +8,7 @@ export interface Conversation {
   lastMessage: {
     subject: string;
     body: string;
+    senderId: string;
   };
   createdAt: Date;
   updatedAt: Date;

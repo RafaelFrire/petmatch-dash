@@ -9,6 +9,8 @@ type PrivateLayoutProps = {
   children: ReactNode;
 };
 
+
+
 export default function PrivateLayout({ children }: PrivateLayoutProps) {
   const { data: session, status } = useSession();
   const router = useRouter();

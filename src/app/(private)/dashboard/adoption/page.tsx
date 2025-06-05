@@ -37,6 +37,7 @@ export default function AdoptionRequestPage() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openAdoptionForm, setOpenAdoptionForm] = useState(false);
+  const [openChatMessage, setOpenChatMessage] = useState(false);
   const [originalData, setOriginalData] = useState<Adoption[]>([]);
   const [filterData, setFilterData] = useState<Adoption[]>([]);
   const [typeAction, setTypeAction] = useState<Status>("PENDING");
@@ -51,6 +52,8 @@ export default function AdoptionRequestPage() {
   const currentPage = Number(searchParams.get("page"));
 
   const [searchText, setSearchText] = useState("");
+
+  const [selectAdoption, setSelectAdoption] = useState("")
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const { data, isError, isLoading } = useGetAdoptonRequestByOngId(
@@ -145,6 +148,7 @@ export default function AdoptionRequestPage() {
           onApprove={() => handleApprove(item.id)}
           onReject={() => handleReject(item.id)}
           onEdit={() => handleAdoptionForm(item.id)}
+          onChat={() => handleStartChat(item.id)}
         />
       ),
     },
@@ -261,6 +265,12 @@ export default function AdoptionRequestPage() {
     setOpenConfirmModal(true);
   };
 
+  const handleStartChat= (name:string) =>{
+    setOpenChatMessage(true)
+    setSelectAdoption(name)
+
+  }
+
   const handleAdoptionForm = (id: string) => {
     console.log("id", id);
     setOpenAdoptionFormId(id);
@@ -332,11 +342,11 @@ export default function AdoptionRequestPage() {
       </Modal>
 
        <StartChatModal
-        setOpen={setOpenConfirmModal}
-        isOpen={true}
+        setOpen={setOpenChatMessage}
+        isOpen={openChatMessage}
         onSend={updateStatus}
-        userName="fulano"
-        petName=""
+        userName={selectAdoption || "teste"}
+        petName={""}
        />
       <div className="h-6"></div>
       <Pagination

@@ -87,7 +87,7 @@ export default function FormLogin() {
 
           <div className="h-3"></div>
 
-          <Text text="Esqueceu a senha?" />
+          <Text text="Esqueceu a senha?" className="px-2" />
         </div>
         <div className="h-3"></div>
         <Button text="Entrar" borderRounded={true} type="submit" />

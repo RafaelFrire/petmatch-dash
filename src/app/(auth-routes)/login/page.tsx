@@ -16,16 +16,24 @@ export default async function Login() {
         <div className="md:w-[450px] mx-auto">
           <div className="flex justify-evenly items-center h-16">
             <ButtonRedirect text="Entrar" redirect={"/login"} isActive={true} />
-            <ButtonRedirect text="Cadastrar" redirect={"/register"} isActive={false} />
+            <ButtonRedirect
+              text="Cadastrar"
+              redirect={"/register"}
+              isActive={false}
+            />
           </div>
           <FormLogin />
         </div>
-      </div>
-      <div className="flex justify-center items-center flex-col ">
-        <div className="h-20"></div>
+        <div className="flex justify-center items-center flex-col ">
           <div>
-            <Text text="Faça Login como usuário aqui" />
+            <a href="/register/ong">
+              <button>
+                <Text text="Cadastre sua ONG " />
+              </button>
+            </a>
           </div>
+          <div className="h-10"></div>
+        </div>
       </div>
     </>
   );

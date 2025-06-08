@@ -75,3 +75,39 @@ export const signup = async (data: RegisterUser) => {
     return null;
   }
 };
+
+
+export const ongSignup = async (data: RegisterUser) => {
+  try {
+    const formData = new FormData();
+
+    Object.keys(data).forEach((key) => {
+      formData.append(key, (data as never)[key]);
+    });
+
+    const response = await api.post<apiResponse>("/auth/signup_ong", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (response.status === 201) {
+      toast.success("Usuário criado com sucesso!");
+    } else if (response.status === 409) {
+      toast.error("Email já em uso.");
+      throw new Error("Email já em uso.");
+    } else {
+      toast.error(`Erro inesperado: ${response.status}`);
+      throw new Error(`Erro inesperado: ${response.status}`);
+    }
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      console.error("Erro na requisição:", err.response?.data || err.message);
+      toast.error("Erro na requisição:" + err.message);
+      throw new Error(
+        `Erro na autenticação: ${err.response?.status || "Desconhecido"}`
+      );
+    }
+
+    console.error("Erro inesperado:", err);
+    return null;
+  }
+};

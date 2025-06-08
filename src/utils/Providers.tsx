@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
@@ -36,7 +37,7 @@ export default function Provider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   const pathname = usePathname();
 
-  const hideBannerOn = ["/login", "/signup", "/dashboard", "/pending"];
+  const hideBannerOn = ["/login", "/register", "/register/ong", "/dashboard", "/pending"];
 
   const hiddenfull = ["/dashboard", "/pending"];
   const dynamicRoutes = ["/dashboard"];
@@ -52,7 +53,7 @@ export default function Provider({ children }: { children: ReactNode }) {
         <SessionGuard>
           {!shouldHideHeaderAndFooter && <Header />}
           {!shouldHideBanner && <Banner />}
-          {children}
+            {children}
           {!shouldHideHeaderAndFooter && <Footer />}
         </SessionGuard>
 

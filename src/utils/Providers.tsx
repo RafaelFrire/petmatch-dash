@@ -37,9 +37,9 @@ export default function Provider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   const pathname = usePathname();
 
-  const hideBannerOn = ["/login", "/register", "/register/ong", "/dashboard", "/pending"];
+  const hideBannerOn = ["/login", "/register", "/register/ong", "/dashboard", "/pending", "/chat"];
 
-  const hiddenfull = ["/dashboard", "/pending"];
+  const hiddenfull = ["/dashboard", "/pending", "/chat"];
   const dynamicRoutes = ["/dashboard"];
 
   const isDynamicRoute = dynamicRoutes.some((route) => pathname.startsWith(route));

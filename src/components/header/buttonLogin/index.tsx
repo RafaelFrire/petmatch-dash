@@ -23,6 +23,11 @@ const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
       onClick: () => router.push("/dashboard"),
       roles: ["ONG", "ADMIN"], // visível apenas para essas roles
     },
+        {
+      label: "Chat",
+      onClick: () => router.push("/chat"),
+      roles: ["ONG", "ADMIN"],
+    },
     {
       label: "Sair",
       onClick: () => signOut(),
@@ -53,7 +58,7 @@ const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
 
       {/* Dropdown Menu */}
       {dropdownOpen && session && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+        <div className="absolute right-0 mt-2 w-48 z-50 bg-white border border-gray-200 rounded-lg shadow-lg">
           {inputsOptions.map((item, index) => {
             return (
               <button

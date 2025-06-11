@@ -13,7 +13,6 @@ const navLinks: navlinkProps[] = [
   { path: "/about", text: "Sobre nós" },
   { path: "/event", text: "Eventos" },
   { path: "/blog", text: "Artigos" },
-  // { path: "/contact", text: "Contato" },
 ];
 
 const Header = () => {

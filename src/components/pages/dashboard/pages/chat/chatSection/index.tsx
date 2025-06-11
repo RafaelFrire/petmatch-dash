@@ -19,14 +19,17 @@ type ChatSectionProps = {
   receiverId: string;
   setReceiverId: (receiverId: string) => void;
   loggedUserId: string;
+  isOng:boolean;
 };
 
 const ChatSection: React.FC<ChatSectionProps> = ({
   onSendMessage,
   conversationsList,
   incomingMessage,
+  receiverId,
   setReceiverId,
   loggedUserId,
+  isOng
 }) => {
   const [input, setInput] = useState("");
   const [currentChatId, setCurrentChatId] = useState(
@@ -68,6 +71,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   function getReiceberAndChatId(receiverId: string, chatId: string) {
     setReceiverId(receiverId);
     setCurrentChatId(chatId);
+
+    sessionStorage.setItem("currentChatId", chatId);
+    sessionStorage.setItem("receiverId", receiverId);
   }
 
   useEffect(() => {
@@ -102,11 +108,13 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       sessionStorage.setItem("currentChatId", currentChatId);
       setMessages(mapMessages || []);
     }
-  }, [currentChatId]);
+    if(receiverId){
+      sessionStorage.setItem("receiverId", receiverId);
+    }
+  }, [currentChatId, receiverId]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: "smooth",
@@ -139,18 +147,23 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           {conversationsList.map((c) => (
             <ConversationItem
               key={c.id}
-              name={c.adopterName || ""}
+              name={isOng ? c.adopterName ?? "" : c.ongName ?? ""}
               initial={
-                c.adopterName
-                  ? c.adopterName[0].toUpperCase()
+                isOng
+                  ? c.adopterName
+                    ? c.adopterName[0].toUpperCase()
+                    : ""
                   : c.ongName
-                  ? c.ongName[0]
+                  ? c.ongName[0].toUpperCase()
                   : ""
               }
               color="#b80000"
               message={c.lastMessage?.body || ""}
               onClick={() =>
-                getReiceberAndChatId(c.adopterId || "", c.id || "")
+                getReiceberAndChatId(
+                  isOng ? c.adopterId || "" : c.ongId || "",
+                  c.id || ""
+                )
               }
               isSelected={currentChatId === c.id}
             />
@@ -185,25 +198,28 @@ const ChatSection: React.FC<ChatSectionProps> = ({
               06 Novembro, 2024
             </span>
           </div>
-          {messages?.map((m) => (
-            <MessageItem
-              key={m.id}
-              sender={m.senderId}
-              avatar={getAvatarInitial(
-                m.senderId,
-                m.adopterId,
-                m.adopterName,
-                m.ongName
-              )}
-              avatarColor="#a00000"
-              message={m.body}
-              time={new Date(m.createdAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-              isUserLogged={loggedUserId === m.ongId}
-            />
-          ))}
+          {messages?.map((m) => {
+
+
+            return (
+              <MessageItem
+                key={m.id}
+                sender={m.senderId}
+                avatar={getAvatarInitial(
+                  m.senderId,
+                  m.adopterId,
+                  m.adopterName,
+                  m.ongName
+                )}
+                avatarColor="#a00000"
+                message={m.body}
+                time={new Date(m.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                isUserLogged={loggedUserId === m.senderId ? true : false}
+              />
+            );})}
         </div>
 
         <div className="p-4 border-t border-[#ebebeb]">

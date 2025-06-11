@@ -76,7 +76,6 @@ export const signup = async (data: RegisterUser) => {
   }
 };
 
-
 export const ongSignup = async (data: RegisterUser) => {
   try {
     const formData = new FormData();

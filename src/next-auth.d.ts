@@ -10,6 +10,8 @@ declare module "next-auth" {
       role?: string;
       status?: string;
       lastname?: string;
+      adopterId?: string;
+      ongId?: string;
     };
   }
 
@@ -17,6 +19,8 @@ declare module "next-auth" {
     role?: string;
     status?: string;
     lastname?: string;
+    adopterId?: string;
+    ongId?: string;
   }
 }
 

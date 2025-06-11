@@ -9,11 +9,15 @@ import {
 import { Conversation } from "@/interfaces/conversation";
 import { useSession } from "next-auth/react";
 import SpinLoader from "@/components/spinLoader";
+import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
-  const {data: sessionData} = useSession();
+  const { data: sessionData, status } = useSession();
+  const router = useRouter()
 
-  const [receiverId, setReceiverId] = useState("");
+  const [receiverId, setReceiverId] = useState(
+    sessionStorage.getItem("receiverId") || ""
+  );
   const { joinRoom, sendMessage, on } = useSocketIo();
 
   const senderId = sessionData?.user.id;
@@ -54,6 +58,20 @@ export default function ChatPage() {
     });
   };
 
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (
+        sessionData?.user?.role !== "ADOPTER" &&
+        sessionData?.user?.role !== "ADMIN"
+      ) {
+        router.push("/");
+      }
+    } else if (status === "unauthenticated") {
+      router.push("/login");
+    }
+    console.log("sessionData", sessionData?.user);
+  }, [status, sessionData, router]);
+
   
   if (isLoading) {
     return (
@@ -78,6 +96,7 @@ export default function ChatPage() {
         setReceiverId={setReceiverId}
         receiverId={receiverId}
         loggedUserId={senderId || ""}
+        isOng={false}
       />
     </div>
   );

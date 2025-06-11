@@ -26,7 +26,7 @@ const ButtonLogin: React.FC<buttonProps> = ({ text }: buttonProps) => {
         {
       label: "Chat",
       onClick: () => router.push("/chat"),
-      roles: ["ONG", "ADMIN"],
+      roles: ["ADOPTER", "ADMIN"],
     },
     {
       label: "Sair",

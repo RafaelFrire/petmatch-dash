@@ -4,6 +4,8 @@ export interface User {
   lastname: string;
   email: string;
   password: string;
+  adopterId?: string;
+  ongId?: string;
   role: "ADMIN" | "ONG" | "ADOPTER";
   status: "ACTIVE" | "INACTIVE";
 };

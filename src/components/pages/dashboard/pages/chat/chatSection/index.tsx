@@ -11,15 +11,18 @@ import {
 import SpinLoader from "@/components/spinLoader";
 import { Box } from "lucide-react";
 import HeaderInputSearch from "../../adoption/headerInputSearch";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ChatSectionProps = {
   onSendMessage: (text: string) => void;
   conversationsList: Conversation[];
   incomingMessage: any;
   receiverId: string;
+  messages: any[];
+  setMessages: ([]: any) => void;
   setReceiverId: (receiverId: string) => void;
   loggedUserId: string;
-  isOng:boolean;
+  isOng: boolean;
 };
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -29,13 +32,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   receiverId,
   setReceiverId,
   loggedUserId,
-  isOng
+  isOng,
+  messages,
+  setMessages,
 }) => {
+  const queryClient = useQueryClient();
   const [input, setInput] = useState("");
   const [currentChatId, setCurrentChatId] = useState(
     sessionStorage.getItem("currentChatId") || null
   );
-  const [messages, setMessages] = useState<any[]>([]);
+  // const [messages, setMessages] = useState<any[]>([]);
   const chatContainerRef = React.useRef<HTMLDivElement>(null);
 
   const { data: fetchMessages, isLoading } = useGetMessagesByChatId(
@@ -76,6 +82,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({
     sessionStorage.setItem("receiverId", receiverId);
   }
 
+  
+useEffect(() => {
+  if (incomingMessage && incomingMessage.chatId === currentChatId) {
+    console.log("🔄 Nova mensagem recebida, refetch de mensagens");
+    queryClient.invalidateQueries({
+      queryKey: ["fetchMessages", currentChatId],
+    });
+  }
+}, [incomingMessage, currentChatId, conversationsList]);
+
   useEffect(() => {
     if (fetchMessages) {
       setMessages(mapChatResponse(fetchMessages));
@@ -83,32 +99,33 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   }, [fetchMessages]);
 
   useEffect(() => {
-    if (incomingMessage && incomingMessage.chatId === currentChatId) {
-      setMessages((prevMessages) => {
-        const alreadyExists = prevMessages.some(
-          (m) => m.id === incomingMessage.id
-        );  
-        if (alreadyExists) return prevMessages;
+  if (!incomingMessage) return;
+  console.log("📥 Nova mensagem recebida:", incomingMessage);
 
-        const conv = conversationsList.find((c) => c.id === currentChatId);
-        const enrichedMessage = {
-          ...incomingMessage,
-          adopterName: conv?.adopterName || null,
-          ongName: conv?.ongName || null,
-          isUser: false,
-        };
+  if (incomingMessage.chatId !== currentChatId) return;
 
-        return [...prevMessages, enrichedMessage];
-      });
-    }
-  }, [incomingMessage, currentChatId, conversationsList]);
+  setMessages((prevMessages: any[]) => {
+    const alreadyExists = prevMessages.some((m) => m.id === incomingMessage.id);
+    if (alreadyExists) return prevMessages;
+
+    const conv = conversationsList.find((c) => c.id === currentChatId);
+    const enrichedMessage = {
+      ...incomingMessage,
+      adopterName: conv?.adopterName ?? null,
+      ongName: conv?.ongName ?? null,
+      isUser: incomingMessage.senderId === loggedUserId ? true : false,
+    };
+
+    return [...prevMessages, enrichedMessage];
+  });
+}, [incomingMessage?.id]);
 
   useEffect(() => {
     if (currentChatId) {
       sessionStorage.setItem("currentChatId", currentChatId);
       setMessages(mapMessages || []);
     }
-    if(receiverId){
+    if (receiverId) {
       sessionStorage.setItem("receiverId", receiverId);
     }
   }, [currentChatId, receiverId]);
@@ -199,8 +216,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({
             </span>
           </div>
           {messages?.map((m) => {
-
-
             return (
               <MessageItem
                 key={m.id}
@@ -219,7 +234,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
                 })}
                 isUserLogged={loggedUserId === m.senderId ? true : false}
               />
-            );})}
+            );
+          })}
         </div>
 
         <div className="p-4 border-t border-[#ebebeb]">

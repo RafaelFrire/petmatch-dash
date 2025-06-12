@@ -49,7 +49,7 @@ export const mapChatResponse = (response: any): GetMessagesResponse[] => {
 
 export function useGetMessagesByChatId(chatId: string) {
     return useQuery({
-        queryKey: ["fetchChats", chatId],
+        queryKey: ["fetchMessages", chatId],
         queryFn: () => getMessages(chatId),
         enabled: !!chatId,
         refetchOnWindowFocus: false,

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
   const { data: sessionData, status } = useSession();
+  
   const router = useRouter()
 
   const [receiverId, setReceiverId] = useState(
@@ -25,6 +26,7 @@ export default function ChatPage() {
   const {data:conversationsList, isLoading, isError} = useGetConversationsByUserId(senderId!);
 
   const initialMessages = mapConversationResponse(conversationsList);
+  const [messages, setMessages] = useState<Conversation[]>(initialMessages);
 
   const [incomingMessage, setIncomingMessage] = useState<Conversation | null>(
     null
@@ -57,6 +59,13 @@ export default function ChatPage() {
       message: text,
     });
   };
+
+    
+  useEffect(() => {
+    if (incomingMessage) {
+      setMessages((prev) => [...prev, incomingMessage]);
+    }
+  }, [incomingMessage]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -96,6 +105,8 @@ export default function ChatPage() {
         setReceiverId={setReceiverId}
         receiverId={receiverId}
         loggedUserId={senderId || ""}
+        setMessages={setMessages}
+        messages={messages}
         isOng={false}
       />
     </div>

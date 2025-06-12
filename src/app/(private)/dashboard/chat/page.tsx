@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import useSocketIo from "@/hooks/useSocketIo";
@@ -21,6 +22,7 @@ export default function ChatPage() {
   const {data:conversationsList, isLoading, isError} = useGetConversationsByUserId(senderId!);
 
   const initialMessages = mapConversationResponse(conversationsList);
+  const [messages, setMessages] = useState<Conversation[]>(initialMessages);
 
   const [incomingMessage, setIncomingMessage] = useState<Conversation | null>(
     null
@@ -43,6 +45,12 @@ export default function ChatPage() {
       console.error("Erro ao enviar:", errorMsg);
     });
   }, [on, joinRoom, senderId]);
+
+  useEffect(() => {
+    if (incomingMessage) {
+      setMessages((prev) => [...prev, incomingMessage]);
+    }
+  }, [incomingMessage]);
 
   const handleSendMessage = (text: string) => {
     if (text.trim() === "") return; // Não envia mensagens vazias
@@ -76,6 +84,8 @@ export default function ChatPage() {
         conversationsList={initialMessages}
         incomingMessage={incomingMessage}
         setReceiverId={setReceiverId}
+        setMessages={setMessages}
+        messages={messages}
         receiverId={receiverId}
         loggedUserId={senderId || ""}
         isOng={true}
